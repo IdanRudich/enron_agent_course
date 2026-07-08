@@ -1,0 +1,520 @@
+[
+  {
+    "id": "easy-001",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {
+      "value": "1-800-368-3804",
+      "aliases": [
+        "18003683804",
+        "800-368-3804",
+        "(800) 368-3804",
+        "1 800 368 3804",
+        "1.800.368.3804"
+      ]
+    },
+    "evidence_message_ids": [
+      "<22322411.1075840045955.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Atomic fact retrieved from the body of the email named by the given Message-ID. The body states 'The contact number for AON is 1-800-368-3804.' Accept the number in any common punctuation/spacing (digits 8003683804); the leading US '1' is optional. The second number in the email (1-800-332-7979, for all Benefits) is a distractor and is not accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-002",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {
+      "value": "<8294594.1075855414353.JavaMail.evans@thyme>",
+      "aliases": [
+        "8294594.1075855414353.JavaMail.evans@thyme"
+      ]
+    },
+    "evidence_message_ids": [
+      "<8294594.1075855414353.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Only one email in phanis-s/inbox has From sara.shackleton@enron.com with Subject 'Magnum Hunter Resources, Inc.', so the discovered Message-ID is unique. Canonical form keeps the angle brackets; a bracket-less but otherwise identical string is accepted (add-only tolerance per NORMALIZATION.md §1). Inner content matched byte-for-byte after trimming. The answer value and the evidence Message-ID are the same id here."
+  },
+  {
+    "id": "easy-003",
+    "difficulty": "easy",
+    "points": 1,
+    "accepted_answer": {
+      "value": "david.steiner@enron.com",
+      "aliases": [
+        "David Steiner",
+        "Steiner, David"
+      ]
+    },
+    "evidence_message_ids": [
+      "<10033007.1075840046962.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Top-level From header of the named email. Canonical answer is the lowercase email address; display-name aliases accepted per NORMALIZATION.md §3. Address compared case-insensitively after trimming. Message-ID evidence required."
+  },
+  {
+    "id": "easy-004",
+    "difficulty": "easy",
+    "points": 1,
+    "accepted_answer": {
+      "value": "Confirmation of Interview on Friday with Tim Belden",
+      "aliases": []
+    },
+    "evidence_message_ids": [
+      "<14464692.1075840045536.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Exact Subject header text of the named email. Compare after trimming leading/trailing whitespace; case-insensitive match accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-005",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {
+      "value": [
+        "MVC-003S.JPG",
+        "MVC-011S.JPG",
+        "MVC-013S.JPG",
+        "MVC-019S.JPG"
+      ],
+      "aliases": []
+    },
+    "evidence_message_ids": [
+      "<31472676.1075853654527.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "The four filenames are mentioned as plain text in the body ('- MVC-003S.JPG' etc.); the email carries NO real MIME attachment (verified: zero attachment parts). Answer is the set of all four filenames; order does not matter and filename case is not significant. All four required for full credit. Message-ID evidence required."
+  },
+  {
+    "id": "easy-006",
+    "difficulty": "easy",
+    "points": 3,
+    "accepted_answer": {
+      "value": "christina.slinger@gs.com",
+      "aliases": [
+        "Christina Slinger",
+        "Slinger, Christina"
+      ]
+    },
+    "evidence_message_ids": [
+      "<5764479.1075840047485.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Graded against the current email's top-level From header per NORMALIZATION.md §5. The quoted 'Original Message' below is from Ryan.Slinger@enron.com; ryan.slinger@enron.com is the quoted-history sender and is a distractor, NOT accepted. Canonical answer is the lowercase current-sender address; display-name aliases accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-007",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {
+      "value": "2001-05-22T07:25:59-07:00",
+      "aliases": [
+        "2001-05-22T14:25:59+00:00",
+        "2001-05-22T14:25:59Z"
+      ]
+    },
+    "evidence_message_ids": [
+      "<3789605.1075840048923.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Raw Date header 'Tue, 22 May 2001 07:25:59 -0700' (PDT). Canonical answer keeps the original -07:00 offset per NORMALIZATION.md §2. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-008",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {
+      "value": "2002-01-31T12:33:39-08:00",
+      "aliases": [
+        "2002-01-31T20:33:39+00:00",
+        "2002-01-31T20:33:39Z"
+      ]
+    },
+    "evidence_message_ids": [
+      "<3392486.1075840045696.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Raw Date header 'Thu, 31 Jan 2002 12:33:39 -0800' (PST). Canonical answer keeps the original -08:00 offset per NORMALIZATION.md §2. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-009",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {
+      "value": "stephanie.sever@enron.com",
+      "aliases": [
+        "Stephanie Sever",
+        "Sever, Stephanie"
+      ]
+    },
+    "evidence_message_ids": [
+      "<11700608.1075840047233.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "The To field holds exactly one address: stephanie.sever@enron.com. The Cc field holds ryan.slinger@enron.com and bill.williams@enron.com; those are Cc recipients and are NOT accepted for this To-role question (note ryan.slinger, the mailbox owner, appears only in Cc). Address compared case-insensitively; display-name aliases accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-010",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {
+      "value": "281-820-7889",
+      "aliases": [
+        "2818207889",
+        "(281) 820-7889",
+        "281.820.7889",
+        "281 820 7889"
+      ]
+    },
+    "evidence_message_ids": [
+      "<1378742.1075855414130.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Explicit fact from the body: 'I received a call from Ryan Youngblood of Kona Ltd. (281-820-7889) requesting the return of the letter of credit...'. Accept the number in any common punctuation/spacing (digits 2818207889). Message-ID evidence required."
+  },
+  {
+    "id": "medium-001",
+    "difficulty": "medium",
+    "points": 4,
+    "accepted_answer": {
+      "value": 136,
+      "aliases": [
+        "136 emails"
+      ]
+    },
+    "evidence_message_ids": [
+      "<28841806.1075841866914.JavaMail.evans@thyme>",
+      "<266694.1075841873502.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'symes-k__power_marketer' only (origin: symes-k/power_marketer). The count is the total number of packaged message files in that pack = 136 (verified by counting lines with pack=='symes-k__power_marketer' in evidence.jsonl, which equals the file count in mail/packs/symes-k__power_marketer/). All messages are counted once; replies/forwards and near-duplicates are included. Answer must equal the integer 136. Evidence is illustrative: any one boundary/anchor message in the pack is accepted (evidence_mode=any); the two listed ids are the earliest and latest messages in the pack."
+  },
+  {
+    "id": "medium-002",
+    "difficulty": "medium",
+    "points": 5,
+    "accepted_answer": {
+      "value": 51,
+      "aliases": [
+        "51 emails",
+        "51 replies/forwards"
+      ]
+    },
+    "evidence_message_ids": [
+      "<303482.1075855211200.JavaMail.evans@thyme>",
+      "<30933191.1075855211314.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'steffes-j__credit_issues' only (origin: steffes-j/credit_issues). Counted rule: packaged emails whose trimmed Subject begins case-insensitively with 're:', 'fw:', or 'fwd:'. Count over the whole pack = 51 (verified against evidence.jsonl; matches the pack's documented reply/forward count). Answer must equal the integer 51. Evidence_mode=any: each listed id is a representative reply/forward message inside the pack; any in-scope reply message id is acceptable as an anchor."
+  },
+  {
+    "id": "medium-003",
+    "difficulty": "medium",
+    "points": 5,
+    "accepted_answer": {
+      "value": "2000-03-15T07:37:00-08:00",
+      "aliases": [
+        "2000-03-15",
+        "2000-03-15T15:37:00Z",
+        "March 15, 2000"
+      ]
+    },
+    "evidence_message_ids": [
+      "<26816706.1075846346223.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope = curated pack 'kean-s__ferc' only (origin: kean-s/ferc). Earliest email by top-level Date header, computed by sorting the ISO 8601 dates of all pack messages ascending. Earliest = 2000-03-15T07:37:00-08:00 (Subject 'Aquila v. Entergy', Message-ID <26816706.1075846346223.JavaMail.evans@thyme>). Date matched per NORMALIZATION.md: canonical is the Pacific-offset ISO 8601 value; equivalent representations of the same instant (e.g. UTC) and the date-only form 2000-03-15 are accepted (see aliases). The single earliest Message-ID is required (evidence_mode=all)."
+  },
+  {
+    "id": "medium-004",
+    "difficulty": "medium",
+    "points": 5,
+    "accepted_answer": {
+      "value": "2001-05-01T07:45:00-07:00",
+      "aliases": [
+        "2001-05-01",
+        "2001-05-01T14:45:00Z",
+        "May 1, 2001"
+      ]
+    },
+    "evidence_message_ids": [
+      "<6822417.1075841878775.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope = curated pack 'symes-k__scheduling' only (origin: symes-k/scheduling). Latest email by top-level Date header, computed by sorting the ISO 8601 dates of all pack messages descending. Latest = 2001-05-01T07:45:00-07:00 (Subject 'May purchase from MPC', Message-ID <6822417.1075841878775.JavaMail.evans@thyme>). Date matched per NORMALIZATION.md: canonical is the Pacific-offset ISO 8601 value; equivalent same-instant representations and the date-only form 2001-05-01 are accepted (see aliases). The single latest Message-ID is required (evidence_mode=all)."
+  },
+  {
+    "id": "medium-005",
+    "difficulty": "medium",
+    "points": 6,
+    "accepted_answer": {
+      "value": [
+        "bill.iii@enron.com",
+        "chris.mallory@enron.com",
+        "chris.stokley@enron.com",
+        "david.porter@enron.com",
+        "david.poston@enron.com",
+        "geir.solberg@enron.com",
+        "holden.salisbury@enron.com",
+        "jeff.richter@enron.com",
+        "jeremy.morris@enron.com",
+        "jesse.bryson@enron.com",
+        "kourtney.nelson@enron.com",
+        "lester.rawson@enron.com",
+        "michael.tully@enron.com",
+        "phillip.platter@enron.com",
+        "portland.desk@enron.com",
+        "portland.shift@enron.com",
+        "ryan.slinger@enron.com",
+        "shift.portland@enron.com",
+        "volume_management_portland@enron.com"
+      ],
+      "aliases": []
+    },
+    "evidence_message_ids": [
+      "<16022517.1075839947691.JavaMail.evans@thyme>",
+      "<9883409.1075839947656.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'williams-w3__rt_strat' only (origin: williams-w3/rt_strat). Participant set = union of all addresses appearing in the top-level From, To, and Cc headers across every packaged email in the pack, lowercased and de-duplicated. Result is the 19-address set in accepted_answer.value. Compared as a SET (order-independent) per NORMALIZATION.md; addresses matched case-insensitively. A submission must contain exactly these 19 addresses (no more, no fewer). Evidence_mode=any: any in-scope pack message id anchors the answer; participants are computed over all 18 messages in the pack."
+  },
+  {
+    "id": "medium-006",
+    "difficulty": "medium",
+    "points": 5,
+    "accepted_answer": {
+      "value": [
+        "bill.iii@enron.com",
+        "cara.semperger@enron.com",
+        "kourtney.nelson@enron.com",
+        "kroum.kroumov@enron.com",
+        "lester.rawson@enron.com",
+        "phillip.platter@enron.com"
+      ],
+      "aliases": []
+    },
+    "evidence_message_ids": [
+      "<14054298.1075841877964.JavaMail.evans@thyme>",
+      "<30484554.1075841878060.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'symes-k__scheduling' only (origin: symes-k/scheduling). Sender set = distinct top-level From addresses across every packaged email in the pack, lowercased and de-duplicated. Result is the 6-address set in accepted_answer.value. Compared as a SET (order-independent), addresses case-insensitive, per NORMALIZATION.md. A submission must contain exactly these 6 addresses. Evidence_mode=any: the two listed ids are representative messages from the two highest-volume senders (cara.semperger, lester.rawson); any in-scope pack message id is an acceptable anchor."
+  },
+  {
+    "id": "medium-007",
+    "difficulty": "medium",
+    "points": 4,
+    "accepted_answer": {
+      "value": "PowerMarketers.com Daily Power Report",
+      "aliases": [
+        "Daily Power Report",
+        "PowerMarketers.com daily power report",
+        "PowerMarketers Daily Power Report"
+      ]
+    },
+    "evidence_message_ids": [
+      "<28841806.1075841866914.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'symes-k__power_marketer' only (origin: symes-k/power_marketer). The recurring publication is the 'PowerMarketers.com Daily Power Report', whose title heads 99 of the 136 packaged emails (verified by counting Subjects beginning 'PowerMarketers.com Daily Power Report' in evidence.jsonl) — by far the most common recurring item. Grade correct if the answer names the PowerMarketers.com Daily Power Report (canonical value or a listed alias; case-insensitive, punctuation-insensitive). This is a summary/naming answer, so equivalence is judged on naming that report specifically. Evidence_mode=any: the listed id is a representative Daily Power Report message; any Daily Power Report message id in the pack is acceptable."
+  },
+  {
+    "id": "medium-008",
+    "difficulty": "medium",
+    "points": 5,
+    "accepted_answer": {
+      "value": "power trade confirmations",
+      "aliases": [
+        "trade confirmations",
+        "confirmations",
+        "power trade confirms",
+        "confirming power trades",
+        "trade confirms"
+      ]
+    },
+    "evidence_message_ids": [
+      "<2377120.1075841710011.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'symes-k__confirms' only (origin: symes-k/confirms). The folder consists of power trade confirmation correspondence (verifying/processing executed power trades). Grade correct if the answer identifies the work as (power) trade confirmations; accept the canonical value or a listed alias, case-insensitive. This is a summary answer whose determinism rests on naming the document type 'trade confirmations'; free-form wording is accepted only if it clearly names trade confirmations. Evidence_mode=any: the listed id is a representative confirmations message; any in-scope pack message id is acceptable as an anchor."
+  },
+  {
+    "id": "medium-009",
+    "difficulty": "medium",
+    "points": 6,
+    "accepted_answer": {
+      "value": 24,
+      "aliases": [
+        "24 emails",
+        "sent 24"
+      ]
+    },
+    "evidence_message_ids": [
+      "<30869027.1075846339788.JavaMail.evans@thyme>",
+      "<5156685.1075846339760.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'kean-s__enrononline' only (origin: kean-s/enrononline). Counted rule: packaged emails whose top-level From is leonardo.pacheco@enron.com (case-insensitive). Count over the whole pack = 24 (verified against evidence.jsonl); he is the pack's primary contributor (24 of 33 messages). Answer must equal the integer 24. Evidence_mode=any: each listed id is a message Leonardo Pacheco sent within the pack; any in-scope message he sent is an acceptable anchor."
+  },
+  {
+    "id": "medium-010",
+    "difficulty": "medium",
+    "points": 6,
+    "accepted_answer": {
+      "value": 8,
+      "aliases": [
+        "8 emails",
+        "sent 8"
+      ]
+    },
+    "evidence_message_ids": [
+      "<22175853.1075843183671.JavaMail.evans@thyme>",
+      "<14534080.1075843183503.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "any",
+    "grading_notes": "Scope = curated pack 'dasovich-j__pg_e_hydro_sale' only (origin: dasovich-j/pg_e_hydro_sale). Counted rule: packaged emails whose top-level From is mona.petrochko@enron.com (case-insensitive). Count over the whole pack = 8 (verified against evidence.jsonl); she is the top sender in this 236-participant topic. Answer must equal the integer 8. Evidence_mode=any: each listed id is a message Mona Petrochko sent within the pack; any in-scope message she sent is an acceptable anchor."
+  },
+  {
+    "id": "hard-001",
+    "difficulty": "hard",
+    "points": 9,
+    "accepted_answer": {
+      "value": "$768,761",
+      "aliases": [
+        "768761",
+        "$768761",
+        "768,761",
+        "$768,761.00"
+      ]
+    },
+    "evidence_message_ids": [
+      "<33030327.1075842251315.JavaMail.evans@thyme>",
+      "<16191280.1075842251338.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: cage_gas_termination_thread pack only. Total from Eric Moon's per-deal breakdown (N47413 + N10445 + NB0242). Do not accept the separate L/C draw figure of $540,170.00 from an earlier Cage Update email. Dollar aliases accepted per NORMALIZATION.md; commas and leading $ optional. Both evidence Message-IDs required: Debbie requests the per-transaction breakdown (6.) and Eric Moon provides the deal-level total (7.). Use file 7., not the near-duplicate forward in 8."
+  },
+  {
+    "id": "hard-002",
+    "difficulty": "hard",
+    "points": 8,
+    "accepted_answer": {
+      "value": "2000-10-03",
+      "aliases": [
+        "10/03/00",
+        "10/03/2000",
+        "October 3, 2000"
+      ]
+    },
+    "evidence_message_ids": [
+      "<26134261.1075842251433.JavaMail.evans@thyme>",
+      "<11014678.1075842251456.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: cage_gas_termination_thread pack only. Filing date from the Dun & Bradstreet bankruptcy alert body (FILING DATE: 10/03/00), not the alert receipt date. Date-only answer; Pacific offset context per NORMALIZATION.md. Both evidence Message-IDs required: escalation context before bankruptcy (11.) and the bankruptcy notification (12.)."
+  },
+  {
+    "id": "hard-003",
+    "difficulty": "hard",
+    "points": 9,
+    "accepted_answer": {
+      "value": "Revised Memo;Talking Points for Hydro Presentation",
+      "aliases": [
+        "Revised Memo; Talking Points for Hydro Presentation"
+      ]
+    },
+    "evidence_message_ids": [
+      "<1662725.1075843183379.JavaMail.evans@thyme>",
+      "<16806263.1075843183356.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: pge_hydro_auction_thread pack only. The two May 2000 finale emails ordered by Date header: Revised Memo (2000-05-16) then Talking Points for Hydro Presentation (2000-05-17). Ignore the unrelated 1999 auction sub-thread. Subject lines must match exactly; semicolon separator with optional single space after semicolon. Both evidence Message-IDs required."
+  },
+  {
+    "id": "hard-004",
+    "difficulty": "hard",
+    "points": 10,
+    "accepted_answer": {
+      "value": "richard.sanders@enron.com",
+      "aliases": [
+        "Richard B Sanders",
+        "Richard Sanders",
+        "Richard.B.Sanders@enron.com"
+      ]
+    },
+    "evidence_message_ids": [
+      "<24284446.1075842251410.JavaMail.evans@thyme>",
+      "<6766807.1075853257399.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: cage_gas_cross_mailbox pack only. Cross-mailbox corroboration requires hyvl-d escalation (Lisa Mellencamp asks whether Dan Hyvl talked to Richard Sanders) AND sanders-r sent-mail follow-up from Richard Sanders himself. Do not accept the duplicate all_documents/469. copy (different Message-ID). Both listed evidence Message-IDs required."
+  },
+  {
+    "id": "hard-005",
+    "difficulty": "hard",
+    "points": 9,
+    "accepted_answer": {
+      "value": "2000-12-22;2001-01-03",
+      "aliases": [
+        "2000-12-22; 2001-01-03"
+      ]
+    },
+    "evidence_message_ids": [
+      "<939576.1075848212371.JavaMail.evans@thyme>",
+      "<13027935.1075848212528.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: governor_davis_meeting_timeline pack only. Earliest email by Date header is Reactions to Yesterday's CPUC Decision (2000-12-22T03:58:00-08:00). Final event is Materials Provided to California Governor (2001-01-03). Same-day 2000-12-22 messages tie-break by time-of-day; earliest is file 2. not file 1. Date-only answers; semicolon separator with optional space. Both evidence Message-IDs required."
+  },
+  {
+    "id": "hard-006",
+    "difficulty": "hard",
+    "points": 8,
+    "accepted_answer": {
+      "value": "2001-04-06",
+      "aliases": [
+        "April 6, 2001",
+        "04/06/2001"
+      ]
+    },
+    "evidence_message_ids": [
+      "<28157939.1075844268030.JavaMail.evans@thyme>",
+      "<13657465.1075844268135.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: pge_bankruptcy_timeline pack only. Both the Chapter 11 filing news forward and Enron's Response Statement to PG&E's Ch. 11 Filing are dated 2001-04-06 (order within the day: filing news ~04:47, response statement ~06:17). Date-only answer per NORMALIZATION.md. Both evidence Message-IDs required."
+  },
+  {
+    "id": "hard-007",
+    "difficulty": "hard",
+    "points": 10,
+    "accepted_answer": {
+      "value": "2001-04-06;2001-04-09;2001-05-23",
+      "aliases": [
+        "2001-04-06; 2001-04-09; 2001-05-23"
+      ]
+    },
+    "evidence_message_ids": [
+      "<28157939.1075844268030.JavaMail.evans@thyme>",
+      "<16858560.1075844268372.JavaMail.evans@thyme>",
+      "<21936463.1075844268445.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: pge_bankruptcy_timeline pack only. Chronological sequence: PG&E Chapter 11 filing news (2001-04-06), FW: PGE Bankruptcy motions (2001-04-09), PX credits & Schedule F (2001-05-23). Use top-level Date headers, not quoted forward dates inside bodies. All three evidence Message-IDs required; order in the answer must match chronological order."
+  },
+  {
+    "id": "hard-008",
+    "difficulty": "hard",
+    "points": 9,
+    "accepted_answer": {
+      "value": "REVISED TVA Settlement Agreement",
+      "aliases": []
+    },
+    "evidence_message_ids": [
+      "<5240747.1075853289522.JavaMail.evans@thyme>",
+      "<22837334.1075853289616.JavaMail.evans@thyme>"
+    ],
+    "evidence_mode": "all",
+    "grading_notes": "Scope: tva_settlement_contradiction pack only. The 2000-11-28 REVISED draft (subject REVISED TVA Settlement Agreement) explicitly says DISREGARD THE EARLIER DRAFT in its body, resolving the conflict with the earlier July 2000 Draft Proposal letter to TVA. Subject must match the top-level Subject header exactly. Both evidence Message-IDs required: the authoritative REVISED draft (tva/1.) and the superseded earlier draft (tva/5.)."
+  }
+]

@@ -5,7 +5,7 @@
       "type": "curated_pack",
       "pack_name": "cage_gas_termination_thread",
       "synthesis_type": "thread_reconstruction",
-      "packaged_path": "student_dataset/mail/hard/cage_gas_termination_thread",
+      "packaged_path": "student_dataset/mail/packs/cage_gas_termination_thread",
       "email_count": 12,
       "topic": "Cage Gas Services contract default and termination (ENA credit/legal)",
       "scope": {
@@ -95,7 +95,7 @@
       "type": "curated_pack",
       "pack_name": "cage_gas_cross_mailbox",
       "synthesis_type": "cross_mailbox_corroboration",
-      "packaged_path": "student_dataset/mail/hard/cage_gas_cross_mailbox",
+      "packaged_path": "student_dataset/mail/packs/cage_gas_cross_mailbox",
       "email_count": 7,
       "topic": "Cage Gas Services collection corroborated across Hyvl and Sanders mailboxes",
       "scope": {
@@ -162,7 +162,7 @@
       "type": "curated_pack",
       "pack_name": "governor_davis_meeting_timeline",
       "synthesis_type": "timeline_synthesis",
-      "packaged_path": "student_dataset/mail/hard/governor_davis_meeting_timeline",
+      "packaged_path": "student_dataset/mail/packs/governor_davis_meeting_timeline",
       "email_count": 8,
       "topic": "Enron prep for the December 2000 Governor Gray Davis meeting (California crisis)",
       "scope": {
@@ -233,7 +233,7 @@
       "type": "curated_pack",
       "pack_name": "tva_settlement_contradiction",
       "synthesis_type": "contradiction_resolution",
-      "packaged_path": "student_dataset/mail/hard/tva_settlement_contradiction",
+      "packaged_path": "student_dataset/mail/packs/tva_settlement_contradiction",
       "email_count": 8,
       "topic": "Enron/TVA control-area dispute settlement drafts (which draft governs)",
       "scope": {
@@ -303,7 +303,7 @@
       "type": "curated_pack",
       "pack_name": "pge_hydro_auction_thread",
       "synthesis_type": "thread_reconstruction",
-      "packaged_path": "student_dataset/mail/hard/pge_hydro_auction_thread",
+      "packaged_path": "student_dataset/mail/packs/pge_hydro_auction_thread",
       "email_count": 12,
       "topic": "PG&E hydro asset auction/divestiture proposal (California regulatory)",
       "scope": {
@@ -392,7 +392,7 @@
       "type": "curated_pack",
       "pack_name": "pge_bankruptcy_timeline",
       "synthesis_type": "timeline_synthesis",
-      "packaged_path": "student_dataset/mail/hard/pge_bankruptcy_timeline",
+      "packaged_path": "student_dataset/mail/packs/pge_bankruptcy_timeline",
       "email_count": 16,
       "topic": "PG&E Chapter 11 bankruptcy filing and Enron's response (April 2001)",
       "scope": {

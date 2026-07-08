@@ -1,4 +1,4 @@
-# Beginner Enron Golden Dataset — Student Guide
+# Beginner Enron Golden Dataset - Student Guide
 
 Welcome to the **Beginner Enron Golden Dataset** (version **0.1.0**). This package gives you a small, real Enron email corpus plus graded challenges so you can practice building AI agents that search email, extract facts, and **cite evidence**.
 
@@ -10,16 +10,17 @@ You do **not** need Python or any specific tooling. Everything is plain files: J
 
 | Component | Location | What it is |
 | --- | --- | --- |
-| **Packaged mail** | `mail/easy/`, `mail/medium/`, `mail/hard/` | Raw Enron email files you search and read. Easy = full small mailboxes; Medium = bounded topic folders; Hard = curated multi-message thread packs. |
-| **Challenge Questions** | `challenges/challenges_<difficulty>.json` | 28 graded tasks (10 Easy, 10 Medium, 8 Hard). Each has a prompt, difficulty, point value, challenge family, and search scope. |
-| **Golden Answers** | `golden_answers/golden_<difficulty>.json` | Official answers for every challenge — accepted answer values, required Evidence Message-IDs, and grading notes. |
-| **Evidence index** | `evidence/evidence_<difficulty>.jsonl` | One record per packaged email, mapping each Message-ID to metadata (subject, date, participants, source mailbox/folder, packaged path). |
-| **Manifest** | `manifest/manifest.json` | Dataset version, email counts, and provenance. Per-difficulty source details live in `manifest/sources_<difficulty>.json`. |
-| **Validation report** | `validation/validation_report.md` | Consistency checks run before release (all passed). |
+| **Full mailboxes** | `mail/full_mailboxes/` | Five small full Enron mailboxes, copied with native folder structure. These support Easy lookup and extraction challenges. |
+| **Packs** | `mail/packs/` | Medium bounded folders plus Hard curated multi-message packs. Pack names match `scope.packs` and evidence `pack` values. |
+| **Challenge Questions** | `challenges/challenges.json` | 28 graded tasks (10 Easy, 10 Medium, 8 Hard). Each record keeps `difficulty`, point value, challenge family, and explicit search scope. |
+| **Golden Answers** | `golden_answers/golden_answers.json` | Official answers for every challenge: accepted values, required Evidence Message-IDs, evidence mode, and grading notes. |
+| **Evidence index** | `evidence/evidence.jsonl` | One record per packaged email, mapping Message-ID to metadata, source lineage, packaged path, pack, and original `difficulty`. |
+| **Manifest** | `manifest/manifest.json` | Dataset version, unified file locations, mail layout, counts, and provenance. Source details remain in `manifest/sources_<difficulty>.json`. |
+| **Validation report** | `validation/validation_report.md` | Consistency checks run before release. |
 
-**Release totals:** 2,892 emails · 28 challenges · source corpus `enron_mail_20150507`.
+**Release totals:** 2,892 emails - 28 challenges - source corpus `enron_mail_20150507`.
 
-Challenge files and Golden Answer files are **separate on purpose** — load prompts and answers as independent inputs when you build your own evaluation loop.
+The physical mail corpus is no longer split into Easy/Medium/Hard directories. Difficulty is challenge metadata, not a top-level mail partition.
 
 ---
 
@@ -41,10 +42,10 @@ Treat Golden Answers as the reference implementation for your evaluation framewo
 
 Grading uses **Evidence-Gated Correctness**: a submission earns a challenge's full points **only if both** are true:
 
-1. **Correct answer** — your final answer matches the Golden Answer (canonical `accepted_answer.value` or a listed `alias`), per `NORMALIZATION.md`.
-2. **Accepted Evidence Message-ID(s)** — you cite Message-ID(s) that satisfy the Golden Answer's `evidence_mode`:
-   - `"all"` — every listed id is required.
-   - `"any"` — at least one listed id suffices.
+1. **Correct answer** - your final answer matches the Golden Answer (canonical `accepted_answer.value` or a listed `alias`), per `NORMALIZATION.md`.
+2. **Accepted Evidence Message-ID(s)** - you cite Message-ID(s) that satisfy the Golden Answer's `evidence_mode`:
+   - `"all"` - every listed id is required.
+   - `"any"` - at least one listed id suffices.
 
 A correct-looking answer **without** accepted Message-ID evidence scores **zero**. There is no partial credit.
 
@@ -58,21 +59,19 @@ Every challenge in this release sets `requires_evidence_message_ids: true`. Alwa
 
 Each challenge has **Fixed Challenge Points** (one integer, all-or-nothing). Difficulty sets the **Point Band**:
 
-| Difficulty | Points | Emails packaged | Challenges | What to expect |
+| Difficulty | Points | Emails represented | Challenges | Where to search |
 | --- | --- | ---: | ---: | --- |
-| **Easy** | 1–3 | 1,329 | 10 | Answer from one known or discoverable email (lookup, header extraction, single-body fact). |
-| **Medium** | 4–7 | 1,500 | 10 | Bounded search across a mailbox, folder, or topic pack (counts, participant lists, earliest/latest). |
-| **Hard** | 8–10 | 63 | 8 | Multi-email synthesis (thread reconstruction, cross-mailbox corroboration, timelines, contradiction resolution). |
+| **Easy** | 1-3 | 1,329 | 10 | `mail/full_mailboxes/<mailbox>/...` |
+| **Medium** | 4-7 | 1,500 | 10 | `mail/packs/<pack_name>/...` |
+| **Hard** | 8-10 | 63 | 8 | `mail/packs/<pack_name>/...` |
 
-### Challenge families (high level)
+Challenge families remain grouped by difficulty:
 
-Each challenge has a `family` tag describing the skill it tests:
+**Easy** - `exact_email_lookup`, `message_id_discovery`, `header_field_extraction`, `attachment_mention`, `latest_vs_quoted_sender`, `date_normalization`, `recipient_role`, `body_fact_extraction`
 
-**Easy** — `exact_email_lookup`, `message_id_discovery`, `header_field_extraction`, `attachment_mention`, `latest_vs_quoted_sender`, `date_normalization`, `recipient_role`, `body_fact_extraction`
+**Medium** - `bounded_work_summary`, `search_aggregate`, `earliest_latest`, `participant_list`, `topic_participation`
 
-**Medium** — `bounded_work_summary`, `search_aggregate`, `earliest_latest`, `participant_list`, `topic_participation`
-
-**Hard** — `thread_reconstruction`, `cross_mailbox_corroboration`, `timeline_synthesis`, `contradiction_resolution`
+**Hard** - `thread_reconstruction`, `cross_mailbox_corroboration`, `timeline_synthesis`, `contradiction_resolution`
 
 When a prompt requires search, its `scope` object tells you which mailboxes, folders, packs, date ranges, or topics are in bounds. Stay inside that scope.
 
@@ -80,14 +79,14 @@ When a prompt requires search, its `scope` object tells you which mailboxes, fol
 
 ## Student Agent Submission
 
-A **Student Agent Submission** (see `CONTEXT.md` glossary) is what your agent returns for one challenge. A valid submission has two parts:
+A **Student Agent Submission** is what your agent returns for one challenge. A valid submission has two parts:
 
 | Field | Description |
 | --- | --- |
 | `answer` | Your final answer, in the shape described by the challenge's `expected_submission.answer_format` (e.g. a single email address, an integer count, an ISO 8601 date). |
 | `evidence_message_ids` | An array of Evidence Message-ID strings in angle-bracket form, citing the email(s) that support your answer. |
 
-**Example submission object** (illustrative shape — use whatever structure your agent framework prefers, as long as it carries these two concepts):
+**Example submission object** (illustrative shape - use whatever structure your agent framework prefers, as long as it carries these two concepts):
 
 ```json
 {
@@ -107,10 +106,10 @@ Your course tooling may wrap this differently, but graders expect both the answe
 
 > Open the email with Message-ID `<22322411.1075840045955.JavaMail.evans@thyme>` in the slinger-r mailbox (inbox folder). The body gives a contact phone number for AON. What is that AON contact phone number?
 
-- **Points:** 2 (Easy band 1–3)
+- **Points:** 2 (Easy band 1-3)
 - **Family:** `exact_email_lookup`
 - **Scope:** `slinger-r` mailbox, `inbox` folder only
-- **Expected answer format:** phone number
+- **Packaged path:** use `evidence/evidence.jsonl` to resolve the Message-ID to `mail/full_mailboxes/slinger-r/inbox/17.`
 
 ### Good submission
 
@@ -122,7 +121,7 @@ Your course tooling may wrap this differently, but graders expect both the answe
 }
 ```
 
-### Golden Answer fields (from `golden_answers/golden_easy.json`)
+### Golden Answer fields (from `golden_answers/golden_answers.json`)
 
 ```json
 {
@@ -133,21 +132,11 @@ Your course tooling may wrap this differently, but graders expect both the answe
     "aliases": ["18003683804", "800-368-3804", "(800) 368-3804"]
   },
   "evidence_message_ids": ["<22322411.1075840045955.JavaMail.evans@thyme>"],
-  "evidence_mode": "all",
-  "grading_notes": "Atomic fact from the named email's body. A second number in the email (1-800-332-7979) is a distractor. Message-ID evidence required."
+  "evidence_mode": "all"
 }
 ```
 
-### How scoring interprets it
-
-| Submission | Answer match? | Evidence match? | Score |
-| --- | --- | --- | ---: |
-| `"1-800-368-3804"` + correct Message-ID | Yes (canonical value) | Yes (`evidence_mode: "all"`, one id cited) | **2 / 2** |
-| `"800-368-3804"` + correct Message-ID | Yes (listed alias) | Yes | **2 / 2** |
-| `"1-800-368-3804"` + **no** Message-ID | Yes | **No** | **0 / 2** |
-| `"1-800-332-7979"` + correct Message-ID | No (distractor number) | Yes | **0 / 2** |
-
-The middle row shows why evidence gating matters: a right answer alone is not enough.
+The right answer alone is not enough; cite the accepted Message-ID evidence.
 
 ---
 
@@ -155,26 +144,38 @@ The middle row shows why evidence gating matters: a right answer alone is not en
 
 ```
 student_dataset/
-  README.md                  ← you are here
-  DATASET_CONTRACT.md        ← full schemas and field definitions (authoritative)
-  NORMALIZATION.md           ← how answers and Message-IDs are matched at grade time
-  mail/                      ← packaged Enron emails by difficulty
-  evidence/                  ← Message-ID index (JSONL, one email per line)
-  challenges/                ← challenge prompts (JSON arrays)
-  golden_answers/            ← official answers (JSON arrays)
-  manifest/                  ← version, counts, source provenance
-  validation/                ← release consistency report
+  README.md
+  DATASET_CONTRACT.md        # full schemas and field definitions (authoritative)
+  NORMALIZATION.md           # how answers and Message-IDs are matched at grade time
+  mail/
+    full_mailboxes/          # full small mailboxes
+    packs/                   # medium bounded folders and hard curated packs
+  evidence/
+    evidence.jsonl           # unified Message-ID index, one email per line
+  challenges/
+    challenges.json          # unified challenge array, sorted easy/medium/hard then id
+  golden_answers/
+    golden_answers.json      # unified golden-answer array, sorted the same way
+  manifest/
+    manifest.json
+    sources_easy.json
+    sources_medium.json
+    sources_hard.json
+  validation/
+    validate_dataset.py
+    validation_report.md
 ```
 
-For complete record shapes (Challenge Question fields, Golden Answer fields, evidence index columns, manifest fragments), see **`DATASET_CONTRACT.md`**. For answer-matching rules (dates, addresses, aggregates, quoted-content pitfalls), see **`NORMALIZATION.md`**.
+For complete record shapes, see **`DATASET_CONTRACT.md`**. For answer-matching rules, see **`NORMALIZATION.md`**.
 
 ---
 
 ## Quick Start
 
-1. Pick a difficulty and read challenges from `challenges/challenges_<difficulty>.json`.
-2. Search the matching mail under `mail/<difficulty>/` (use `evidence/evidence_<difficulty>.jsonl` to look up Message-IDs and paths).
-3. Build your agent to return a **Student Agent Submission** — answer plus evidence Message-IDs.
-4. Compare against `golden_answers/golden_<difficulty>.json` to score yourself before each course submission round.
+1. Read challenges from `challenges/challenges.json`.
+2. Use each challenge's `difficulty`, `points`, and `scope` to choose the in-bounds mail: full mailboxes live under `mail/full_mailboxes/`, and named packs live under `mail/packs/`.
+3. Use `evidence/evidence.jsonl` to resolve Message-IDs to `packaged_path` values and to inspect metadata.
+4. Build your agent to return a **Student Agent Submission** - answer plus evidence Message-IDs.
+5. Compare against `golden_answers/golden_answers.json` to score yourself before each course submission round.
 
-Good luck — start with Easy challenges to get lookup and citation working, then move to Medium bounded search and Hard multi-email synthesis.
+Good luck - start with Easy challenges to get lookup and citation working, then move to Medium bounded search and Hard multi-email synthesis.

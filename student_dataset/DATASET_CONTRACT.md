@@ -1,89 +1,69 @@
-# Dataset Contract — Beginner Enron Golden Dataset
+# Dataset Contract - Beginner Enron Golden Dataset
 
-This document is the **authoritative contract** for the Beginner Enron Golden Dataset
-artifact. Every downstream ticket (source selection, challenge authoring, validation,
-documentation) MUST follow the directory layout, record shapes, and rules defined here
-**verbatim**. When this document and any other note disagree, this document wins for
-structure/schemas and `NORMALIZATION.md` wins for value-matching rules.
+This document is the **authoritative contract** for the Beginner Enron Golden Dataset artifact. Every downstream consumer should follow the directory layout, record shapes, and rules defined here. When this document and any other note disagree, this document wins for structure/schemas and `NORMALIZATION.md` wins for value-matching rules.
 
-The artifact is **plain data**: JSON, JSONL, Markdown, and copied raw email files. It is
-**not** tied to any implementation package, framework, or language. Students may consume it
-with any tooling. See [Implementation neutrality](#implementation-neutrality).
+The artifact is **plain data**: JSON, JSONL, Markdown, and copied raw email files. It is not tied to any implementation package, framework, or language.
 
 ---
 
-## 1. Directory layout
+## 1. Directory Layout
 
 ```
 student_dataset/
-  DATASET_CONTRACT.md        # THIS FILE — the written contract
-  NORMALIZATION.md           # value normalization + matching rules
+  DATASET_CONTRACT.md
+  NORMALIZATION.md
   manifest/
-    manifest.json            # top-level manifest skeleton (aggregated by ticket 8)
-    sources_easy.json        # Easy source fragment (filled by ticket 2)
-    sources_medium.json      # Medium source fragment (filled by ticket 3)
-    sources_hard.json        # Hard source fragment (filled by ticket 4)
+    manifest.json
+    sources_easy.json
+    sources_medium.json
+    sources_hard.json
   mail/
-    easy/                    # full mailboxes copied here by ticket 2
-    medium/                  # bounded slices / topic packs by ticket 3
-    hard/                    # curated thread packs by ticket 4
+    full_mailboxes/
+      <mailbox>/<folder>/<n>.
+    packs/
+      <pack_name>/<n>.
+      <pack_name>/<mailbox>__<folder>__<n>.
   evidence/
-    evidence_easy.jsonl      # Easy evidence index (ticket 2)
-    evidence_medium.jsonl    # Medium evidence index (ticket 3)
-    evidence_hard.jsonl      # Hard evidence index (ticket 4)
+    evidence.jsonl
   challenges/
-    challenges_easy.json     # Easy Challenge Questions, JSON array (ticket 5)
-    challenges_medium.json   # Medium Challenge Questions, JSON array (ticket 6)
-    challenges_hard.json     # Hard Challenge Questions, JSON array (ticket 7)
+    challenges.json
   golden_answers/
-    golden_easy.json         # Easy Golden Answers, JSON array (ticket 5)
-    golden_medium.json       # Medium Golden Answers, JSON array (ticket 6)
-    golden_hard.json         # Hard Golden Answers, JSON array (ticket 7)
+    golden_answers.json
   validation/
-    validation_report.md     # written by ticket 8 (validation/.gitkeep until then)
+    validate_dataset.py
+    validation_report.md
 ```
 
-### What lives where
+### What Lives Where
 
 | Location | Contents |
 | --- | --- |
-| `mail/easy/<mailbox>/<folder>/<n>.` | Full beginner-friendly mailboxes, native Enron folder structure preserved. |
-| `mail/medium/<pack-or-folder>/...` | Bounded folders and topic slices small enough to search without a huge mailbox. |
-| `mail/hard/<pack>/...` | Curated multi-message thread / cross-mailbox synthesis packs. |
-| `evidence/evidence_<difficulty>.jsonl` | One record per packaged email mapping Message-ID → canonical metadata + lineage. |
-| `challenges/challenges_<difficulty>.json` | Public Challenge Questions (prompt, difficulty, points, family, scope). |
-| `golden_answers/golden_<difficulty>.json` | Student-visible Golden Answers (accepted answer, evidence IDs, points, grading notes). |
-| `manifest/sources_<difficulty>.json` | Per-difficulty source selection fragment (what was copied, from where, counts). |
-| `manifest/manifest.json` | Top-level manifest: version, sources index, counts, provenance. |
+| `mail/full_mailboxes/<mailbox>/<folder>/<n>.` | Full beginner-friendly mailboxes, native Enron folder structure preserved. |
+| `mail/packs/<pack_name>/...` | Medium bounded folders and Hard curated multi-message packs. |
+| `evidence/evidence.jsonl` | Unified evidence index, one record per packaged email. Each row includes original `difficulty`, source lineage, `packaged_path`, and `pack`. |
+| `challenges/challenges.json` | Public Challenge Questions as one JSON array, sorted by difficulty order Easy, Medium, Hard, then `id`. |
+| `golden_answers/golden_answers.json` | Student-visible Golden Answers as one JSON array, sorted the same way as challenges. |
+| `manifest/sources_<difficulty>.json` | Per-difficulty source selection fragments. These document source provenance and email counts; they do not imply separate student mail corpora. |
+| `manifest/manifest.json` | Top-level manifest: version, unified files, mail layout, counts, and provenance. |
 | `validation/validation_report.md` | Consistency report produced during verification. |
 
-### Fragment-per-difficulty rule (concurrency safety)
-
-Source-selection tickets (2/3/4) run **in parallel**, and challenge-authoring tickets
-(5/6/7) run **in parallel**. To prevent two agents editing the same file:
-
-- There is **no shared multi-difficulty file** that parallel agents both write.
-- Each difficulty owns its own `sources_*`, `evidence_*`, `challenges_*`, `golden_*` file
-  and its own `mail/<difficulty>/` subtree.
-- `manifest/manifest.json` is a **skeleton only** until ticket 8 aggregates it. Tickets
-  2/3/4 write their per-difficulty `sources_*.json` fragment and MUST NOT edit
-  `manifest.json`.
+The physical student corpus is unified. Difficulty remains explicit metadata on Challenge Questions, Golden Answers, evidence rows, source fragments, and manifest counts.
 
 ---
 
-## 2. Challenge Question record
+## 2. Challenge Question Record
 
-Element of the JSON array in `challenges/challenges_<difficulty>.json`.
+Element of the JSON array in `challenges/challenges.json`.
 
 ### Fields
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | string | Stable challenge id, `"<difficulty>-NNN"` zero-padded to 3 digits, e.g. `"easy-001"`. Unique across the whole dataset. Never reused. |
-| `difficulty` | string | One of `"easy"`, `"medium"`, `"hard"`. Must match the file it lives in. |
-| `family` | string | Challenge family; MUST be one of the values in [Challenge families](#3-challenge-families). |
-| `points` | integer | Fixed Challenge Points. Must fit the difficulty's Point Band (see [Points](#6-points-and-point-bands)). |
-| `prompt` | string | Beginner-friendly task text. MUST state scope explicitly whenever search is required. |
+| `id` | string | Stable challenge id, `"<difficulty>-NNN"` zero-padded to 3 digits, e.g. `"easy-001"`. Unique across the whole dataset. |
+| `difficulty` | string | One of `"easy"`, `"medium"`, `"hard"`. Difficulty is challenge metadata and determines the point band. |
+| `family` | string | Challenge family; must be one of the values in [Challenge Families](#3-challenge-families). |
+| `points` | integer | Fixed Challenge Points. Must fit the difficulty's Point Band. |
+| `prompt` | string | Beginner-friendly task text. Must state scope explicitly whenever search is required. |
 | `scope` | object | Where the answer may be found. See below. |
 | `expected_submission` | object | What a valid student submission must contain. See below. |
 
@@ -91,18 +71,18 @@ Element of the JSON array in `challenges/challenges_<difficulty>.json`.
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `mailboxes` | array of string | In-bounds mailbox names (e.g. `["slinger-r"]`), or `[]` if not scoped by mailbox. |
-| `folders` | array of string | In-bounds folder names (e.g. `["inbox"]`), or `[]`. |
-| `packs` | array of string | In-bounds curated pack names, or `[]`. |
-| `date_range` | object or null | `null`, or `{"start": "<ISO 8601>", "end": "<ISO 8601>"}` inclusive. |
+| `mailboxes` | array of string | In-bounds mailbox names, or `[]` if not scoped by mailbox. |
+| `folders` | array of string | In-bounds folder names, or `[]`. |
+| `packs` | array of string | In-bounds pack names under `mail/packs/`, or `[]`. |
+| `date_range` | object or null | `null`, or `{ "start": "<ISO 8601>", "end": "<ISO 8601>" }` inclusive. |
 | `topic` | string or null | Free-text topic label for topic-bounded challenges, else `null`. |
 
 `expected_submission` object:
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `answer_format` | string | Short description of the expected answer shape (e.g. `"single email address"`, `"integer count"`, `"ISO 8601 date"`). |
-| `requires_evidence_message_ids` | boolean | Whether the student must cite Evidence Message-IDs. Normally `true` (see [Evidence-Gated Correctness](#7-evidence-gated-correctness)). |
+| `answer_format` | string | Short description of the expected answer shape. |
+| `requires_evidence_message_ids` | boolean | Whether the student must cite Evidence Message-IDs. This release uses `true` for every challenge. |
 
 ### Example
 
@@ -120,110 +100,85 @@ Element of the JSON array in `challenges/challenges_<difficulty>.json`.
 
 ---
 
-## 3. Challenge families
+## 3. Challenge Families
 
-`family` MUST come from the taxonomy defined in `CONTEXT.md`. The allowed string values,
-grouped by the difficulty they belong to:
+Allowed `family` values, grouped by the difficulty they primarily belong to:
 
 **Easy families**
 
-| `family` value | CONTEXT.md term |
-| --- | --- |
-| `exact_email_lookup` | Exact Email Lookup Challenge |
-| `message_id_discovery` | Message-ID Discovery Challenge |
-| `header_field_extraction` | Header Field Extraction Challenge |
-| `attachment_mention` | Attachment Mention Challenge |
-| `latest_vs_quoted_sender` | Latest-Vs-Quoted Sender Challenge |
-| `date_normalization` | Date Normalization Challenge |
-| `recipient_role` | Recipient Role Challenge |
-| `body_fact_extraction` | Body Fact Extraction Challenge |
+| `family` value |
+| --- |
+| `exact_email_lookup` |
+| `message_id_discovery` |
+| `header_field_extraction` |
+| `attachment_mention` |
+| `latest_vs_quoted_sender` |
+| `date_normalization` |
+| `recipient_role` |
+| `body_fact_extraction` |
 
 **Medium families**
 
-| `family` value | CONTEXT.md term |
-| --- | --- |
-| `bounded_work_summary` | Bounded Work Summary Challenge |
-| `search_aggregate` | Search Aggregate Challenge |
-| `earliest_latest` | Earliest-Latest Challenge |
-| `participant_list` | Participant List Challenge |
-| `topic_participation` | Topic Participation Challenge |
+| `family` value |
+| --- |
+| `bounded_work_summary` |
+| `search_aggregate` |
+| `earliest_latest` |
+| `participant_list` |
+| `topic_participation` |
 
 **Hard families**
 
-| `family` value | CONTEXT.md term |
-| --- | --- |
-| `thread_reconstruction` | Thread Reconstruction Challenge |
-| `cross_mailbox_corroboration` | Cross-Mailbox Corroboration Challenge |
-| `timeline_synthesis` | Timeline Synthesis Challenge |
-| `contradiction_resolution` | Contradiction-Resolution Challenge |
+| `family` value |
+| --- |
+| `thread_reconstruction` |
+| `cross_mailbox_corroboration` |
+| `timeline_synthesis` |
+| `contradiction_resolution` |
 
-The `family` value SHOULD match the difficulty group of its file. Cross-cutting families
-from `CONTEXT.md` (`negative_evidence`, `forwarded_copy`, `entity_disambiguation`,
-`mailbox_hygiene`) MAY be used when a challenge genuinely fits, but authors should prefer
-the primary families above and document any cross-cutting use in the prompt.
+Cross-cutting families from the course glossary (`negative_evidence`, `forwarded_copy`, `entity_disambiguation`, `mailbox_hygiene`) may be used when a challenge genuinely fits, but authors should prefer the primary families above.
 
 ---
 
-## 4. Golden Answer record
+## 4. Golden Answer Record
 
-Element of the JSON array in `golden_answers/golden_<difficulty>.json`. **Student-visible**:
-students receive these to run their own evaluation framework.
+Element of the JSON array in `golden_answers/golden_answers.json`. **Student-visible**: students receive these to run their own evaluation framework.
 
 ### Fields
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | string | MUST equal the `id` of the Challenge Question of the same difficulty. |
+| `id` | string | Must equal the `id` of the matching Challenge Question. |
 | `difficulty` | string | Same as the matching Challenge Question. |
-| `points` | integer | MUST equal the matching Challenge Question's `points`. |
-| `accepted_answer` | object | `{"value": <canonical answer>, "aliases": [<accepted equivalents>]}`. `value` is the canonical form; `aliases` are additional accepted forms (see `NORMALIZATION.md`). |
-| `evidence_message_ids` | array of string | Accepted Evidence Message-IDs in canonical angle-bracket form `"<...@...>"`. Every id MUST exist in the packaged dataset / evidence index. |
+| `points` | integer | Must equal the matching Challenge Question's `points`. |
+| `accepted_answer` | object | `{ "value": <canonical answer>, "aliases": [<accepted equivalents>] }`. |
+| `evidence_message_ids` | array of string | Accepted Evidence Message-IDs in canonical angle-bracket form `"<...@...>"`. Every id must resolve in `evidence/evidence.jsonl` for the relevant difficulty and scope. |
 | `evidence_mode` | string | `"all"` = every listed id required; `"any"` = any one listed id suffices. |
-| `grading_notes` | string | How answer equivalence is judged (normalization applied, tolerances, tie-breaks). |
+| `grading_notes` | string | How answer equivalence is judged. |
 
 ### Rules
 
-- `id` and `points` MUST match the Challenge Question with the same `id`. Ticket 8 verifies
-  this.
-- Every id in `evidence_message_ids` MUST appear as a `message_id` in the corresponding
-  `evidence/evidence_<difficulty>.jsonl` (and thus in the packaged mail).
-- `accepted_answer.value` is the single canonical answer; `aliases` never contradict it,
-  they only add accepted equivalents.
-
-### Example
-
-```json
-{
-  "id": "easy-001",
-  "difficulty": "easy",
-  "points": 2,
-  "accepted_answer": {"value": "richard.slinger@enron.com", "aliases": ["Richard Slinger", "slinger-r"]},
-  "evidence_message_ids": ["<example123@enron.com>"],
-  "evidence_mode": "all",
-  "grading_notes": "Address match; accept canonical email or listed display-name aliases per NORMALIZATION.md. Message-ID required."
-}
-```
+- `id`, `difficulty`, and `points` must match the Challenge Question with the same `id`.
+- Every id in `evidence_message_ids` must appear as a `message_id` in the unified evidence index.
+- For scoped pack challenges, the accepted evidence must resolve inside the scoped pack(s).
+- `accepted_answer.value` is the single canonical answer; aliases only add accepted equivalents.
 
 ---
 
-## 5. Evidence representation
+## 5. Evidence Representation
 
-Evidence Message-IDs are represented in **two** places, and they must agree:
+Evidence Message-IDs are represented in two places, and they must agree:
 
-1. **Evidence index** — `evidence/evidence_<difficulty>.jsonl`, one JSON object per line,
-   one line per packaged email. This is the canonical map from Message-ID → metadata +
-   lineage back to the raw maildir.
-2. **Inside Golden Answers** — the `evidence_message_ids` array lists the subset of
-   Message-IDs that are accepted evidence for that specific challenge.
+1. **Evidence index** - `evidence/evidence.jsonl`, one JSON object per line, one line per packaged email.
+2. **Golden Answers** - each Golden Answer lists the subset of Message-IDs accepted as evidence for that challenge.
 
-Every Message-ID referenced by a Golden Answer MUST have a matching record in the evidence
-index for the same difficulty.
+Message-ID alone is the grading evidence key, but Message-IDs are not guaranteed to be unique across every packaged row. Some Hard packs intentionally include the same source message in more than one pack. The evidence row identity is therefore `(message_id, packaged_path, pack)`, and duplicate Message-IDs remain distinct through `packaged_path` and `pack`.
 
-### Evidence index record fields
+### Evidence Index Record Fields
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `message_id` | string | Canonical angle-bracket Message-ID `"<...@...>"`. Primary evidence key. |
+| `message_id` | string | Canonical angle-bracket Message-ID `"<...@...>"`. |
 | `subject` | string | Email `Subject:` header, trimmed. |
 | `date` | string | Canonical date per `NORMALIZATION.md` (ISO 8601). |
 | `from` | string | Top-level `From:` (prefer email address). |
@@ -232,137 +187,90 @@ index for the same difficulty.
 | `source_mailbox` | string | Original mailbox, e.g. `"slinger-r"`. |
 | `source_folder` | string | Original folder, e.g. `"inbox"`. |
 | `source_path` | string | Path in the raw corpus, e.g. `"enron_mail_20150507/maildir/slinger-r/inbox/1."`. |
-| `packaged_path` | string | Path inside this artifact, e.g. `"student_dataset/mail/easy/slinger-r/inbox/1."`. |
-| `pack` | string or null | Curated pack name for medium/hard packs, else `null`. |
+| `packaged_path` | string | Path inside this artifact, e.g. `"student_dataset/mail/full_mailboxes/slinger-r/inbox/1."` or `"student_dataset/mail/packs/symes-k__scheduling/1."`. |
+| `pack` | string or null | Pack name for rows under `mail/packs/`; `null` for full-mailbox rows. |
+| `difficulty` | string | Original difficulty provenance: `"easy"`, `"medium"`, or `"hard"`. |
 
-### Example (one JSONL line)
+### Example JSONL Row
 
 ```json
-{"message_id":"<example123@enron.com>","subject":"Weekly update","date":"2001-05-14T09:12:00-07:00","from":"richard.slinger@enron.com","to":["jeff.dasovich@enron.com"],"cc":[],"source_mailbox":"slinger-r","source_folder":"inbox","source_path":"enron_mail_20150507/maildir/slinger-r/inbox/1.","packaged_path":"student_dataset/mail/easy/slinger-r/inbox/1.","pack":null}
+{"message_id":"<example123@enron.com>","subject":"Weekly update","date":"2001-05-14T09:12:00-07:00","from":"richard.slinger@enron.com","to":["jeff.dasovich@enron.com"],"cc":[],"source_mailbox":"slinger-r","source_folder":"inbox","source_path":"enron_mail_20150507/maildir/slinger-r/inbox/1.","packaged_path":"student_dataset/mail/full_mailboxes/slinger-r/inbox/1.","pack":null,"difficulty":"easy"}
 ```
 
-Every packaged email traces back to the raw maildir via `source_path`; this is the
-provenance / lineage guarantee referenced in the manifest.
+Every packaged email traces back to the raw maildir via `source_path`; this is the provenance / lineage guarantee referenced in the manifest.
 
 ---
 
 ## 6. Points and Point Bands
 
-Points are **Fixed Challenge Points**: a single integer per challenge, graded
-**all-or-nothing** (no partial credit). Each difficulty has a fixed **Point Band**:
+Points are **Fixed Challenge Points**: a single integer per challenge, graded all-or-nothing. Each difficulty has a fixed **Point Band**:
 
 | Difficulty | Point Band (inclusive) |
 | --- | --- |
-| Easy | 1–3 |
-| Medium | 4–7 |
-| Hard | 8–10 |
+| Easy | 1-3 |
+| Medium | 4-7 |
+| Hard | 8-10 |
 
-A challenge's `points` MUST fall inside its band. The Golden Answer's `points` MUST equal
-its Challenge Question's `points`.
+A challenge's `points` must fall inside its band. The Golden Answer's `points` must equal its Challenge Question's `points`.
 
 ---
 
 ## 7. Evidence-Gated Correctness
 
-A student submission scores the challenge's full points **only if** it provides both:
+A student submission scores the challenge's full points only if it provides both:
 
-1. A correct final answer (judged against the Golden Answer per `NORMALIZATION.md`), **and**
-2. Accepted Evidence Message-ID(s) satisfying the Golden Answer's `evidence_mode`
-   (`"all"` = every listed id; `"any"` = at least one listed id).
+1. A correct final answer, judged against the Golden Answer per `NORMALIZATION.md`.
+2. Accepted Evidence Message-ID(s) satisfying the Golden Answer's `evidence_mode`.
 
-A correct-looking answer **without** accepted Message-ID evidence scores **zero**. Grading
-is all-or-nothing: there is no partial credit.
+A correct-looking answer without accepted Message-ID evidence scores zero. Grading is all-or-nothing; there is no partial credit.
 
 ---
 
-## 8. Manifest shape
+## 8. Manifest Shape
 
-`manifest/manifest.json` records dataset version, the per-difficulty source fragments,
-counts, and provenance. It is a **skeleton** (null counts) until ticket 8 aggregates it.
+`manifest/manifest.json` records dataset version, the unified student-facing files, the mail layout, per-difficulty counts, and provenance.
 
-### Top-level manifest fields
+### Top-Level Manifest Fields
 
 | Field | Type | Description |
 | --- | --- | --- |
 | `dataset_name` | string | Human-readable dataset name. |
 | `dataset_version` | string | Semantic version tying grades to a corpus version. |
-| `created` | string or null | ISO 8601 creation timestamp (set at aggregation). |
-| `target_email_ceiling` | integer | Approximate max packaged emails (≈6000 for release 1). |
+| `created` | string | ISO 8601 creation/update date for this packaged artifact. |
+| `target_email_ceiling` | integer | Approximate max packaged emails. |
 | `source_corpus` | string | Raw corpus id, `"enron_mail_20150507"`. |
-| `difficulties` | object | Per-difficulty `{sources_file, email_count}`; counts null until aggregation. |
-| `totals` | object | `{emails, challenges, easy_challenges, medium_challenges, hard_challenges}`; null until aggregation. |
-| `provenance_note` | string | Statement that each email traces to the raw maildir via the evidence index. |
+| `mail_layout` | object | `{ "full_mailboxes": "mail/full_mailboxes", "packs": "mail/packs" }`. |
+| `files` | object | Paths to the unified challenge, golden-answer, and evidence files. |
+| `difficulties` | object | Per-difficulty `{ sources_file, email_count }` counts for provenance and point-band reporting. |
+| `totals` | object | `{ emails, challenges, easy_challenges, medium_challenges, hard_challenges }`. |
+| `provenance_note` | string | Statement that each email traces to raw maildir and evidence rows retain original difficulty provenance. |
 
-### Source manifest fragment (`manifest/sources_<difficulty>.json`)
+### Source Manifest Fragments
 
-```json
-{"difficulty": "easy", "sources": [ <source records> ]}
-```
-
-Each **source record** describes one copied unit. `type` selects the variant:
-
-**`full_mailbox`** (Easy — full mailbox copied with native folder structure):
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `type` | string | `"full_mailbox"`. |
-| `mailbox` | string | Mailbox name, e.g. `"slinger-r"`. |
-| `source_path` | string | Raw corpus path to the mailbox. |
-| `packaged_path` | string | Path inside this artifact. |
-| `email_count` | integer | Number of emails copied. |
-| `folders` | array of string | Folders included, e.g. `["inbox","sent_items","deleted_items"]`. |
-| `parser_pitfalls` | array of string | Known tricky cases noted for challenge authors (`[]` if none). |
-
-**`bounded_folder`** (Medium — a bounded folder / slice copied without the full mailbox):
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `type` | string | `"bounded_folder"`. |
-| `mailbox` | string | Origin mailbox. |
-| `source_path` | string | Raw corpus path to the folder / slice. |
-| `packaged_path` | string | Path inside this artifact. |
-| `email_count` | integer | Number of emails copied. |
-| `topic` | string | Topic / theme label for the slice. |
-| `scope` | object | Bounds, e.g. `{"folders": [...], "date_range": {...}}`. |
-| `parser_pitfalls` | array of string | Known tricky cases (`[]` if none). |
-
-**`curated_pack`** (Medium/Hard — a hand-assembled thread or cross-mailbox cluster):
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `type` | string | `"curated_pack"`. |
-| `pack_name` | string | Unique pack name; matches the pack folder under `mail/<difficulty>/` and `pack` in the evidence index. |
-| `packaged_path` | string | Path inside this artifact, e.g. `"student_dataset/mail/hard/<pack_name>"`. |
-| `email_count` | integer | Number of emails in the pack. |
-| `topic` | string | Topic / theme of the pack. |
-| `scope` | object | Bounds description used by challenge authors. |
-| `source_provenance` | array of object | Lineage list; each `{"mailbox": ..., "folder": ..., "source_path": ...}` for every origin the pack draws from. |
-| `parser_pitfalls` | array of string | Known tricky cases (`[]` if none). |
-
-### Source fragment example
+`manifest/sources_easy.json`, `manifest/sources_medium.json`, and `manifest/sources_hard.json` remain separate source-selection fragments:
 
 ```json
-{
-  "difficulty": "easy",
-  "sources": [
-    {"type":"full_mailbox","mailbox":"slinger-r","source_path":"enron_mail_20150507/maildir/slinger-r","packaged_path":"student_dataset/mail/easy/slinger-r","email_count":132,"folders":["inbox","sent_items","deleted_items"],"parser_pitfalls":[]}
-  ]
-}
+{"difficulty": "easy", "sources": ["..."]}
 ```
+
+Each source record describes one copied unit. `packaged_path` must use the new physical layout:
+
+- Easy `full_mailbox` records: `student_dataset/mail/full_mailboxes/<mailbox>`.
+- Medium `bounded_folder` records: `student_dataset/mail/packs/<pack_name>`.
+- Hard `curated_pack` records: `student_dataset/mail/packs/<pack_name>`.
+
+Source records keep their existing `difficulty`, `type`, `source_path`, `source_provenance`, `email_count`, `topic`, `scope`, and `parser_pitfalls` fields. They are provenance fragments, not separate student-facing corpora.
 
 ---
 
-## Implementation neutrality
+## Implementation Neutrality
 
-The contract does **not** require students to use any specific implementation package,
-framework, or programming language. All deliverables are plain, tool-agnostic formats:
+The contract does not require students to use any specific implementation package, framework, or programming language. All deliverables are plain, tool-agnostic formats:
 
-- Challenge Questions and Golden Answers: **JSON arrays**.
-- Evidence index: **JSON Lines (JSONL)**.
-- Manifests and source fragments: **JSON**.
-- Documentation: **Markdown**.
-- Packaged emails: **raw Enron maildir files** copied verbatim.
+- Challenge Questions and Golden Answers: JSON arrays.
+- Evidence index: JSON Lines (JSONL).
+- Manifests and source fragments: JSON.
+- Documentation: Markdown.
+- Packaged emails: raw Enron maildir files copied verbatim.
 
-Any language or tooling that can read JSON/JSONL/Markdown and plain text files can consume
-this dataset. Challenge files and Golden Answer files are intentionally **separate** so a
-student evaluation framework can load prompts and answers as independent inputs.
+Any language or tooling that can read JSON/JSONL/Markdown and plain text files can consume this dataset. Challenge files and Golden Answer files are intentionally separate so a student evaluation framework can load prompts and answers as independent inputs.

@@ -1,0 +1,622 @@
+[
+  {
+    "id": "easy-001",
+    "difficulty": "easy",
+    "family": "exact_email_lookup",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <22322411.1075840045955.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). The body gives a contact phone number for AON. What is that AON contact phone number?",
+    "scope": {
+      "mailboxes": [
+        "slinger-r"
+      ],
+      "folders": [
+        "inbox"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "phone number",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-002",
+    "difficulty": "easy",
+    "family": "message_id_discovery",
+    "points": 2,
+    "prompt": "Search only the phanis-s mailbox (inbox folder) for the email whose sender (From) is sara.shackleton@enron.com and whose Subject is exactly 'Magnum Hunter Resources, Inc.'. Return that email's Message-ID.",
+    "scope": {
+      "mailboxes": [
+        "phanis-s"
+      ],
+      "folders": [
+        "inbox"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "Message-ID in angle-bracket form",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-003",
+    "difficulty": "easy",
+    "family": "header_field_extraction",
+    "points": 1,
+    "prompt": "Open the email with Message-ID <10033007.1075840046962.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). Who is listed as the sender in the From header? Give the email address.",
+    "scope": {
+      "mailboxes": [
+        "slinger-r"
+      ],
+      "folders": [
+        "inbox"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "single email address",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-004",
+    "difficulty": "easy",
+    "family": "header_field_extraction",
+    "points": 1,
+    "prompt": "Open the email with Message-ID <14464692.1075840045536.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). What is the exact text of its Subject header?",
+    "scope": {
+      "mailboxes": [
+        "slinger-r"
+      ],
+      "folders": [
+        "inbox"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "email subject text",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-005",
+    "difficulty": "easy",
+    "family": "attachment_mention",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <31472676.1075853654527.JavaMail.evans@thyme> in the dickson-s mailbox (pictures folder). The body lists image filenames even though the email carries no real MIME attachment. List every image filename mentioned in the body.",
+    "scope": {
+      "mailboxes": [
+        "dickson-s"
+      ],
+      "folders": [
+        "pictures"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "list of image filenames",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-006",
+    "difficulty": "easy",
+    "family": "latest_vs_quoted_sender",
+    "points": 3,
+    "prompt": "Open the email with Message-ID <5764479.1075840047485.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). This is a reply that quotes an earlier message underneath it. Who is the current (latest) sender of this email itself, not the person quoted in the earlier message below? Give the email address.",
+    "scope": {
+      "mailboxes": [
+        "slinger-r"
+      ],
+      "folders": [
+        "inbox"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "single email address",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-007",
+    "difficulty": "easy",
+    "family": "date_normalization",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <3789605.1075840048923.JavaMail.evans@thyme> in the slinger-r mailbox (sent_items folder). Take the Date header and convert it to ISO 8601 format, keeping the email's original UTC offset. Give the normalized date-time.",
+    "scope": {
+      "mailboxes": [
+        "slinger-r"
+      ],
+      "folders": [
+        "sent_items"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 date-time with UTC offset",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-008",
+    "difficulty": "easy",
+    "family": "date_normalization",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <3392486.1075840045696.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). Take the Date header and convert it to ISO 8601 format, keeping the email's original UTC offset. Give the normalized date-time.",
+    "scope": {
+      "mailboxes": [
+        "slinger-r"
+      ],
+      "folders": [
+        "inbox"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 date-time with UTC offset",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-009",
+    "difficulty": "easy",
+    "family": "recipient_role",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <11700608.1075840047233.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). This email has both To and Cc recipients. Which single email address is in the To field (the direct recipient), not the Cc field?",
+    "scope": {
+      "mailboxes": [
+        "slinger-r"
+      ],
+      "folders": [
+        "inbox"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "single email address",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "easy-010",
+    "difficulty": "easy",
+    "family": "body_fact_extraction",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <1378742.1075855414130.JavaMail.evans@thyme> in the phanis-s mailbox (sent_items folder). The body names a person from Kona Ltd. who called requesting the return of a letter of credit, and gives his phone number. What is that phone number?",
+    "scope": {
+      "mailboxes": [
+        "phanis-s"
+      ],
+      "folders": [
+        "sent_items"
+      ],
+      "packs": [],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "phone number",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-001",
+    "difficulty": "medium",
+    "family": "search_aggregate",
+    "points": 4,
+    "prompt": "Count the total number of email messages packaged in the Medium pack 'symes-k__power_marketer' (Kate Symes's power_marketer folder). Count every packaged message file in that pack exactly once, including replies/forwards and any near-duplicates. Report a single integer.",
+    "scope": {
+      "mailboxes": [
+        "symes-k"
+      ],
+      "folders": [
+        "power_marketer"
+      ],
+      "packs": [
+        "symes-k__power_marketer"
+      ],
+      "date_range": null,
+      "topic": "Power marketer scheduling/trading comms"
+    },
+    "expected_submission": {
+      "answer_format": "integer count",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-002",
+    "difficulty": "medium",
+    "family": "search_aggregate",
+    "points": 5,
+    "prompt": "Within the Medium pack 'steffes-j__credit_issues' (James Steffes's credit_issues folder), count how many packaged emails are replies or forwards, defined as messages whose Subject line begins (case-insensitively) with 'Re:', 'Fw:', or 'Fwd:'. Count each such message once across the whole pack. Report a single integer.",
+    "scope": {
+      "mailboxes": [
+        "steffes-j"
+      ],
+      "folders": [
+        "credit_issues"
+      ],
+      "packs": [
+        "steffes-j__credit_issues"
+      ],
+      "date_range": null,
+      "topic": "Credit issues / creditworthiness"
+    },
+    "expected_submission": {
+      "answer_format": "integer count",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-003",
+    "difficulty": "medium",
+    "family": "earliest_latest",
+    "points": 5,
+    "prompt": "Look only inside the Medium pack 'kean-s__ferc' (Steven Kean's ferc folder). Find the earliest email in that pack by its top-level Date header. Report that email's date (ISO 8601) and cite its Message-ID as evidence.",
+    "scope": {
+      "mailboxes": [
+        "kean-s"
+      ],
+      "folders": [
+        "ferc"
+      ],
+      "packs": [
+        "kean-s__ferc"
+      ],
+      "date_range": null,
+      "topic": "FERC regulatory matters"
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 date/time plus the Message-ID of the earliest email",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-004",
+    "difficulty": "medium",
+    "family": "earliest_latest",
+    "points": 5,
+    "prompt": "Look only inside the Medium pack 'symes-k__scheduling' (Kate Symes's scheduling folder). Find the latest (most recent) email in that pack by its top-level Date header. Report that email's date (ISO 8601) and cite its Message-ID as evidence.",
+    "scope": {
+      "mailboxes": [
+        "symes-k"
+      ],
+      "folders": [
+        "scheduling"
+      ],
+      "packs": [
+        "symes-k__scheduling"
+      ],
+      "date_range": null,
+      "topic": "Real-time power scheduling"
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 date/time plus the Message-ID of the latest email",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-005",
+    "difficulty": "medium",
+    "family": "participant_list",
+    "points": 6,
+    "prompt": "List every distinct person who participated in the Medium pack 'williams-w3__rt_strat' (Bill Williams III's rt_strat folder, West real-time trading strategy). A participant is any address that appears in the top-level From, To, or Cc header of any packaged email in the pack. Return the complete set of participant email addresses (lowercased).",
+    "scope": {
+      "mailboxes": [
+        "williams-w3"
+      ],
+      "folders": [
+        "rt_strat"
+      ],
+      "packs": [
+        "williams-w3__rt_strat"
+      ],
+      "date_range": null,
+      "topic": "Real-time trading strategy (West)"
+    },
+    "expected_submission": {
+      "answer_format": "set of lowercased email addresses",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-006",
+    "difficulty": "medium",
+    "family": "participant_list",
+    "points": 5,
+    "prompt": "List every distinct sender (top-level From address) across all packaged emails in the Medium pack 'symes-k__scheduling' (Kate Symes's scheduling folder). Return the complete set of sender email addresses (lowercased).",
+    "scope": {
+      "mailboxes": [
+        "symes-k"
+      ],
+      "folders": [
+        "scheduling"
+      ],
+      "packs": [
+        "symes-k__scheduling"
+      ],
+      "date_range": null,
+      "topic": "Real-time power scheduling"
+    },
+    "expected_submission": {
+      "answer_format": "set of lowercased email addresses",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-007",
+    "difficulty": "medium",
+    "family": "bounded_work_summary",
+    "points": 4,
+    "prompt": "Skim the Medium pack 'symes-k__power_marketer' (Kate Symes's power_marketer folder), which is made up of external market-news emails. Name the single recurring daily publication that dominates this folder (the report title that appears in the large majority of the messages).",
+    "scope": {
+      "mailboxes": [
+        "symes-k"
+      ],
+      "folders": [
+        "power_marketer"
+      ],
+      "packs": [
+        "symes-k__power_marketer"
+      ],
+      "date_range": null,
+      "topic": "Power marketer scheduling/trading comms"
+    },
+    "expected_submission": {
+      "answer_format": "short name of the recurring publication",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-008",
+    "difficulty": "medium",
+    "family": "bounded_work_summary",
+    "points": 5,
+    "prompt": "Based only on the Medium pack 'symes-k__confirms' (Kate Symes's confirms folder), summarize in a short phrase what kind of documents/work this folder is about. Answer with the specific type of business document being handled.",
+    "scope": {
+      "mailboxes": [
+        "symes-k"
+      ],
+      "folders": [
+        "confirms"
+      ],
+      "packs": [
+        "symes-k__confirms"
+      ],
+      "date_range": null,
+      "topic": "Trade confirmations"
+    },
+    "expected_submission": {
+      "answer_format": "short descriptive phrase naming the document type",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-009",
+    "difficulty": "medium",
+    "family": "topic_participation",
+    "points": 6,
+    "prompt": "Within the Medium pack 'kean-s__enrononline' (Steven Kean's enrononline folder about the EnronOnline trading platform), determine how Leonardo Pacheco (leonardo.pacheco@enron.com) participated: count how many emails in the pack he SENT (was the top-level From). Report a single integer.",
+    "scope": {
+      "mailboxes": [
+        "kean-s"
+      ],
+      "folders": [
+        "enrononline"
+      ],
+      "packs": [
+        "kean-s__enrononline"
+      ],
+      "date_range": null,
+      "topic": "EnronOnline trading platform"
+    },
+    "expected_submission": {
+      "answer_format": "integer count of emails sent by the named person",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "medium-010",
+    "difficulty": "medium",
+    "family": "topic_participation",
+    "points": 6,
+    "prompt": "Within the Medium pack 'dasovich-j__pg_e_hydro_sale' (Jeff Dasovich's pg_e_hydro_sale folder about the proposed sale of PG&E hydro assets), determine how Mona Petrochko (mona.petrochko@enron.com) participated: count how many emails in the pack she SENT (was the top-level From). Report a single integer.",
+    "scope": {
+      "mailboxes": [
+        "dasovich-j"
+      ],
+      "folders": [
+        "pg_e_hydro_sale"
+      ],
+      "packs": [
+        "dasovich-j__pg_e_hydro_sale"
+      ],
+      "date_range": null,
+      "topic": "PG&E hydro asset sale"
+    },
+    "expected_submission": {
+      "answer_format": "integer count of emails sent by the named person",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-001",
+    "difficulty": "hard",
+    "family": "thread_reconstruction",
+    "points": 9,
+    "prompt": "Within the `cage_gas_termination_thread` pack only, follow the Cage Gas contract-default and termination email chain. Eric Moon eventually sends a per-deal breakdown of the termination amounts owed. What is the TOTAL termination amount in that breakdown (sum across all deals)?",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "cage_gas_termination_thread"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "US dollar amount (integer or formatted with commas)",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-002",
+    "difficulty": "hard",
+    "family": "thread_reconstruction",
+    "points": 8,
+    "prompt": "Within the `cage_gas_termination_thread` pack only, trace the Cage Gas default thread to its final corporate outcome. According to the Dun & Bradstreet bankruptcy alert forwarded in the thread, on what calendar date did Cage Gas Services Corporation file bankruptcy? Use YYYY-MM-DD format.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "cage_gas_termination_thread"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 calendar date (YYYY-MM-DD)",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-003",
+    "difficulty": "hard",
+    "family": "thread_reconstruction",
+    "points": 9,
+    "prompt": "Within the `pge_hydro_auction_thread` pack only, the folder spans a 1999 PG&E hydro auction discussion and a May 2000 regulatory push. Identify the two final May 2000 emails that conclude Enron's hydro position in this thread. List their subject lines in chronological order (earliest first), separated by semicolons.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "pge_hydro_auction_thread"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ordered list of two subject lines separated by semicolon",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-004",
+    "difficulty": "hard",
+    "family": "cross_mailbox_corroboration",
+    "points": 10,
+    "prompt": "Within the `cage_gas_cross_mailbox` pack only, combine evidence from both the hyvl-d and sanders-r mailboxes. Which Enron attorney (email address) took over active pursuit of the Cage Gas collection, corroborated across both mailboxes?",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "cage_gas_cross_mailbox"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "single email address",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-005",
+    "difficulty": "hard",
+    "family": "timeline_synthesis",
+    "points": 9,
+    "prompt": "Within the `governor_davis_meeting_timeline` pack only, assemble the dated timeline of Enron's December 2000 Governor Gray Davis meeting preparation. What is the calendar date of the earliest email in the pack, and what is the calendar date of the final recap email titled \"Materials Provided to California Governor\"? Answer as two YYYY-MM-DD dates separated by a semicolon (earliest first).",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "governor_davis_meeting_timeline"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "two ISO 8601 calendar dates separated by semicolon",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-006",
+    "difficulty": "hard",
+    "family": "timeline_synthesis",
+    "points": 8,
+    "prompt": "Within the `pge_bankruptcy_timeline` pack only, Pacific Gas & Electric filed for Chapter 11 and Enron issued a public response the same day. On what calendar date did both events occur? Use YYYY-MM-DD format.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "pge_bankruptcy_timeline"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 calendar date (YYYY-MM-DD)",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-007",
+    "difficulty": "hard",
+    "family": "timeline_synthesis",
+    "points": 10,
+    "prompt": "Within the `pge_bankruptcy_timeline` pack only, list in chronological order the calendar dates of these three key events: (1) PG&E's Chapter 11 filing news, (2) Michael Tribolet's forward of \"PGE Bankruptcy motions\", (3) the \"PX credits & Schedule F in the PG&E bankruptcy\" email. Answer as three YYYY-MM-DD dates separated by semicolons.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "pge_bankruptcy_timeline"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "three ISO 8601 calendar dates separated by semicolons",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-008",
+    "difficulty": "hard",
+    "family": "contradiction_resolution",
+    "points": 9,
+    "prompt": "Within the `tva_settlement_contradiction` pack only, multiple TVA settlement drafts circulate over several months. One later email explicitly instructs recipients to disregard an earlier draft. What is the exact Subject line of that authoritative (REVISED) email?",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": [
+        "tva_settlement_contradiction"
+      ],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "exact email subject line",
+      "requires_evidence_message_ids": true
+    }
+  }
+]

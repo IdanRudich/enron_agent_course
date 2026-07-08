@@ -5,7 +5,7 @@
       "type": "bounded_folder",
       "mailbox": "dasovich-j",
       "source_path": "enron_mail_20150507/maildir/dasovich-j/california_crisis",
-      "packaged_path": "student_dataset/mail/medium/dasovich-j__california_crisis",
+      "packaged_path": "student_dataset/mail/packs/dasovich-j__california_crisis",
       "email_count": 20,
       "topic": "California energy crisis (internal analysis)",
       "scope": {
@@ -35,7 +35,7 @@
       "type": "bounded_folder",
       "mailbox": "dasovich-j",
       "source_path": "enron_mail_20150507/maildir/dasovich-j/california_crisis__press",
-      "packaged_path": "student_dataset/mail/medium/dasovich-j__california_crisis__press",
+      "packaged_path": "student_dataset/mail/packs/dasovich-j__california_crisis__press",
       "email_count": 46,
       "topic": "California energy crisis - press coverage",
       "scope": {
@@ -63,7 +63,7 @@
       "type": "bounded_folder",
       "mailbox": "kean-s",
       "source_path": "enron_mail_20150507/maildir/kean-s/california___working_group",
-      "packaged_path": "student_dataset/mail/medium/kean-s__california___working_group",
+      "packaged_path": "student_dataset/mail/packs/kean-s__california___working_group",
       "email_count": 72,
       "topic": "California working group",
       "scope": {
@@ -93,7 +93,7 @@
       "type": "bounded_folder",
       "mailbox": "kean-s",
       "source_path": "enron_mail_20150507/maildir/kean-s/heat_wave",
-      "packaged_path": "student_dataset/mail/medium/kean-s__heat_wave",
+      "packaged_path": "student_dataset/mail/packs/kean-s__heat_wave",
       "email_count": 244,
       "topic": "Western heat wave / summer power emergency",
       "scope": {
@@ -123,7 +123,7 @@
       "type": "bounded_folder",
       "mailbox": "kean-s",
       "source_path": "enron_mail_20150507/maildir/kean-s/ferc",
-      "packaged_path": "student_dataset/mail/medium/kean-s__ferc",
+      "packaged_path": "student_dataset/mail/packs/kean-s__ferc",
       "email_count": 188,
       "topic": "FERC regulatory matters",
       "scope": {
@@ -153,7 +153,7 @@
       "type": "bounded_folder",
       "mailbox": "steffes-j",
       "source_path": "enron_mail_20150507/maildir/steffes-j/rto",
-      "packaged_path": "student_dataset/mail/medium/steffes-j__rto",
+      "packaged_path": "student_dataset/mail/packs/steffes-j__rto",
       "email_count": 32,
       "topic": "Regional Transmission Organization (RTO) policy",
       "scope": {
@@ -183,7 +183,7 @@
       "type": "bounded_folder",
       "mailbox": "kean-s",
       "source_path": "enron_mail_20150507/maildir/kean-s/federal_legislation",
-      "packaged_path": "student_dataset/mail/medium/kean-s__federal_legislation",
+      "packaged_path": "student_dataset/mail/packs/kean-s__federal_legislation",
       "email_count": 88,
       "topic": "Federal energy legislation",
       "scope": {
@@ -213,7 +213,7 @@
       "type": "bounded_folder",
       "mailbox": "kean-s",
       "source_path": "enron_mail_20150507/maildir/kean-s/enrononline",
-      "packaged_path": "student_dataset/mail/medium/kean-s__enrononline",
+      "packaged_path": "student_dataset/mail/packs/kean-s__enrononline",
       "email_count": 33,
       "topic": "EnronOnline trading platform",
       "scope": {
@@ -241,7 +241,7 @@
       "type": "bounded_folder",
       "mailbox": "symes-k",
       "source_path": "enron_mail_20150507/maildir/symes-k/power_marketer",
-      "packaged_path": "student_dataset/mail/medium/symes-k__power_marketer",
+      "packaged_path": "student_dataset/mail/packs/symes-k__power_marketer",
       "email_count": 136,
       "topic": "Power marketer scheduling/trading comms",
       "scope": {
@@ -269,7 +269,7 @@
       "type": "bounded_folder",
       "mailbox": "symes-k",
       "source_path": "enron_mail_20150507/maildir/symes-k/scheduling",
-      "packaged_path": "student_dataset/mail/medium/symes-k__scheduling",
+      "packaged_path": "student_dataset/mail/packs/symes-k__scheduling",
       "email_count": 37,
       "topic": "Real-time power scheduling",
       "scope": {
@@ -299,7 +299,7 @@
       "type": "bounded_folder",
       "mailbox": "symes-k",
       "source_path": "enron_mail_20150507/maildir/symes-k/confirms",
-      "packaged_path": "student_dataset/mail/medium/symes-k__confirms",
+      "packaged_path": "student_dataset/mail/packs/symes-k__confirms",
       "email_count": 52,
       "topic": "Trade confirmations",
       "scope": {
@@ -329,7 +329,7 @@
       "type": "bounded_folder",
       "mailbox": "kean-s",
       "source_path": "enron_mail_20150507/maildir/kean-s/pge",
-      "packaged_path": "student_dataset/mail/medium/kean-s__pge",
+      "packaged_path": "student_dataset/mail/packs/kean-s__pge",
       "email_count": 46,
       "topic": "Pacific Gas & Electric (PG&E)",
       "scope": {
@@ -359,7 +359,7 @@
       "type": "bounded_folder",
       "mailbox": "dasovich-j",
       "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale",
-      "packaged_path": "student_dataset/mail/medium/dasovich-j__pg_e_hydro_sale",
+      "packaged_path": "student_dataset/mail/packs/dasovich-j__pg_e_hydro_sale",
       "email_count": 12,
       "topic": "PG&E hydro asset sale",
       "scope": {
@@ -389,7 +389,7 @@
       "type": "bounded_folder",
       "mailbox": "dasovich-j",
       "source_path": "enron_mail_20150507/maildir/dasovich-j/distributed_generation",
-      "packaged_path": "student_dataset/mail/medium/dasovich-j__distributed_generation",
+      "packaged_path": "student_dataset/mail/packs/dasovich-j__distributed_generation",
       "email_count": 34,
       "topic": "Distributed generation",
       "scope": {
@@ -419,7 +419,7 @@
       "type": "bounded_folder",
       "mailbox": "dasovich-j",
       "source_path": "enron_mail_20150507/maildir/dasovich-j/interconnection",
-      "packaged_path": "student_dataset/mail/medium/dasovich-j__interconnection",
+      "packaged_path": "student_dataset/mail/packs/dasovich-j__interconnection",
       "email_count": 19,
       "topic": "Grid interconnection",
       "scope": {
@@ -449,7 +449,7 @@
       "type": "bounded_folder",
       "mailbox": "dasovich-j",
       "source_path": "enron_mail_20150507/maildir/dasovich-j/natural_gas_strategy",
-      "packaged_path": "student_dataset/mail/medium/dasovich-j__natural_gas_strategy",
+      "packaged_path": "student_dataset/mail/packs/dasovich-j__natural_gas_strategy",
       "email_count": 27,
       "topic": "Natural gas strategy",
       "scope": {
@@ -479,7 +479,7 @@
       "type": "bounded_folder",
       "mailbox": "scott-s",
       "source_path": "enron_mail_20150507/maildir/scott-s/gir",
-      "packaged_path": "student_dataset/mail/medium/scott-s__gir",
+      "packaged_path": "student_dataset/mail/packs/scott-s__gir",
       "email_count": 250,
       "topic": "Government & Industry Relations (GIR)",
       "scope": {
@@ -509,7 +509,7 @@
       "type": "bounded_folder",
       "mailbox": "scott-s",
       "source_path": "enron_mail_20150507/maildir/scott-s/mkt_affiliate",
-      "packaged_path": "student_dataset/mail/medium/scott-s__mkt_affiliate",
+      "packaged_path": "student_dataset/mail/packs/scott-s__mkt_affiliate",
       "email_count": 13,
       "topic": "Marketing affiliate rules",
       "scope": {
@@ -539,7 +539,7 @@
       "type": "bounded_folder",
       "mailbox": "germany-c",
       "source_path": "enron_mail_20150507/maildir/germany-c/new_power",
-      "packaged_path": "student_dataset/mail/medium/germany-c__new_power",
+      "packaged_path": "student_dataset/mail/packs/germany-c__new_power",
       "email_count": 54,
       "topic": "New Power Company",
       "scope": {
@@ -569,7 +569,7 @@
       "type": "bounded_folder",
       "mailbox": "williams-w3",
       "source_path": "enron_mail_20150507/maildir/williams-w3/rt_strat",
-      "packaged_path": "student_dataset/mail/medium/williams-w3__rt_strat",
+      "packaged_path": "student_dataset/mail/packs/williams-w3__rt_strat",
       "email_count": 18,
       "topic": "Real-time trading strategy (West)",
       "scope": {
@@ -599,7 +599,7 @@
       "type": "bounded_folder",
       "mailbox": "steffes-j",
       "source_path": "enron_mail_20150507/maildir/steffes-j/credit_issues",
-      "packaged_path": "student_dataset/mail/medium/steffes-j__credit_issues",
+      "packaged_path": "student_dataset/mail/packs/steffes-j__credit_issues",
       "email_count": 79,
       "topic": "Credit issues / creditworthiness",
       "scope": {

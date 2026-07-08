@@ -3,38 +3,40 @@
   "failures": [],
   "warnings": [],
   "checks": [
-    "easy: 10 challenges, 10 golden answers, 1329 evidence lines, 1329 mail files, sources sum email_count=1329",
-    "medium: 10 challenges, 10 golden answers, 1500 evidence lines, 1500 mail files, sources sum email_count=1500",
-    "hard: 8 challenges, 8 golden answers, 63 evidence lines, 63 mail files, sources sum email_count=63",
-    "medium spot-check pack 'symes-k__power_marketer': 136 evidence rows",
-    "medium-001 scope symes-k/power_marketer: 136 evidence rows",
-    "hard curated pack emails: 63 rows with pack set",
-    "manifest.json updated (created=2026-07-08)"
+    "mail layout: 1329 full-mailbox files, 1563 pack files",
+    "unified evidence: 2892 rows, 17 Message-IDs appear in multiple packaged paths/packs",
+    "medium-001 pack 'symes-k__power_marketer': 136 evidence rows",
+    "hard duplicate Message-IDs remain distinct by packaged_path/pack: 17 ids"
   ],
-  "fixes": [],
   "counts": {
+    "mail_full_mailboxes_files": 1329,
+    "mail_packs_files": 1563,
+    "mail_files_total": 2892,
+    "challenges_total": 28,
+    "golden_total": 28,
     "challenges_easy": 10,
     "golden_easy": 10,
-    "evidence_easy": 1329,
-    "sources_email_sum_easy": 1329,
-    "email_disk_easy": 1329,
     "challenges_medium": 10,
     "golden_medium": 10,
-    "evidence_medium": 1500,
-    "sources_email_sum_medium": 1500,
-    "email_disk_medium": 1500,
     "challenges_hard": 8,
     "golden_hard": 8,
+    "evidence_total": 2892,
+    "evidence_easy": 1329,
+    "evidence_medium": 1500,
     "evidence_hard": 63,
+    "duplicate_message_ids_allowed": 17,
+    "sources_units_easy": 5,
+    "sources_email_sum_easy": 1329,
+    "sources_units_medium": 21,
+    "sources_email_sum_medium": 1500,
+    "sources_units_hard": 6,
     "sources_email_sum_hard": 63,
-    "email_disk_hard": 63,
-    "challenges_total": 28,
-    "email_disk_total": 2892
+    "sources_units_total": 32
   },
   "manifest": {
     "dataset_name": "Beginner Enron Golden Dataset",
     "dataset_version": "0.1.0",
-    "created": "2026-07-08",
+    "created": "2026-07-09",
     "target_email_ceiling": 6000,
     "source_corpus": "enron_mail_20150507",
     "difficulties": {
@@ -58,6 +60,15 @@
       "medium_challenges": 10,
       "hard_challenges": 8
     },
-    "provenance_note": "Each packaged email traces to enron_mail_20150507/maildir via evidence index source_path."
+    "provenance_note": "Each packaged email traces to enron_mail_20150507/maildir via evidence index source_path; evidence rows retain original difficulty provenance.",
+    "mail_layout": {
+      "full_mailboxes": "mail/full_mailboxes",
+      "packs": "mail/packs"
+    },
+    "files": {
+      "challenges": "challenges/challenges.json",
+      "golden_answers": "golden_answers/golden_answers.json",
+      "evidence": "evidence/evidence.jsonl"
+    }
   }
 }
