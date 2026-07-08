@@ -14,6 +14,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from email import policy
 from email.parser import Parser
+from email.utils import getaddresses
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -23,6 +24,9 @@ DIFFICULTY_ORDER = {difficulty: i for i, difficulty in enumerate(DIFFICULTIES)}
 
 POINT_BANDS = {"easy": (1, 3), "medium": (4, 7), "hard": (8, 10)}
 EXPECTED_CHALLENGE_COUNTS = {"easy": 10, "medium": 10, "hard": 8}
+EVIDENCE_MODES = ("all", "any", "predicate")
+PREDICATE_TYPES = ("message_in_pack", "subject_prefix", "from_address", "address_in_headers")
+ADDRESS_ROLES = ("from", "to", "cc")
 
 MSG_ID_RE = re.compile(r"^<[^>]+>$")
 PROMPT_PACK_RE = re.compile(r"(?:pack\s+['`]([^'`]+)['`]|['`]([^'`]+)['`]\s+pack)", re.IGNORECASE)
@@ -160,7 +164,19 @@ def validate_layout(report: Report) -> None:
     )
 
 
-def parse_message_id(path: Path, report: Report) -> str | None:
+def normalize_header_value(value: object) -> str:
+    return " ".join(str(value or "").strip().split())
+
+
+def normalize_addresses(value: object) -> list[str]:
+    return [
+        address.strip().lower()
+        for _, address in getaddresses([str(value or "")])
+        if address.strip()
+    ]
+
+
+def parse_mail_headers(path: Path, report: Report) -> dict | None:
     try:
         text = path.read_text(encoding="utf-8", errors="replace")
         msg = Parser(policy=policy.default).parsestr(text, headersonly=True)
@@ -171,11 +187,17 @@ def parse_message_id(path: Path, report: Report) -> str | None:
     if message_id is None:
         report.fail(f"{dataset_relative(path)}: missing Message-ID header")
         return None
-    message_id = " ".join(str(message_id).strip().split())
+    message_id = normalize_header_value(message_id)
     if not MSG_ID_RE.match(message_id):
         report.fail(f"{dataset_relative(path)}: malformed Message-ID {message_id!r}")
         return None
-    return message_id
+    return {
+        "message_id": message_id,
+        "subject": normalize_header_value(msg.get("Subject")),
+        "from_addresses": normalize_addresses(msg.get("From")),
+        "to_addresses": normalize_addresses(msg.get("To")),
+        "cc_addresses": normalize_addresses(msg.get("Cc")),
+    }
 
 
 def derive_mail_rows(pack_difficulty: dict[str, str], report: Report) -> dict[str, list[dict]]:
@@ -190,9 +212,10 @@ def derive_mail_rows(pack_difficulty: dict[str, str], report: Report) -> dict[st
         if len(parts) < 3:
             report.fail(f"{dataset_relative(path)}: full-mailbox file must be under <mailbox>/<folder>/<n>.")
             continue
-        mid = parse_message_id(path, report)
-        if not mid:
+        headers = parse_mail_headers(path, report)
+        if not headers:
             continue
+        mid = headers["message_id"]
         row = {
             "message_id": mid,
             "difficulty": "easy",
@@ -200,6 +223,10 @@ def derive_mail_rows(pack_difficulty: dict[str, str], report: Report) -> dict[st
             "packaged_path": dataset_relative(path),
             "mailbox": parts[0],
             "folder": "/".join(parts[1:-1]),
+            "subject": headers["subject"],
+            "from_addresses": headers["from_addresses"],
+            "to_addresses": headers["to_addresses"],
+            "cc_addresses": headers["cc_addresses"],
         }
         rows_by_mid[mid].append(row)
         difficulty_counts["easy"] += 1
@@ -217,9 +244,10 @@ def derive_mail_rows(pack_difficulty: dict[str, str], report: Report) -> dict[st
         if difficulty not in ("medium", "hard"):
             report.fail(f"{dataset_relative(path)}: pack {pack!r} not found in medium/hard source fragments")
             continue
-        mid = parse_message_id(path, report)
-        if not mid:
+        headers = parse_mail_headers(path, report)
+        if not headers:
             continue
+        mid = headers["message_id"]
         row = {
             "message_id": mid,
             "difficulty": difficulty,
@@ -227,6 +255,10 @@ def derive_mail_rows(pack_difficulty: dict[str, str], report: Report) -> dict[st
             "packaged_path": dataset_relative(path),
             "mailbox": None,
             "folder": None,
+            "subject": headers["subject"],
+            "from_addresses": headers["from_addresses"],
+            "to_addresses": headers["to_addresses"],
+            "cc_addresses": headers["cc_addresses"],
         }
         rows_by_mid[mid].append(row)
         difficulty_counts[difficulty] += 1
@@ -312,6 +344,99 @@ def rows_matching_prompt_bounds(mid: str, challenge: dict, rows_by_mid: dict[str
     return rows
 
 
+def validate_allowed_keys(gid: str, predicate: dict, allowed: set[str], report: Report) -> None:
+    extra = sorted(set(predicate) - allowed)
+    if extra:
+        report.fail(f"{gid}: evidence_predicate has unsupported field(s): {extra}")
+
+
+def validate_string_list(gid: str, predicate: dict, field: str, report: Report) -> None:
+    values = predicate.get(field)
+    if not isinstance(values, list) or not values or not all(isinstance(v, str) and v.strip() for v in values):
+        report.fail(f"{gid}: evidence_predicate.{field} must be a non-empty string array")
+
+
+def validate_bool_field(gid: str, predicate: dict, field: str, report: Report) -> None:
+    if not isinstance(predicate.get(field), bool):
+        report.fail(f"{gid}: evidence_predicate.{field} must be boolean")
+
+
+def validate_evidence_predicate(predicate: object, ch: dict, report: Report) -> bool:
+    gid = ch.get("id", "<missing>")
+    if not isinstance(predicate, dict):
+        report.fail(f"{gid}: evidence_mode predicate requires evidence_predicate object")
+        return False
+
+    ptype = predicate.get("type")
+    if ptype not in PREDICATE_TYPES:
+        report.fail(f"{gid}: invalid evidence_predicate.type {ptype!r}")
+        return False
+
+    pack = predicate.get("pack")
+    if not isinstance(pack, str) or not pack.strip():
+        report.fail(f"{gid}: evidence_predicate.pack must be a non-empty string")
+    prompt_packs = prompt_pack_names(ch.get("prompt", ""))
+    if prompt_packs and pack not in prompt_packs:
+        report.fail(f"{gid}: evidence_predicate.pack {pack!r} is outside prompt pack bounds {sorted(prompt_packs)}")
+
+    if ptype == "message_in_pack":
+        validate_allowed_keys(gid, predicate, {"type", "pack"}, report)
+    elif ptype == "subject_prefix":
+        validate_allowed_keys(gid, predicate, {"type", "pack", "subject_prefixes", "trim_subject", "case_insensitive"}, report)
+        validate_string_list(gid, predicate, "subject_prefixes", report)
+        validate_bool_field(gid, predicate, "trim_subject", report)
+        validate_bool_field(gid, predicate, "case_insensitive", report)
+    elif ptype == "from_address":
+        validate_allowed_keys(gid, predicate, {"type", "pack", "from_address", "case_insensitive"}, report)
+        address = predicate.get("from_address")
+        if not isinstance(address, str) or "@" not in address:
+            report.fail(f"{gid}: evidence_predicate.from_address must be an email address string")
+        validate_bool_field(gid, predicate, "case_insensitive", report)
+    elif ptype == "address_in_headers":
+        validate_allowed_keys(gid, predicate, {"type", "pack", "roles", "addresses", "case_insensitive"}, report)
+        roles = predicate.get("roles")
+        if not isinstance(roles, list) or not roles or not all(role in ADDRESS_ROLES for role in roles):
+            report.fail(f"{gid}: evidence_predicate.roles must use one or more of {ADDRESS_ROLES}")
+        validate_string_list(gid, predicate, "addresses", report)
+        validate_bool_field(gid, predicate, "case_insensitive", report)
+    return True
+
+
+def comparable(value: str, case_insensitive: bool) -> str:
+    return value.casefold() if case_insensitive else value
+
+
+def predicate_matches_row(predicate: dict, row: dict) -> bool:
+    if row.get("pack") != predicate.get("pack"):
+        return False
+
+    ptype = predicate.get("type")
+    if ptype == "message_in_pack":
+        return True
+
+    case_insensitive = predicate.get("case_insensitive") is True
+    if ptype == "subject_prefix":
+        subject = row.get("subject") or ""
+        if predicate.get("trim_subject") is True:
+            subject = subject.strip()
+        subject = comparable(subject, case_insensitive)
+        prefixes = [comparable(prefix, case_insensitive) for prefix in predicate.get("subject_prefixes", [])]
+        return any(subject.startswith(prefix) for prefix in prefixes)
+
+    if ptype == "from_address":
+        target = comparable(predicate.get("from_address", ""), case_insensitive)
+        return any(comparable(address, case_insensitive) == target for address in row.get("from_addresses", []))
+
+    if ptype == "address_in_headers":
+        targets = {comparable(address, case_insensitive) for address in predicate.get("addresses", [])}
+        row_addresses: list[str] = []
+        for role in predicate.get("roles", []):
+            row_addresses.extend(row.get(f"{role}_addresses", []))
+        return any(comparable(address, case_insensitive) in targets for address in row_addresses)
+
+    return False
+
+
 def validate_golden(ga: object, ch: dict, rows_by_mid: dict[str, list[dict]], report: Report) -> None:
     gid = ch.get("id", "<missing>")
     if not isinstance(ga, dict):
@@ -321,8 +446,14 @@ def validate_golden(ga: object, ch: dict, rows_by_mid: dict[str, list[dict]], re
     if not isinstance(aa, dict) or "value" not in aa:
         report.fail(f"{gid}: accepted_answer missing value")
     mode = ga.get("evidence_mode")
-    if mode not in ("all", "any"):
+    if mode not in EVIDENCE_MODES:
         report.fail(f"{gid}: invalid evidence_mode {mode!r}")
+    predicate = ga.get("evidence_predicate")
+    predicate_is_valid = False
+    if mode == "predicate":
+        predicate_is_valid = validate_evidence_predicate(predicate, ch, report)
+    elif predicate is not None:
+        report.fail(f"{gid}: evidence_predicate is only allowed when evidence_mode is 'predicate'")
     eids = ga.get("evidence_message_ids") or []
     if not eids:
         report.fail(f"{gid}: empty evidence_message_ids")
@@ -335,6 +466,8 @@ def validate_golden(ga: object, ch: dict, rows_by_mid: dict[str, list[dict]], re
             packs = sorted(prompt_pack_names(ch.get("prompt", "")))
             scope_hint = f" in packs {packs}" if packs else " in declared scope"
             report.fail(f"{gid}: evidence Message-ID not found in packaged raw mail{scope_hint}: {mid}")
+        elif predicate_is_valid and not any(predicate_matches_row(predicate, row) for row in matches):
+            report.fail(f"{gid}: curated evidence Message-ID does not satisfy evidence_predicate: {mid}")
 
 
 def validate_sources_fragment(sources: dict, difficulty: str, report: Report) -> None:
@@ -434,6 +567,11 @@ def main() -> int:
     for ch in golden_set:
         validate_challenge(ch, report)
         validate_golden(ch.get("golden_answer"), ch, rows_by_mid, report)
+    predicate_count = sum(
+        1 for ch in golden_set if (ch.get("golden_answer") or {}).get("evidence_mode") == "predicate"
+    )
+    report.counts["predicate_evidence_challenges"] = predicate_count
+    report.check(f"predicate evidence modes: {predicate_count} challenges")
 
     source_unit_total = 0
     for difficulty in DIFFICULTIES:

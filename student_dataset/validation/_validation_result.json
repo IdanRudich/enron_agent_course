@@ -5,6 +5,7 @@
   "checks": [
     "mail layout: 1329 full-mailbox files, 1563 pack files",
     "parsed mail: 2892 files with Message-ID headers, 17 duplicated Message-IDs",
+    "predicate evidence modes: 8 challenges",
     "medium-001 pack 'symes-k__power_marketer': 136 packaged files",
     "hard duplicate Message-IDs remain distinct by packaged_path/pack: 17 ids"
   ],
@@ -22,6 +23,7 @@
     "parsed_mail_medium": 1500,
     "parsed_mail_hard": 63,
     "duplicate_message_ids_allowed": 17,
+    "predicate_evidence_challenges": 8,
     "sources_units_easy": 5,
     "sources_email_sum_easy": 1329,
     "sources_units_medium": 21,

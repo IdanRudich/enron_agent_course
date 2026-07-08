@@ -136,8 +136,9 @@ Nested object at `golden_answer` inside each `golden_set/golden_set.json` record
 | Field | Type | Description |
 | --- | --- | --- |
 | `accepted_answer` | object | `{ "value": <canonical answer>, "aliases": [<accepted equivalents>] }`. |
-| `evidence_message_ids` | array of string | Accepted Evidence Message-IDs in canonical angle-bracket form `"<...@...>"`. Every id must appear in an in-scope packaged raw email file. |
-| `evidence_mode` | string | `"all"` = every listed id required; `"any"` = any one listed id suffices. |
+| `evidence_message_ids` | array of string | Evidence Message-IDs in canonical angle-bracket form `"<...@...>"`. For `"all"`/`"any"` modes these are the accepted ids; for `"predicate"` mode these are curated examples/anchors. Every id must appear in an in-scope packaged raw email file. |
+| `evidence_mode` | string | `"all"` = every listed id required; `"any"` = any one listed id suffices; `"predicate"` = at least one submitted id must satisfy `evidence_predicate`. |
+| `evidence_predicate` | object | Required only when `evidence_mode` is `"predicate"`. Structured grader-only rule describing which in-scope Message-IDs satisfy evidence. |
 | `grading_notes` | string | How answer equivalence is judged. |
 
 ### Rules
@@ -146,6 +147,21 @@ Nested object at `golden_answer` inside each `golden_set/golden_set.json` record
 - Every id in `evidence_message_ids` must appear as the `Message-ID:` header of at least one packaged raw email file.
 - For prompt-bounded pack challenges, the accepted evidence must resolve inside the named pack(s).
 - `accepted_answer.value` is the single canonical answer; aliases only add accepted equivalents.
+- For `evidence_mode: "predicate"`, a submission still must include at least one Message-ID. The evidence gate passes if at least one submitted Message-ID resolves inside the prompt bounds and satisfies `golden_answer.evidence_predicate`; extra submitted evidence ids that do not satisfy the predicate are ignored for evidence scoring.
+- In `predicate` mode, `evidence_message_ids` remain useful as human-readable examples or anchors, not as the full acceptance list. Release validation should ensure the listed example ids satisfy their predicate.
+
+### Evidence Predicate Object
+
+Predicate rules are intentionally small and explicit. This release uses pack-bounded predicates over parsed top-level headers:
+
+| `type` | Required fields | Meaning |
+| --- | --- | --- |
+| `message_in_pack` | `pack` | Any Message-ID in the named pack satisfies evidence. |
+| `subject_prefix` | `pack`, `subject_prefixes`, `trim_subject`, `case_insensitive` | A Message-ID satisfies evidence when its top-level Subject begins with one of the listed prefixes. |
+| `from_address` | `pack`, `from_address`, `case_insensitive` | A Message-ID satisfies evidence when its top-level From address matches the listed sender. |
+| `address_in_headers` | `pack`, `roles`, `addresses`, `case_insensitive` | A Message-ID satisfies evidence when any top-level address in the listed roles (`from`, `to`, `cc`) appears in `addresses`. |
+
+Predicate fields live only inside `golden_answer`. Do not reintroduce routing-only `family` or `scope` fields on public challenge records.
 
 ---
 
@@ -154,7 +170,7 @@ Nested object at `golden_answer` inside each `golden_set/golden_set.json` record
 Evidence Message-IDs are represented in nested Golden Answers and in the raw email files themselves:
 
 1. **Packaged mail** - each raw email file has a `Message-ID:` header.
-2. **Golden Set records** - each nested `golden_answer` lists the subset of Message-IDs accepted as evidence for that challenge.
+2. **Golden Set records** - each nested `golden_answer` lists fixed accepted Message-IDs for `"all"`/`"any"` evidence modes, or curated example Message-IDs plus an `evidence_predicate` for `"predicate"` mode.
 
 Message-ID alone is the grading evidence key, but Message-IDs are not guaranteed to be unique across every packaged file. Some Hard packs intentionally include the same source message in more than one pack. Graders and student-built indexes should therefore preserve the packaged path and pack context when they index mail.
 

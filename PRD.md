@@ -90,7 +90,7 @@ The course should use the settled challenge taxonomy:
 - Challenge prompts must always define scope explicitly when search is required.
 - Bounded "what was X working on" questions are Medium when constrained by dates, mailbox, folder, or topic.
 - Unbounded work-history questions are Hard or out of scope for the first release because they are difficult to grade deterministically.
-- The public challenge catalog should include challenge ID, difficulty, point value, prompt, expected submission format, and scope.
+- The public challenge catalog should include challenge ID, difficulty, point value, prompt, and expected submission format; search bounds belong in the natural-language prompt.
 - The student-visible Golden Answer store should include challenge ID, accepted answer values, accepted Evidence Message-IDs, accepted aliases where needed, point value, and grading notes.
 - The evidence index should map Message-IDs to canonical metadata such as subject, date, participants, source mailbox, source folder, and pack provenance.
 - The dataset manifest should record dataset version, selected full mailboxes, selected curated packs, approximate email counts, and challenge coverage.

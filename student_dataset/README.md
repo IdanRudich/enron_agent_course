@@ -29,7 +29,7 @@ You receive the Golden Answers inside `golden_set/golden_set.json` **on purpose*
 During the course you submit agent versions every couple of hours. The Golden Answers let you:
 
 - Grade your own submissions locally before you submit.
-- See exactly which Message-IDs count as accepted evidence.
+- See which Message-IDs or predicate rules count as accepted evidence.
 - Read `grading_notes` to understand normalization, aliases, and tie-breaks.
 
 Treat each record's `golden_answer` object as the reference implementation for your evaluation framework, not as something to memorize and replay without doing the email work.
@@ -46,6 +46,7 @@ Grading uses **Evidence-Gated Correctness**: a submission earns a challenge's fu
 2. **Accepted Evidence Message-ID(s)** - you cite Message-ID(s) that satisfy the Golden Answer's `evidence_mode`:
    - `"all"` - every listed id is required.
    - `"any"` - at least one listed id suffices.
+   - `"predicate"` - at least one submitted id must satisfy `golden_answer.evidence_predicate`; listed `evidence_message_ids` are curated examples/anchors.
 
 A correct-looking answer **without** accepted Message-ID evidence scores **zero**. There is no partial credit.
 

@@ -28,6 +28,14 @@ Message-ID is the **primary evidence key** for grading.
   character inside the brackets does **not** match.
 - **Storage:** raw email `Message-ID:` headers and Golden Answers (`evidence_message_ids`)
   use the canonical angle-bracket form.
+- **Predicate evidence mode:** when `golden_answer.evidence_mode` is `"predicate"`, a
+  submission still must provide at least one Message-ID. Normalize submitted Message-IDs by
+  the rules above, resolve them inside the prompt-stated bounds, and pass the evidence gate
+  if at least one submitted id satisfies `golden_answer.evidence_predicate`. Extra submitted
+  ids that do not satisfy the predicate are ignored for evidence scoring.
+- **Curated examples:** in predicate mode, `golden_answer.evidence_message_ids` are curated
+  examples/anchors for humans and validators. They are not an exhaustive accepted-evidence
+  list.
 
 ---
 
@@ -91,6 +99,11 @@ scope is declared in the Challenge Question prompt and restated in the Golden An
 If a date range applies, the prompt-stated date range bounds the count (inclusive) and is
 applied after scope selection. Emails outside the declared scope are never counted, even if
 they match the topic.
+
+For aggregate challenges that use `evidence_mode: "predicate"`, the predicate is evaluated
+after the same prompt-stated scope bounds are applied. For example, a `from_address`
+predicate only accepts a matching sender inside the named pack, and a `subject_prefix`
+predicate only accepts a matching subject inside the named pack.
 
 ---
 

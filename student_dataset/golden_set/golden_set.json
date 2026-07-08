@@ -46,7 +46,7 @@
         "<8294594.1075855414353.JavaMail.evans@thyme>"
       ],
       "evidence_mode": "all",
-      "grading_notes": "Only one email in phanis-s/inbox has From sara.shackleton@enron.com with Subject 'Magnum Hunter Resources, Inc.', so the discovered Message-ID is unique. Canonical form keeps the angle brackets; a bracket-less but otherwise identical string is accepted (add-only tolerance per NORMALIZATION.md \u00a71). Inner content matched byte-for-byte after trimming. The answer value and the evidence Message-ID are the same id here."
+      "grading_notes": "Only one email in phanis-s/inbox has From sara.shackleton@enron.com with Subject 'Magnum Hunter Resources, Inc.', so the discovered Message-ID is unique. Canonical form keeps the angle brackets; a bracket-less but otherwise identical string is accepted (add-only tolerance per NORMALIZATION.md §1). Inner content matched byte-for-byte after trimming. The answer value and the evidence Message-ID are the same id here."
     }
   },
   {
@@ -70,7 +70,7 @@
         "<10033007.1075840046962.JavaMail.evans@thyme>"
       ],
       "evidence_mode": "all",
-      "grading_notes": "Top-level From header of the named email. Canonical answer is the lowercase email address; display-name aliases accepted per NORMALIZATION.md \u00a73. Address compared case-insensitively after trimming. Message-ID evidence required."
+      "grading_notes": "Top-level From header of the named email. Canonical answer is the lowercase email address; display-name aliases accepted per NORMALIZATION.md §3. Address compared case-insensitively after trimming. Message-ID evidence required."
     }
   },
   {
@@ -141,7 +141,7 @@
         "<5764479.1075840047485.JavaMail.evans@thyme>"
       ],
       "evidence_mode": "all",
-      "grading_notes": "Graded against the current email's top-level From header per NORMALIZATION.md \u00a75. The quoted 'Original Message' below is from Ryan.Slinger@enron.com; ryan.slinger@enron.com is the quoted-history sender and is a distractor, NOT accepted. Canonical answer is the lowercase current-sender address; display-name aliases accepted. Message-ID evidence required."
+      "grading_notes": "Graded against the current email's top-level From header per NORMALIZATION.md §5. The quoted 'Original Message' below is from Ryan.Slinger@enron.com; ryan.slinger@enron.com is the quoted-history sender and is a distractor, NOT accepted. Canonical answer is the lowercase current-sender address; display-name aliases accepted. Message-ID evidence required."
     }
   },
   {
@@ -165,7 +165,7 @@
         "<3789605.1075840048923.JavaMail.evans@thyme>"
       ],
       "evidence_mode": "all",
-      "grading_notes": "Raw Date header 'Tue, 22 May 2001 07:25:59 -0700' (PDT). Canonical answer keeps the original -07:00 offset per NORMALIZATION.md \u00a72. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
+      "grading_notes": "Raw Date header 'Tue, 22 May 2001 07:25:59 -0700' (PDT). Canonical answer keeps the original -07:00 offset per NORMALIZATION.md §2. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
     }
   },
   {
@@ -189,7 +189,7 @@
         "<3392486.1075840045696.JavaMail.evans@thyme>"
       ],
       "evidence_mode": "all",
-      "grading_notes": "Raw Date header 'Thu, 31 Jan 2002 12:33:39 -0800' (PST). Canonical answer keeps the original -08:00 offset per NORMALIZATION.md \u00a72. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
+      "grading_notes": "Raw Date header 'Thu, 31 Jan 2002 12:33:39 -0800' (PST). Canonical answer keeps the original -08:00 offset per NORMALIZATION.md §2. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
     }
   },
   {
@@ -262,8 +262,12 @@
         "<28841806.1075841866914.JavaMail.evans@thyme>",
         "<266694.1075841873502.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'symes-k__power_marketer' only (origin: symes-k/power_marketer). The count is the total number of packaged message files in that pack = 136 (verified by counting lines with pack=='symes-k__power_marketer' in evidence.jsonl, which equals the file count in mail/packs/symes-k__power_marketer/). All messages are counted once; replies/forwards and near-duplicates are included. Answer must equal the integer 136. Evidence is illustrative: any one boundary/anchor message in the pack is accepted (evidence_mode=any); the two listed ids are the earliest and latest messages in the pack."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'symes-k__power_marketer' only (origin: symes-k/power_marketer). The count is the total number of packaged message files in that pack = 136 (verified by counting lines with pack=='symes-k__power_marketer' in evidence.jsonl, which equals the file count in mail/packs/symes-k__power_marketer/). All messages are counted once; replies/forwards and near-duplicates are included. Answer must equal the integer 136. Evidence_mode=predicate: evidence_message_ids are curated boundary/anchor examples; any Message-ID from the symes-k__power_marketer pack satisfies evidence for this total-pack count.",
+      "evidence_predicate": {
+        "type": "message_in_pack",
+        "pack": "symes-k__power_marketer"
+      }
     }
   },
   {
@@ -287,8 +291,19 @@
         "<303482.1075855211200.JavaMail.evans@thyme>",
         "<30933191.1075855211314.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'steffes-j__credit_issues' only (origin: steffes-j/credit_issues). Counted rule: packaged emails whose trimmed Subject begins case-insensitively with 're:', 'fw:', or 'fwd:'. Count over the whole pack = 51 (verified against evidence.jsonl; matches the pack's documented reply/forward count). Answer must equal the integer 51. Evidence_mode=any: each listed id is a representative reply/forward message inside the pack; any in-scope reply message id is acceptable as an anchor."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'steffes-j__credit_issues' only (origin: steffes-j/credit_issues). Counted rule: packaged emails whose trimmed Subject begins case-insensitively with 're:', 'fw:', or 'fwd:'. Count over the whole pack = 51 (verified against evidence.jsonl; matches the pack's documented reply/forward count). Answer must equal the integer 51. Evidence_mode=predicate: evidence_message_ids are curated representative examples; any Message-ID in the pack whose trimmed Subject begins case-insensitively with 're:', 'fw:', or 'fwd:' satisfies evidence.",
+      "evidence_predicate": {
+        "type": "subject_prefix",
+        "pack": "steffes-j__credit_issues",
+        "subject_prefixes": [
+          "re:",
+          "fw:",
+          "fwd:"
+        ],
+        "trim_subject": true,
+        "case_insensitive": true
+      }
     }
   },
   {
@@ -379,8 +394,39 @@
         "<16022517.1075839947691.JavaMail.evans@thyme>",
         "<9883409.1075839947656.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'williams-w3__rt_strat' only (origin: williams-w3/rt_strat). Participant set = union of all addresses appearing in the top-level From, To, and Cc headers across every packaged email in the pack, lowercased and de-duplicated. Result is the 19-address set in accepted_answer.value. Compared as a SET (order-independent) per NORMALIZATION.md; addresses matched case-insensitively. A submission must contain exactly these 19 addresses (no more, no fewer). Evidence_mode=any: any in-scope pack message id anchors the answer; participants are computed over all 18 messages in the pack."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'williams-w3__rt_strat' only (origin: williams-w3/rt_strat). Participant set = union of all addresses appearing in the top-level From, To, and Cc headers across every packaged email in the pack, lowercased and de-duplicated. Result is the 19-address set in accepted_answer.value. Compared as a SET (order-independent) per NORMALIZATION.md; addresses matched case-insensitively. A submission must contain exactly these 19 addresses (no more, no fewer). Evidence_mode=predicate: evidence_message_ids are curated pack anchors; any Message-ID in the pack with a top-level From, To, or Cc participant address from the accepted participant set satisfies evidence.",
+      "evidence_predicate": {
+        "type": "address_in_headers",
+        "pack": "williams-w3__rt_strat",
+        "roles": [
+          "from",
+          "to",
+          "cc"
+        ],
+        "addresses": [
+          "bill.iii@enron.com",
+          "chris.mallory@enron.com",
+          "chris.stokley@enron.com",
+          "david.porter@enron.com",
+          "david.poston@enron.com",
+          "geir.solberg@enron.com",
+          "holden.salisbury@enron.com",
+          "jeff.richter@enron.com",
+          "jeremy.morris@enron.com",
+          "jesse.bryson@enron.com",
+          "kourtney.nelson@enron.com",
+          "lester.rawson@enron.com",
+          "michael.tully@enron.com",
+          "phillip.platter@enron.com",
+          "portland.desk@enron.com",
+          "portland.shift@enron.com",
+          "ryan.slinger@enron.com",
+          "shift.portland@enron.com",
+          "volume_management_portland@enron.com"
+        ],
+        "case_insensitive": true
+      }
     }
   },
   {
@@ -408,8 +454,24 @@
         "<14054298.1075841877964.JavaMail.evans@thyme>",
         "<30484554.1075841878060.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'symes-k__scheduling' only (origin: symes-k/scheduling). Sender set = distinct top-level From addresses across every packaged email in the pack, lowercased and de-duplicated. Result is the 6-address set in accepted_answer.value. Compared as a SET (order-independent), addresses case-insensitive, per NORMALIZATION.md. A submission must contain exactly these 6 addresses. Evidence_mode=any: the two listed ids are representative messages from the two highest-volume senders (cara.semperger, lester.rawson); any in-scope pack message id is an acceptable anchor."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'symes-k__scheduling' only (origin: symes-k/scheduling). Sender set = distinct top-level From addresses across every packaged email in the pack, lowercased and de-duplicated. Result is the 6-address set in accepted_answer.value. Compared as a SET (order-independent), addresses case-insensitive, per NORMALIZATION.md. A submission must contain exactly these 6 addresses. Evidence_mode=predicate: evidence_message_ids are curated sender examples; any Message-ID in the pack whose top-level From address is one of the accepted sender-set addresses satisfies evidence.",
+      "evidence_predicate": {
+        "type": "address_in_headers",
+        "pack": "symes-k__scheduling",
+        "roles": [
+          "from"
+        ],
+        "addresses": [
+          "bill.iii@enron.com",
+          "cara.semperger@enron.com",
+          "kourtney.nelson@enron.com",
+          "kroum.kroumov@enron.com",
+          "lester.rawson@enron.com",
+          "phillip.platter@enron.com"
+        ],
+        "case_insensitive": true
+      }
     }
   },
   {
@@ -433,8 +495,17 @@
       "evidence_message_ids": [
         "<28841806.1075841866914.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'symes-k__power_marketer' only (origin: symes-k/power_marketer). The recurring publication is the 'PowerMarketers.com Daily Power Report', whose title heads 99 of the 136 packaged emails (verified by counting Subjects beginning 'PowerMarketers.com Daily Power Report' in evidence.jsonl) \u2014 by far the most common recurring item. Grade correct if the answer names the PowerMarketers.com Daily Power Report (canonical value or a listed alias; case-insensitive, punctuation-insensitive). This is a summary/naming answer, so equivalence is judged on naming that report specifically. Evidence_mode=any: the listed id is a representative Daily Power Report message; any Daily Power Report message id in the pack is acceptable."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'symes-k__power_marketer' only (origin: symes-k/power_marketer). The recurring publication is the 'PowerMarketers.com Daily Power Report', whose title heads 99 of the 136 packaged emails (verified by counting Subjects beginning 'PowerMarketers.com Daily Power Report' in evidence.jsonl) — by far the most common recurring item. Grade correct if the answer names the PowerMarketers.com Daily Power Report (canonical value or a listed alias; case-insensitive, punctuation-insensitive). This is a summary/naming answer, so equivalence is judged on naming that report specifically. Evidence_mode=predicate: evidence_message_ids are curated representative examples; any Message-ID in the pack whose Subject begins case-insensitively with 'PowerMarketers.com Daily Power Report' satisfies evidence.",
+      "evidence_predicate": {
+        "type": "subject_prefix",
+        "pack": "symes-k__power_marketer",
+        "subject_prefixes": [
+          "PowerMarketers.com Daily Power Report"
+        ],
+        "trim_subject": true,
+        "case_insensitive": true
+      }
     }
   },
   {
@@ -460,8 +531,12 @@
       "evidence_message_ids": [
         "<2377120.1075841710011.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'symes-k__confirms' only (origin: symes-k/confirms). The folder consists of power trade confirmation correspondence (verifying/processing executed power trades). Grade correct if the answer identifies the work as (power) trade confirmations; accept the canonical value or a listed alias, case-insensitive. This is a summary answer whose determinism rests on naming the document type 'trade confirmations'; free-form wording is accepted only if it clearly names trade confirmations. Evidence_mode=any: the listed id is a representative confirmations message; any in-scope pack message id is acceptable as an anchor."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'symes-k__confirms' only (origin: symes-k/confirms). The folder consists of power trade confirmation correspondence (verifying/processing executed power trades). Grade correct if the answer identifies the work as (power) trade confirmations; accept the canonical value or a listed alias, case-insensitive. This is a summary answer whose determinism rests on naming the document type 'trade confirmations'; free-form wording is accepted only if it clearly names trade confirmations. Evidence_mode=predicate: evidence_message_ids are curated representative examples; any Message-ID from the symes-k__confirms pack satisfies evidence as an anchor for the bounded-folder summary.",
+      "evidence_predicate": {
+        "type": "message_in_pack",
+        "pack": "symes-k__confirms"
+      }
     }
   },
   {
@@ -485,8 +560,14 @@
         "<30869027.1075846339788.JavaMail.evans@thyme>",
         "<5156685.1075846339760.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'kean-s__enrononline' only (origin: kean-s/enrononline). Counted rule: packaged emails whose top-level From is leonardo.pacheco@enron.com (case-insensitive). Count over the whole pack = 24 (verified against evidence.jsonl); he is the pack's primary contributor (24 of 33 messages). Answer must equal the integer 24. Evidence_mode=any: each listed id is a message Leonardo Pacheco sent within the pack; any in-scope message he sent is an acceptable anchor."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'kean-s__enrononline' only (origin: kean-s/enrononline). Counted rule: packaged emails whose top-level From is leonardo.pacheco@enron.com (case-insensitive). Count over the whole pack = 24 (verified against evidence.jsonl); he is the pack's primary contributor (24 of 33 messages). Answer must equal the integer 24. Evidence_mode=predicate: evidence_message_ids are curated representative examples; any Message-ID in the pack whose top-level From is leonardo.pacheco@enron.com satisfies evidence.",
+      "evidence_predicate": {
+        "type": "from_address",
+        "pack": "kean-s__enrononline",
+        "from_address": "leonardo.pacheco@enron.com",
+        "case_insensitive": true
+      }
     }
   },
   {
@@ -510,8 +591,14 @@
         "<22175853.1075843183671.JavaMail.evans@thyme>",
         "<14534080.1075843183503.JavaMail.evans@thyme>"
       ],
-      "evidence_mode": "any",
-      "grading_notes": "Scope = curated pack 'dasovich-j__pg_e_hydro_sale' only (origin: dasovich-j/pg_e_hydro_sale). Counted rule: packaged emails whose top-level From is mona.petrochko@enron.com (case-insensitive). Count over the whole pack = 8 (verified against evidence.jsonl); she is the top sender in this 236-participant topic. Answer must equal the integer 8. Evidence_mode=any: each listed id is a message Mona Petrochko sent within the pack; any in-scope message she sent is an acceptable anchor."
+      "evidence_mode": "predicate",
+      "grading_notes": "Scope = curated pack 'dasovich-j__pg_e_hydro_sale' only (origin: dasovich-j/pg_e_hydro_sale). Counted rule: packaged emails whose top-level From is mona.petrochko@enron.com (case-insensitive). Count over the whole pack = 8 (verified against evidence.jsonl); she is the top sender in this 236-participant topic. Answer must equal the integer 8. Evidence_mode=predicate: evidence_message_ids are curated representative examples; any Message-ID in the pack whose top-level From is mona.petrochko@enron.com satisfies evidence.",
+      "evidence_predicate": {
+        "type": "from_address",
+        "pack": "dasovich-j__pg_e_hydro_sale",
+        "from_address": "mona.petrochko@enron.com",
+        "case_insensitive": true
+      }
     }
   },
   {
