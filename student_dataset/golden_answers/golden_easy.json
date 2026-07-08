@@ -30,8 +30,8 @@
     "id": "easy-004",
     "difficulty": "easy",
     "points": 1,
-    "accepted_answer": {"value": "Paul Kane Resigns", "aliases": []},
-    "evidence_message_ids": ["<10033007.1075840046962.JavaMail.evans@thyme>"],
+    "accepted_answer": {"value": "Confirmation of Interview on Friday with Tim Belden", "aliases": []},
+    "evidence_message_ids": ["<14464692.1075840045536.JavaMail.evans@thyme>"],
     "evidence_mode": "all",
     "grading_notes": "Exact Subject header text of the named email. Compare after trimming leading/trailing whitespace; case-insensitive match accepted. Message-ID evidence required."
   },
