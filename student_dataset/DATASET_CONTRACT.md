@@ -23,10 +23,8 @@ student_dataset/
     packs/
       <pack_name>/<n>.
       <pack_name>/<mailbox>__<folder>__<n>.
-  challenges/
-    challenges.json
-  golden_answers/
-    golden_answers.json
+  golden_set/
+    golden_set.json
   validation/
     validate_dataset.py
     validation_report.md
@@ -38,19 +36,18 @@ student_dataset/
 | --- | --- |
 | `mail/full_mailboxes/<mailbox>/<folder>/<n>.` | Full beginner-friendly mailboxes, native Enron folder structure preserved. |
 | `mail/packs/<pack_name>/...` | Medium bounded folders and Hard curated multi-message packs. |
-| `challenges/challenges.json` | Public Challenge Questions as one JSON array, sorted by difficulty order Easy, Medium, Hard, then `id`. |
-| `golden_answers/golden_answers.json` | Student-visible Golden Answers as one JSON array, sorted the same way as challenges. |
+| `golden_set/golden_set.json` | Public Golden Set as one JSON array, sorted by difficulty order Easy, Medium, Hard, then `id`. Each record contains the challenge question fields plus its nested student-visible Golden Answer. |
 | `manifest/sources_<difficulty>.json` | Per-difficulty source selection fragments. These document source provenance and email counts; they do not imply separate student mail corpora. |
 | `manifest/manifest.json` | Top-level manifest: version, unified files, mail layout, counts, and provenance. |
 | `validation/validation_report.md` | Consistency report produced during verification. |
 
-The physical student corpus is unified. Difficulty remains explicit metadata on Challenge Questions, Golden Answers, source fragments, and manifest counts. The package intentionally does not ship a prebuilt Message-ID index; students may build one from the raw mail files.
+The physical student corpus is unified. Difficulty remains explicit metadata on Golden Set records, source fragments, and manifest counts. The package intentionally does not ship a prebuilt Message-ID index; students may build one from the raw mail files.
 
 ---
 
-## 2. Challenge Question Record
+## 2. Golden Set Record
 
-Element of the JSON array in `challenges/challenges.json`.
+Element of the JSON array in `golden_set/golden_set.json`.
 
 ### Fields
 
@@ -63,6 +60,7 @@ Element of the JSON array in `challenges/challenges.json`.
 | `prompt` | string | Beginner-friendly task text. Must state scope explicitly whenever search is required. |
 | `scope` | object | Where the answer may be found. See below. |
 | `expected_submission` | object | What a valid student submission must contain. See below. |
+| `golden_answer` | object | The official student-visible answer and accepted evidence for this challenge. See [Golden Answer Object](#4-golden-answer-object). |
 
 `scope` object:
 
@@ -91,7 +89,13 @@ Element of the JSON array in `challenges/challenges.json`.
   "points": 2,
   "prompt": "Open the email with Message-ID <example123@enron.com> in the slinger-r inbox. Who is listed as the sender (From)?",
   "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
-  "expected_submission": {"answer_format": "single email address", "requires_evidence_message_ids": true}
+  "expected_submission": {"answer_format": "single email address", "requires_evidence_message_ids": true},
+  "golden_answer": {
+    "accepted_answer": {"value": "sender@example.com", "aliases": []},
+    "evidence_message_ids": ["<example123@enron.com>"],
+    "evidence_mode": "all",
+    "grading_notes": "Top-level From header of the named email."
+  }
 }
 ```
 
@@ -137,17 +141,14 @@ Cross-cutting families from the course glossary (`negative_evidence`, `forwarded
 
 ---
 
-## 4. Golden Answer Record
+## 4. Golden Answer Object
 
-Element of the JSON array in `golden_answers/golden_answers.json`. **Student-visible**: students receive these to run their own evaluation framework.
+Nested object at `golden_answer` inside each `golden_set/golden_set.json` record. **Student-visible**: students receive these to run their own evaluation framework.
 
 ### Fields
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `id` | string | Must equal the `id` of the matching Challenge Question. |
-| `difficulty` | string | Same as the matching Challenge Question. |
-| `points` | integer | Must equal the matching Challenge Question's `points`. |
 | `accepted_answer` | object | `{ "value": <canonical answer>, "aliases": [<accepted equivalents>] }`. |
 | `evidence_message_ids` | array of string | Accepted Evidence Message-IDs in canonical angle-bracket form `"<...@...>"`. Every id must appear in an in-scope packaged raw email file. |
 | `evidence_mode` | string | `"all"` = every listed id required; `"any"` = any one listed id suffices. |
@@ -155,7 +156,7 @@ Element of the JSON array in `golden_answers/golden_answers.json`. **Student-vis
 
 ### Rules
 
-- `id`, `difficulty`, and `points` must match the Challenge Question with the same `id`.
+- `id`, `difficulty`, and `points` live on the parent Golden Set record.
 - Every id in `evidence_message_ids` must appear as the `Message-ID:` header of at least one packaged raw email file.
 - For scoped pack challenges, the accepted evidence must resolve inside the scoped pack(s).
 - `accepted_answer.value` is the single canonical answer; aliases only add accepted equivalents.
@@ -164,10 +165,10 @@ Element of the JSON array in `golden_answers/golden_answers.json`. **Student-vis
 
 ## 5. Evidence Representation
 
-Evidence Message-IDs are represented in Golden Answers and in the raw email files themselves:
+Evidence Message-IDs are represented in nested Golden Answers and in the raw email files themselves:
 
 1. **Packaged mail** - each raw email file has a `Message-ID:` header.
-2. **Golden Answers** - each Golden Answer lists the subset of Message-IDs accepted as evidence for that challenge.
+2. **Golden Set records** - each nested `golden_answer` lists the subset of Message-IDs accepted as evidence for that challenge.
 
 Message-ID alone is the grading evidence key, but Message-IDs are not guaranteed to be unique across every packaged file. Some Hard packs intentionally include the same source message in more than one pack. Graders and student-built indexes should therefore preserve the packaged path and pack context when they index mail.
 
@@ -189,7 +190,7 @@ Points are **Fixed Challenge Points**: a single integer per challenge, graded al
 | Medium | 4-7 |
 | Hard | 8-10 |
 
-A challenge's `points` must fall inside its band. The Golden Answer's `points` must equal its Challenge Question's `points`.
+A Golden Set record's `points` must fall inside its difficulty band.
 
 ---
 
@@ -206,7 +207,7 @@ A correct-looking answer without accepted Message-ID evidence scores zero. Gradi
 
 ## 8. Manifest Shape
 
-`manifest/manifest.json` records dataset version, the unified student-facing files, the mail layout, per-difficulty counts, and provenance.
+`manifest/manifest.json` records dataset version, the unified student-facing file, the mail layout, per-difficulty counts, and provenance.
 
 ### Top-Level Manifest Fields
 
@@ -218,7 +219,7 @@ A correct-looking answer without accepted Message-ID evidence scores zero. Gradi
 | `target_email_ceiling` | integer | Approximate max packaged emails. |
 | `source_corpus` | string | Raw corpus id, `"enron_mail_20150507"`. |
 | `mail_layout` | object | `{ "full_mailboxes": "mail/full_mailboxes", "packs": "mail/packs" }`. |
-| `files` | object | Paths to the unified challenge and golden-answer files. |
+| `files` | object | Path to the unified Golden Set file. |
 | `difficulties` | object | Per-difficulty `{ sources_file, email_count }` counts for provenance and point-band reporting. |
 | `totals` | object | `{ emails, challenges, easy_challenges, medium_challenges, hard_challenges }`. |
 | `provenance_note` | string | Statement that each email traces to raw maildir through the source fragments and packaged paths. |
@@ -245,9 +246,9 @@ Source records keep their existing `difficulty`, `type`, `source_path`, `source_
 
 The contract does not require students to use any specific implementation package, framework, or programming language. All deliverables are plain, tool-agnostic formats:
 
-- Challenge Questions and Golden Answers: JSON arrays.
+- Golden Set: JSON array.
 - Manifests and source fragments: JSON.
 - Documentation: Markdown.
 - Packaged emails: raw Enron maildir files copied verbatim.
 
-Any language or tooling that can read JSON, Markdown, and plain text files can consume this dataset. Challenge files and Golden Answer files are intentionally separate so a student evaluation framework can load prompts and answers as independent inputs.
+Any language or tooling that can read JSON, Markdown, and plain text files can consume this dataset. The Golden Set intentionally keeps each prompt and official answer together so a student evaluation framework can iterate one record per graded challenge.

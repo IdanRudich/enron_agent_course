@@ -12,8 +12,7 @@ You do **not** need Python or any specific tooling. Everything is plain files: J
 | --- | --- | --- |
 | **Full mailboxes** | `mail/full_mailboxes/` | Five small full Enron mailboxes, copied with native folder structure. These support Easy lookup and extraction challenges. |
 | **Packs** | `mail/packs/` | Medium bounded folders plus Hard curated multi-message packs. Pack names match `scope.packs` values. |
-| **Challenge Questions** | `challenges/challenges.json` | 28 graded tasks (10 Easy, 10 Medium, 8 Hard). Each record keeps `difficulty`, point value, challenge family, and explicit search scope. |
-| **Golden Answers** | `golden_answers/golden_answers.json` | Official answers for every challenge: accepted values, required Evidence Message-IDs, evidence mode, and grading notes. |
+| **Golden Set** | `golden_set/golden_set.json` | 28 graded tasks (10 Easy, 10 Medium, 8 Hard). Each record keeps the challenge prompt, metadata, explicit search scope, and nested official answer. |
 | **Manifest** | `manifest/manifest.json` | Dataset version, unified file locations, mail layout, counts, and provenance. Source details remain in `manifest/sources_<difficulty>.json`. |
 | **Validation report** | `validation/validation_report.md` | Consistency checks run before release. |
 
@@ -25,7 +24,7 @@ The physical mail corpus is no longer split into Easy/Medium/Hard directories. D
 
 ## Golden Answers Are Student-Visible
 
-You receive the Golden Answers **on purpose**. This is not a hidden test set.
+You receive the Golden Answers inside `golden_set/golden_set.json` **on purpose**. This is not a hidden test set.
 
 During the course you submit agent versions every couple of hours. The Golden Answers let you:
 
@@ -33,7 +32,7 @@ During the course you submit agent versions every couple of hours. The Golden An
 - See exactly which Message-IDs count as accepted evidence.
 - Read `grading_notes` to understand normalization, aliases, and tie-breaks.
 
-Treat Golden Answers as the reference implementation for your evaluation framework, not as something to memorize and replay without doing the email work.
+Treat each record's `golden_answer` object as the reference implementation for your evaluation framework, not as something to memorize and replay without doing the email work.
 
 The package does **not** include a prebuilt Message-ID index. Building one from the raw mail files is part of the challenge if your agent needs fast lookup.
 
@@ -122,18 +121,20 @@ Your course tooling may wrap this differently, but graders expect both the answe
 }
 ```
 
-### Golden Answer fields (from `golden_answers/golden_answers.json`)
+### Golden Answer fields (from `golden_set/golden_set.json`)
 
 ```json
 {
   "id": "easy-001",
   "points": 2,
-  "accepted_answer": {
-    "value": "1-800-368-3804",
-    "aliases": ["18003683804", "800-368-3804", "(800) 368-3804"]
-  },
-  "evidence_message_ids": ["<22322411.1075840045955.JavaMail.evans@thyme>"],
-  "evidence_mode": "all"
+  "golden_answer": {
+    "accepted_answer": {
+      "value": "1-800-368-3804",
+      "aliases": ["18003683804", "800-368-3804", "(800) 368-3804"]
+    },
+    "evidence_message_ids": ["<22322411.1075840045955.JavaMail.evans@thyme>"],
+    "evidence_mode": "all"
+  }
 }
 ```
 
@@ -151,10 +152,8 @@ student_dataset/
   mail/
     full_mailboxes/          # full small mailboxes
     packs/                   # medium bounded folders and hard curated packs
-  challenges/
-    challenges.json          # unified challenge array, sorted easy/medium/hard then id
-  golden_answers/
-    golden_answers.json      # unified golden-answer array, sorted the same way
+  golden_set/
+    golden_set.json          # challenge prompts and nested official answers, sorted easy/medium/hard then id
   manifest/
     manifest.json
     sources_easy.json
@@ -171,10 +170,10 @@ For complete record shapes, see **`DATASET_CONTRACT.md`**. For answer-matching r
 
 ## Quick Start
 
-1. Read challenges from `challenges/challenges.json`.
+1. Read challenge records from `golden_set/golden_set.json`.
 2. Use each challenge's `difficulty`, `points`, and `scope` to choose the in-bounds mail: full mailboxes live under `mail/full_mailboxes/`, and named packs live under `mail/packs/`.
 3. Search the raw mail directly, or build your own Message-ID / metadata index from the packaged files.
 4. Build your agent to return a **Student Agent Submission** - answer plus evidence Message-IDs.
-5. Compare against `golden_answers/golden_answers.json` to score yourself before each course submission round.
+5. Compare against each record's `golden_answer` object to score yourself before each course submission round.
 
 Good luck - start with Easy challenges to get lookup and citation working, then move to Medium bounded search and Hard multi-email synthesis.

@@ -13,13 +13,10 @@
     "mail_packs_files": 1563,
     "mail_files_total": 2892,
     "challenges_total": 28,
-    "golden_total": 28,
+    "golden_set_total": 28,
     "challenges_easy": 10,
-    "golden_easy": 10,
     "challenges_medium": 10,
-    "golden_medium": 10,
     "challenges_hard": 8,
-    "golden_hard": 8,
     "parsed_mail_total": 2892,
     "parsed_mail_easy": 1329,
     "parsed_mail_medium": 1500,
@@ -66,8 +63,7 @@
       "packs": "mail/packs"
     },
     "files": {
-      "challenges": "challenges/challenges.json",
-      "golden_answers": "golden_answers/golden_answers.json"
+      "golden_set": "golden_set/golden_set.json"
     }
   }
 }

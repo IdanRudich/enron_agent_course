@@ -9,7 +9,7 @@ A graded task given to a student agent. Each challenge question has a correct an
 The answer returned by a student's agent for a challenge question. A valid submission includes the final answer and the Message-ID evidence used to support it.
 
 ### Golden Answer
-The official student-visible answer for a challenge question. It includes the accepted answer value, accepted evidence Message-IDs, and the points awarded for a correct submission.
+The official student-visible answer for a challenge question. It includes the accepted answer value and accepted evidence Message-IDs; points live on the parent challenge record.
 
 ### Evidence Message-ID
 An email Message-ID that supports a golden answer or student submission.

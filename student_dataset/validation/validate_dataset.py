@@ -59,10 +59,12 @@ MSG_ID_RE = re.compile(r"^<[^>]+>$")
 SOURCE_CORPUS_PREFIX = "enron_mail_20150507/maildir/"
 DATASET_MAIL_PREFIX = "student_dataset/mail/"
 EXPECTED_FILES = {
-    "challenges": ROOT / "challenges" / "challenges.json",
-    "golden_answers": ROOT / "golden_answers" / "golden_answers.json",
+    "golden_set": ROOT / "golden_set" / "golden_set.json",
 }
 OBSOLETE_FILES = [
+    ROOT / "challenges" / "challenges.json",
+    ROOT / "golden_answers" / "golden_answers.json",
+] + [
     ROOT / "challenges" / f"challenges_{difficulty}.json"
     for difficulty in DIFFICULTIES
 ] + [
@@ -162,7 +164,7 @@ def validate_layout(report: Report) -> None:
             report.fail(f"missing unified {label} file: {path.relative_to(ROOT)}")
     for path in OBSOLETE_FILES:
         if path.exists():
-            report.fail(f"obsolete evidence/per-difficulty file remains: {path.relative_to(ROOT)}")
+            report.fail(f"obsolete split/evidence file remains: {path.relative_to(ROOT)}")
     evidence_dir = ROOT / "evidence"
     if evidence_dir.exists():
         report.fail("student package must not include an evidence/ directory")
@@ -332,15 +334,11 @@ def rows_matching_challenge_scope(mid: str, challenge: dict, rows_by_mid: dict[s
     return rows
 
 
-def validate_golden(ga: dict, ch: dict | None, rows_by_mid: dict[str, list[dict]], report: Report) -> None:
-    gid = ga.get("id", "<missing>")
-    if ch is None:
-        report.fail(f"{gid}: golden answer has no matching challenge")
+def validate_golden(ga: object, ch: dict, rows_by_mid: dict[str, list[dict]], report: Report) -> None:
+    gid = ch.get("id", "<missing>")
+    if not isinstance(ga, dict):
+        report.fail(f"{gid}: missing or invalid golden_answer object")
         return
-    if ga.get("difficulty") != ch.get("difficulty"):
-        report.fail(f"{gid}: golden difficulty {ga.get('difficulty')!r} != challenge difficulty {ch.get('difficulty')!r}")
-    if ga.get("points") != ch.get("points"):
-        report.fail(f"{gid}: points {ga.get('points')} != challenge points {ch.get('points')}")
     aa = ga.get("accepted_answer")
     if not isinstance(aa, dict) or "value" not in aa:
         report.fail(f"{gid}: accepted_answer missing value")
@@ -404,8 +402,7 @@ def validate_sources_fragment(sources: dict, difficulty: str, report: Report) ->
 
 def validate_manifest(manifest: dict, report: Report) -> None:
     expected_files = {
-        "challenges": "challenges/challenges.json",
-        "golden_answers": "golden_answers/golden_answers.json",
+        "golden_set": "golden_set/golden_set.json",
     }
     if manifest.get("files") != expected_files:
         report.fail(f"manifest files field mismatch: {manifest.get('files')!r}")
@@ -415,7 +412,7 @@ def validate_manifest(manifest: dict, report: Report) -> None:
     if manifest.get("totals", {}).get("emails") != report.counts.get("mail_files_total"):
         report.fail("manifest totals.emails does not match packaged mail files")
     if manifest.get("totals", {}).get("challenges") != report.counts.get("challenges_total"):
-        report.fail("manifest totals.challenges does not match unified challenges")
+        report.fail("manifest totals.challenges does not match golden set records")
     for difficulty in DIFFICULTIES:
         md = manifest.get("difficulties", {}).get(difficulty) or {}
         if md.get("sources_file") != f"manifest/sources_{difficulty}.json":
@@ -433,51 +430,32 @@ def main() -> int:
     validate_layout(report)
     pack_difficulty = build_pack_difficulty_map(report)
 
-    challenges = load_json(EXPECTED_FILES["challenges"])
-    golden = load_json(EXPECTED_FILES["golden_answers"])
+    golden_set = load_json(EXPECTED_FILES["golden_set"])
     manifest = load_json(ROOT / "manifest" / "manifest.json")
 
-    if not isinstance(challenges, list):
-        report.fail("challenges/challenges.json must be a JSON array")
-        challenges = []
-    if not isinstance(golden, list):
-        report.fail("golden_answers/golden_answers.json must be a JSON array")
-        golden = []
+    if not isinstance(golden_set, list):
+        report.fail("golden_set/golden_set.json must be a JSON array")
+        golden_set = []
 
-    ch_by_id = index_by_id(challenges, "challenges", report)
-    ga_by_id = index_by_id(golden, "golden_answers", report)
-    ch_ids = set(ch_by_id)
-    ga_ids = set(ga_by_id)
-    if ch_ids != ga_ids:
-        if ch_ids - ga_ids:
-            report.fail(f"challenges without golden: {sorted(ch_ids - ga_ids)}")
-        if ga_ids - ch_ids:
-            report.fail(f"golden without challenges: {sorted(ga_ids - ch_ids)}")
+    ch_by_id = index_by_id(golden_set, "golden_set", report)
 
-    if [r.get("id") for r in challenges] != expected_sort(challenges):
-        report.fail("challenges/challenges.json is not sorted by easy, medium, hard, then id")
-    if [r.get("id") for r in golden] != expected_sort(golden):
-        report.fail("golden_answers/golden_answers.json is not sorted by easy, medium, hard, then id")
+    if [r.get("id") for r in golden_set] != expected_sort(golden_set):
+        report.fail("golden_set/golden_set.json is not sorted by easy, medium, hard, then id")
 
-    challenge_counts = Counter(ch.get("difficulty") for ch in challenges)
-    golden_counts = Counter(ga.get("difficulty") for ga in golden)
-    report.counts["challenges_total"] = len(challenges)
-    report.counts["golden_total"] = len(golden)
+    challenge_counts = Counter(ch.get("difficulty") for ch in golden_set)
+    report.counts["challenges_total"] = len(golden_set)
+    report.counts["golden_set_total"] = len(golden_set)
     for difficulty in DIFFICULTIES:
         report.counts[f"challenges_{difficulty}"] = challenge_counts[difficulty]
-        report.counts[f"golden_{difficulty}"] = golden_counts[difficulty]
         expected = EXPECTED_CHALLENGE_COUNTS[difficulty]
         if challenge_counts[difficulty] != expected:
             report.fail(f"{difficulty}: challenge count {challenge_counts[difficulty]} != expected {expected}")
-        if golden_counts[difficulty] != challenge_counts[difficulty]:
-            report.fail(f"{difficulty}: golden count {golden_counts[difficulty]} != challenge count {challenge_counts[difficulty]}")
 
     rows_by_mid = derive_mail_rows(pack_difficulty, report)
 
-    for ch in challenges:
+    for ch in golden_set:
         validate_challenge(ch, report)
-    for ga in golden:
-        validate_golden(ga, ch_by_id.get(ga.get("id")), rows_by_mid, report)
+        validate_golden(ch.get("golden_answer"), ch, rows_by_mid, report)
 
     source_unit_total = 0
     for difficulty in DIFFICULTIES:

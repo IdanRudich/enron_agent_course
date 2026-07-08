@@ -31,7 +31,6 @@
     "packs": "mail/packs"
   },
   "files": {
-    "challenges": "challenges/challenges.json",
-    "golden_answers": "golden_answers/golden_answers.json"
+    "golden_set": "golden_set/golden_set.json"
   }
 }
