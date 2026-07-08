@@ -26,35 +26,33 @@ student_dataset/
     packs/                   # 1,563 files from Medium + Hard packs
   challenges/challenges.json
   golden_answers/golden_answers.json
-  evidence/evidence.jsonl
   manifest/manifest.json
   manifest/sources_easy.json
   manifest/sources_medium.json
   manifest/sources_hard.json
 ```
 
-The old physical split (`mail/easy`, `mail/medium`, `mail/hard`) and old per-difficulty public index files were removed. Difficulty is retained as metadata on Challenge Questions, Golden Answers, evidence rows, source fragments, and manifest counts.
+The old physical split (`mail/easy`, `mail/medium`, `mail/hard`) and old per-difficulty public index files were removed. No prebuilt evidence index is shipped; students may build their own from raw mail. Difficulty is retained as metadata on Challenge Questions, Golden Answers, source fragments, and manifest counts.
 
 ---
 
 ## Checks Performed
 
-- [x] **Unified file presence** - `challenges/challenges.json`, `golden_answers/golden_answers.json`, and `evidence/evidence.jsonl` exist.
-- [x] **Obsolete file removal** - no `challenges_<difficulty>.json`, `golden_<difficulty>.json`, or `evidence_<difficulty>.jsonl` files remain.
+- [x] **Unified file presence** - `challenges/challenges.json` and `golden_answers/golden_answers.json` exist.
+- [x] **No shipped evidence index** - no prebuilt evidence index remains in the student package.
+- [x] **Obsolete file removal** - no per-difficulty challenge, golden-answer, or evidence files remain.
 - [x] **Mail layout** - `mail/full_mailboxes` and `mail/packs` exist; `mail/easy`, `mail/medium`, and `mail/hard` do not.
 - [x] **Challenge to Golden Answer id alignment** - 28/28 pairs matched by id.
 - [x] **Points equality** - every golden answer `points` equals its challenge `points`.
 - [x] **Point bands** - easy 1-3, medium 4-7, hard 8-10.
 - [x] **Challenge sort order** - unified challenge array sorted by Easy, Medium, Hard, then id.
 - [x] **Golden sort order** - unified golden-answer array sorted the same way.
-- [x] **Evidence Message-ID resolution** - all `evidence_message_ids` in golden answers resolve in `evidence/evidence.jsonl` for the matching difficulty and scoped pack when applicable.
-- [x] **Evidence row difficulty** - all 2,892 evidence rows include `difficulty` with one of `easy`, `medium`, or `hard`.
-- [x] **Packaged path existence** - every evidence `packaged_path` points to an existing packaged email file.
-- [x] **Source lineage** - all evidence rows and source fragments trace back under `enron_mail_20150507/maildir/`.
-- [x] **Source count reconciliation** - source fragment `email_count` sums match evidence rows by difficulty.
-- [x] **Mail count reconciliation** - mail files on disk = evidence JSONL rows = 2,892.
+- [x] **Evidence Message-ID resolution** - all `evidence_message_ids` in golden answers resolve by parsing `Message-ID:` headers from in-scope packaged raw mail files.
+- [x] **Source lineage** - all source fragments trace back under `enron_mail_20150507/maildir/`.
+- [x] **Source count reconciliation** - source fragment `email_count` sums match packaged mail files by difficulty.
+- [x] **Mail count reconciliation** - mail files on disk = 2,892.
 - [x] **Manifest consistency** - `manifest.json` points to the unified files and reports matching totals.
-- [x] **Duplicate Message-ID handling** - 17 Message-IDs intentionally appear in multiple packaged paths/packs; each evidence row remains distinct by `(message_id, packaged_path, pack)`.
+- [x] **Duplicate Message-ID handling** - duplicate Message-IDs intentionally appear in multiple packaged paths/packs; validation preserves path and pack context while parsing raw mail.
 
 Validator: `student_dataset/validation/validate_dataset.py` (stdlib only).
 
@@ -72,9 +70,9 @@ Key output:
 
 ```text
 mail layout: 1329 full-mailbox files, 1563 pack files
-unified evidence: 2892 rows, 17 Message-IDs appear in multiple packaged paths/packs
-medium-001 pack 'symes-k__power_marketer': 136 evidence rows
-hard duplicate Message-IDs remain distinct by packaged_path/pack: 17 ids
+parsed mail: 2892 files with Message-ID headers
+medium-001 pack 'symes-k__power_marketer': 136 packaged files
+duplicate Message-IDs remain distinct by packaged_path/pack context
 ```
 
 ---
@@ -82,6 +80,7 @@ hard duplicate Message-IDs remain distinct by packaged_path/pack: 17 ids
 ## Notes and Choices
 
 - The old per-difficulty challenge, golden-answer, and evidence files were removed because the docs and validator now enforce the unified contract.
+- The unified generated evidence index was removed from the student package. Students can build an index themselves as part of the challenge.
 - `manifest/sources_easy.json`, `manifest/sources_medium.json`, and `manifest/sources_hard.json` were kept as provenance fragments and updated to the new `packaged_path` layout.
 - The `easy-004` fix was preserved: its golden answer uses Message-ID `<14464692.1075840045536.JavaMail.evans@thyme>` and subject `Confirmation of Interview on Friday with Tim Belden`.
 - The validator no longer rewrites `manifest.json`; it validates manifest counts and writes only `validation/_validation_result.json` as its machine-readable sidecar.

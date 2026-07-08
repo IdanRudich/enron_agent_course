@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Golden Dataset consistency validator for the unified student corpus."""
+"""Golden Dataset consistency validator for the unified student corpus.
+
+The student package intentionally does not ship a prebuilt evidence index. This
+validator derives Message-ID evidence from the packaged raw mail files.
+"""
 
 from __future__ import annotations
 
@@ -8,6 +12,8 @@ import re
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
+from email import policy
+from email.parser import Parser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -55,7 +61,6 @@ DATASET_MAIL_PREFIX = "student_dataset/mail/"
 EXPECTED_FILES = {
     "challenges": ROOT / "challenges" / "challenges.json",
     "golden_answers": ROOT / "golden_answers" / "golden_answers.json",
-    "evidence": ROOT / "evidence" / "evidence.jsonl",
 }
 OBSOLETE_FILES = [
     ROOT / "challenges" / f"challenges_{difficulty}.json"
@@ -63,6 +68,8 @@ OBSOLETE_FILES = [
 ] + [
     ROOT / "golden_answers" / f"golden_{difficulty}.json"
     for difficulty in DIFFICULTIES
+] + [
+    ROOT / "evidence" / "evidence.jsonl",
 ] + [
     ROOT / "evidence" / f"evidence_{difficulty}.jsonl"
     for difficulty in DIFFICULTIES
@@ -91,28 +98,22 @@ def load_json(path: Path) -> object:
         return json.load(f)
 
 
-def load_jsonl(path: Path) -> list[dict]:
-    rows = []
-    with path.open(encoding="utf-8") as f:
-        for i, line in enumerate(f, 1):
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                rows.append(json.loads(line))
-            except json.JSONDecodeError as e:
-                raise ValueError(f"{path}:{i}: invalid JSON: {e}") from e
-    return rows
-
-
 def count_mail_files(mail_dir: Path) -> int:
     if not mail_dir.is_dir():
         return 0
     return sum(1 for p in mail_dir.rglob("*") if p.is_file() and not p.name.startswith("."))
 
 
-def dataset_path_exists(packaged_path: str) -> bool:
-    return (REPO_ROOT / packaged_path).is_file()
+def iter_mail_files(mail_dir: Path):
+    if not mail_dir.is_dir():
+        return
+    for p in sorted(mail_dir.rglob("*")):
+        if p.is_file() and not p.name.startswith("."):
+            yield p
+
+
+def dataset_relative(path: Path) -> str:
+    return path.relative_to(REPO_ROOT).as_posix()
 
 
 def sum_source_email_counts(sources: dict) -> int:
@@ -139,13 +140,32 @@ def expected_sort(records: list[dict]) -> list[str]:
     ]
 
 
+def build_pack_difficulty_map(report: Report) -> dict[str, str]:
+    pack_difficulty: dict[str, str] = {}
+    for difficulty in ("medium", "hard"):
+        sources = load_json(ROOT / "manifest" / f"sources_{difficulty}.json")
+        for source in sources.get("sources", []):
+            pack_name = source.get("pack_name") or Path(source.get("packaged_path", "")).name
+            if not pack_name:
+                report.fail(f"sources_{difficulty}: source missing pack name: {source!r}")
+                continue
+            previous = pack_difficulty.get(pack_name)
+            if previous and previous != difficulty:
+                report.fail(f"pack {pack_name!r}: appears as both {previous} and {difficulty}")
+            pack_difficulty[pack_name] = difficulty
+    return pack_difficulty
+
+
 def validate_layout(report: Report) -> None:
     for label, path in EXPECTED_FILES.items():
         if not path.is_file():
             report.fail(f"missing unified {label} file: {path.relative_to(ROOT)}")
     for path in OBSOLETE_FILES:
         if path.exists():
-            report.fail(f"obsolete per-difficulty file remains: {path.relative_to(ROOT)}")
+            report.fail(f"obsolete evidence/per-difficulty file remains: {path.relative_to(ROOT)}")
+    evidence_dir = ROOT / "evidence"
+    if evidence_dir.exists():
+        report.fail("student package must not include an evidence/ directory")
 
     full_mailboxes = ROOT / "mail" / "full_mailboxes"
     packs = ROOT / "mail" / "packs"
@@ -165,6 +185,92 @@ def validate_layout(report: Report) -> None:
         f"{report.counts['mail_full_mailboxes_files']} full-mailbox files, "
         f"{report.counts['mail_packs_files']} pack files"
     )
+
+
+def parse_message_id(path: Path, report: Report) -> str | None:
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+        msg = Parser(policy=policy.default).parsestr(text, headersonly=True)
+    except Exception as exc:  # pragma: no cover - defensive for release scripts
+        report.fail(f"{dataset_relative(path)}: failed to parse email headers: {exc}")
+        return None
+    message_id = msg.get("Message-ID")
+    if message_id is None:
+        report.fail(f"{dataset_relative(path)}: missing Message-ID header")
+        return None
+    message_id = " ".join(str(message_id).strip().split())
+    if not MSG_ID_RE.match(message_id):
+        report.fail(f"{dataset_relative(path)}: malformed Message-ID {message_id!r}")
+        return None
+    return message_id
+
+
+def derive_mail_rows(pack_difficulty: dict[str, str], report: Report) -> dict[str, list[dict]]:
+    rows_by_mid: dict[str, list[dict]] = defaultdict(list)
+    difficulty_counts: Counter[str] = Counter()
+    identity_counts: Counter[tuple[str, str, str | None]] = Counter()
+
+    full_root = ROOT / "mail" / "full_mailboxes"
+    for path in iter_mail_files(full_root):
+        rel = path.relative_to(full_root)
+        parts = rel.parts
+        if len(parts) < 3:
+            report.fail(f"{dataset_relative(path)}: full-mailbox file must be under <mailbox>/<folder>/<n>.")
+            continue
+        mid = parse_message_id(path, report)
+        if not mid:
+            continue
+        row = {
+            "message_id": mid,
+            "difficulty": "easy",
+            "pack": None,
+            "packaged_path": dataset_relative(path),
+            "mailbox": parts[0],
+            "folder": "/".join(parts[1:-1]),
+        }
+        rows_by_mid[mid].append(row)
+        difficulty_counts["easy"] += 1
+        identity_counts[(mid, row["packaged_path"], None)] += 1
+
+    packs_root = ROOT / "mail" / "packs"
+    for path in iter_mail_files(packs_root):
+        rel = path.relative_to(packs_root)
+        parts = rel.parts
+        if len(parts) < 2:
+            report.fail(f"{dataset_relative(path)}: pack file must be under <pack_name>/<n>.")
+            continue
+        pack = parts[0]
+        difficulty = pack_difficulty.get(pack)
+        if difficulty not in ("medium", "hard"):
+            report.fail(f"{dataset_relative(path)}: pack {pack!r} not found in medium/hard source fragments")
+            continue
+        mid = parse_message_id(path, report)
+        if not mid:
+            continue
+        row = {
+            "message_id": mid,
+            "difficulty": difficulty,
+            "pack": pack,
+            "packaged_path": dataset_relative(path),
+            "mailbox": None,
+            "folder": None,
+        }
+        rows_by_mid[mid].append(row)
+        difficulty_counts[difficulty] += 1
+        identity_counts[(mid, row["packaged_path"], pack)] += 1
+
+    for identity, count in identity_counts.items():
+        if count > 1:
+            report.fail(f"duplicate packaged mail identity {identity}: {count} rows")
+
+    duplicate_mids = sum(1 for rows in rows_by_mid.values() if len(rows) > 1)
+    total = sum(difficulty_counts.values())
+    report.counts["parsed_mail_total"] = total
+    for difficulty in DIFFICULTIES:
+        report.counts[f"parsed_mail_{difficulty}"] = difficulty_counts[difficulty]
+    report.counts["duplicate_message_ids_allowed"] = duplicate_mids
+    report.check(f"parsed mail: {total} files with Message-ID headers, {duplicate_mids} duplicated Message-IDs")
+    return rows_by_mid
 
 
 def validate_scope_explicit(challenge: dict, report: Report) -> None:
@@ -214,9 +320,15 @@ def rows_matching_challenge_scope(mid: str, challenge: dict, rows_by_mid: dict[s
     difficulty = challenge.get("difficulty")
     scope = challenge.get("scope") or {}
     packs = set(scope.get("packs") or [])
+    mailboxes = set(scope.get("mailboxes") or [])
+    folders = set(scope.get("folders") or [])
     rows = [r for r in rows_by_mid.get(mid, []) if r.get("difficulty") == difficulty]
     if packs:
         rows = [r for r in rows if r.get("pack") in packs]
+    if difficulty == "easy" and mailboxes:
+        rows = [r for r in rows if r.get("mailbox") in mailboxes]
+    if difficulty == "easy" and folders:
+        rows = [r for r in rows if r.get("folder") in folders]
     return rows
 
 
@@ -245,58 +357,8 @@ def validate_golden(ga: dict, ch: dict | None, rows_by_mid: dict[str, list[dict]
         matches = rows_matching_challenge_scope(mid, ch, rows_by_mid)
         if not matches:
             packs = ch.get("scope", {}).get("packs") or []
-            scope_hint = f" in packs {packs}" if packs else ""
-            report.fail(f"{gid}: evidence Message-ID not in {ch.get('difficulty')} evidence{scope_hint}: {mid}")
-
-
-def validate_evidence_rows(rows: list[dict], report: Report) -> dict[str, list[dict]]:
-    rows_by_mid: dict[str, list[dict]] = defaultdict(list)
-    identity_counts: Counter[tuple[str, str, str | None]] = Counter()
-    difficulty_counts: Counter[str] = Counter()
-
-    for i, row in enumerate(rows, 1):
-        mid = row.get("message_id")
-        difficulty = row.get("difficulty")
-        if difficulty not in DIFFICULTIES:
-            report.fail(f"evidence line {i}: invalid difficulty {difficulty!r}")
-        else:
-            difficulty_counts[difficulty] += 1
-        if not isinstance(mid, str) or not MSG_ID_RE.match(mid):
-            report.fail(f"evidence line {i}: bad message_id {mid!r}")
-        else:
-            rows_by_mid[mid].append(row)
-        sp = row.get("source_path", "")
-        if not isinstance(sp, str) or not sp.startswith(SOURCE_CORPUS_PREFIX):
-            report.fail(f"evidence line {i} {mid}: source_path missing maildir lineage: {sp!r}")
-        pp = row.get("packaged_path", "")
-        if not isinstance(pp, str) or not pp.startswith(DATASET_MAIL_PREFIX):
-            report.fail(f"evidence line {i} {mid}: bad packaged_path {pp!r}")
-        elif difficulty == "easy" and not pp.startswith("student_dataset/mail/full_mailboxes/"):
-            report.fail(f"evidence line {i} {mid}: easy evidence must live under mail/full_mailboxes: {pp}")
-        elif difficulty in ("medium", "hard") and not pp.startswith("student_dataset/mail/packs/"):
-            report.fail(f"evidence line {i} {mid}: {difficulty} evidence must live under mail/packs: {pp}")
-        if pp and not dataset_path_exists(pp):
-            report.fail(f"evidence line {i} {mid}: packaged_path does not exist: {pp}")
-        if difficulty == "easy" and row.get("pack") is not None:
-            report.fail(f"evidence line {i} {mid}: easy full mailbox row should have pack=null")
-        if difficulty in ("medium", "hard") and not row.get("pack"):
-            report.fail(f"evidence line {i} {mid}: {difficulty} pack row missing pack")
-        identity_counts[(mid, pp, row.get("pack"))] += 1
-
-    for identity, count in identity_counts.items():
-        if count > 1:
-            report.fail(f"duplicate evidence identity {identity}: {count} rows")
-
-    duplicate_mids = sum(1 for mid_rows in rows_by_mid.values() if len(mid_rows) > 1)
-    report.counts["evidence_total"] = len(rows)
-    for difficulty in DIFFICULTIES:
-        report.counts[f"evidence_{difficulty}"] = difficulty_counts[difficulty]
-    report.counts["duplicate_message_ids_allowed"] = duplicate_mids
-    report.check(
-        "unified evidence: "
-        f"{len(rows)} rows, {duplicate_mids} Message-IDs appear in multiple packaged paths/packs"
-    )
-    return rows_by_mid
+            scope_hint = f" in packs {packs}" if packs else " in declared scope"
+            report.fail(f"{gid}: evidence Message-ID not found in packaged raw mail{scope_hint}: {mid}")
 
 
 def validate_sources_fragment(sources: dict, difficulty: str, report: Report) -> None:
@@ -344,22 +406,21 @@ def validate_manifest(manifest: dict, report: Report) -> None:
     expected_files = {
         "challenges": "challenges/challenges.json",
         "golden_answers": "golden_answers/golden_answers.json",
-        "evidence": "evidence/evidence.jsonl",
     }
     if manifest.get("files") != expected_files:
         report.fail(f"manifest files field mismatch: {manifest.get('files')!r}")
     expected_layout = {"full_mailboxes": "mail/full_mailboxes", "packs": "mail/packs"}
     if manifest.get("mail_layout") != expected_layout:
         report.fail(f"manifest mail_layout mismatch: {manifest.get('mail_layout')!r}")
-    if manifest.get("totals", {}).get("emails") != report.counts.get("evidence_total"):
-        report.fail("manifest totals.emails does not match unified evidence rows")
+    if manifest.get("totals", {}).get("emails") != report.counts.get("mail_files_total"):
+        report.fail("manifest totals.emails does not match packaged mail files")
     if manifest.get("totals", {}).get("challenges") != report.counts.get("challenges_total"):
         report.fail("manifest totals.challenges does not match unified challenges")
     for difficulty in DIFFICULTIES:
         md = manifest.get("difficulties", {}).get(difficulty) or {}
         if md.get("sources_file") != f"manifest/sources_{difficulty}.json":
             report.fail(f"manifest difficulties.{difficulty}.sources_file mismatch")
-        if md.get("email_count") != report.counts.get(f"evidence_{difficulty}"):
+        if md.get("email_count") != report.counts.get(f"parsed_mail_{difficulty}"):
             report.fail(f"manifest difficulties.{difficulty}.email_count mismatch")
         expected_challenge_total = report.counts.get(f"challenges_{difficulty}")
         total_key = f"{difficulty}_challenges"
@@ -370,10 +431,10 @@ def validate_manifest(manifest: dict, report: Report) -> None:
 def main() -> int:
     report = Report()
     validate_layout(report)
+    pack_difficulty = build_pack_difficulty_map(report)
 
     challenges = load_json(EXPECTED_FILES["challenges"])
     golden = load_json(EXPECTED_FILES["golden_answers"])
-    evidence_rows = load_jsonl(EXPECTED_FILES["evidence"])
     manifest = load_json(ROOT / "manifest" / "manifest.json")
 
     if not isinstance(challenges, list):
@@ -411,7 +472,7 @@ def main() -> int:
         if golden_counts[difficulty] != challenge_counts[difficulty]:
             report.fail(f"{difficulty}: golden count {golden_counts[difficulty]} != challenge count {challenge_counts[difficulty]}")
 
-    rows_by_mid = validate_evidence_rows(evidence_rows, report)
+    rows_by_mid = derive_mail_rows(pack_difficulty, report)
 
     for ch in challenges:
         validate_challenge(ch, report)
@@ -425,28 +486,27 @@ def main() -> int:
         report.counts[f"sources_units_{difficulty}"] = len(sources.get("sources", []))
         report.counts[f"sources_email_sum_{difficulty}"] = sum_source_email_counts(sources)
         validate_sources_fragment(sources, difficulty, report)
-        if report.counts[f"sources_email_sum_{difficulty}"] != report.counts[f"evidence_{difficulty}"]:
+        if report.counts[f"sources_email_sum_{difficulty}"] != report.counts[f"parsed_mail_{difficulty}"]:
             report.fail(
                 f"{difficulty}: sources email_count sum {report.counts[f'sources_email_sum_{difficulty}']} "
-                f"!= evidence rows {report.counts[f'evidence_{difficulty}']}"
+                f"!= parsed mail files {report.counts[f'parsed_mail_{difficulty}']}"
             )
     report.counts["sources_units_total"] = source_unit_total
 
-    if report.counts["mail_files_total"] != report.counts["evidence_total"]:
+    if report.counts["mail_files_total"] != report.counts["parsed_mail_total"]:
         report.fail(
-            f"mail file count {report.counts['mail_files_total']} != evidence rows {report.counts['evidence_total']}"
+            f"mail file count {report.counts['mail_files_total']} != parsed mail files {report.counts['parsed_mail_total']}"
         )
-    if report.counts["mail_full_mailboxes_files"] != report.counts["evidence_easy"]:
-        report.fail("mail/full_mailboxes count does not match easy evidence rows")
-    if report.counts["mail_packs_files"] != report.counts["evidence_medium"] + report.counts["evidence_hard"]:
-        report.fail("mail/packs count does not match medium+hard evidence rows")
+    if report.counts["mail_full_mailboxes_files"] != report.counts["parsed_mail_easy"]:
+        report.fail("mail/full_mailboxes count does not match easy parsed mail files")
+    if report.counts["mail_packs_files"] != report.counts["parsed_mail_medium"] + report.counts["parsed_mail_hard"]:
+        report.fail("mail/packs count does not match medium+hard parsed mail files")
 
-    # Spot checks for documented scope and duplicated Message-ID behavior.
     medium_001 = ch_by_id.get("medium-001")
     if medium_001:
         pack = (medium_001.get("scope", {}).get("packs") or [None])[0]
-        pack_rows = [r for r in evidence_rows if r.get("pack") == pack]
-        report.check(f"medium-001 pack {pack!r}: {len(pack_rows)} evidence rows")
+        pack_rows = [r for rows in rows_by_mid.values() for r in rows if r.get("pack") == pack]
+        report.check(f"medium-001 pack {pack!r}: {len(pack_rows)} packaged files")
     hard_duplicates = [mid for mid, rows in rows_by_mid.items() if len(rows) > 1 and any(r.get("difficulty") == "hard" for r in rows)]
     report.check(f"hard duplicate Message-IDs remain distinct by packaged_path/pack: {len(hard_duplicates)} ids")
 

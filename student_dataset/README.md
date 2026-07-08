@@ -2,7 +2,7 @@
 
 Welcome to the **Beginner Enron Golden Dataset** (version **0.1.0**). This package gives you a small, real Enron email corpus plus graded challenges so you can practice building AI agents that search email, extract facts, and **cite evidence**.
 
-You do **not** need Python or any specific tooling. Everything is plain files: JSON, JSONL, Markdown, and raw email text.
+You do **not** need Python or any specific tooling. Everything is plain files: JSON, Markdown, and raw email text.
 
 ---
 
@@ -11,10 +11,9 @@ You do **not** need Python or any specific tooling. Everything is plain files: J
 | Component | Location | What it is |
 | --- | --- | --- |
 | **Full mailboxes** | `mail/full_mailboxes/` | Five small full Enron mailboxes, copied with native folder structure. These support Easy lookup and extraction challenges. |
-| **Packs** | `mail/packs/` | Medium bounded folders plus Hard curated multi-message packs. Pack names match `scope.packs` and evidence `pack` values. |
+| **Packs** | `mail/packs/` | Medium bounded folders plus Hard curated multi-message packs. Pack names match `scope.packs` values. |
 | **Challenge Questions** | `challenges/challenges.json` | 28 graded tasks (10 Easy, 10 Medium, 8 Hard). Each record keeps `difficulty`, point value, challenge family, and explicit search scope. |
 | **Golden Answers** | `golden_answers/golden_answers.json` | Official answers for every challenge: accepted values, required Evidence Message-IDs, evidence mode, and grading notes. |
-| **Evidence index** | `evidence/evidence.jsonl` | One record per packaged email, mapping Message-ID to metadata, source lineage, packaged path, pack, and original `difficulty`. |
 | **Manifest** | `manifest/manifest.json` | Dataset version, unified file locations, mail layout, counts, and provenance. Source details remain in `manifest/sources_<difficulty>.json`. |
 | **Validation report** | `validation/validation_report.md` | Consistency checks run before release. |
 
@@ -35,6 +34,8 @@ During the course you submit agent versions every couple of hours. The Golden An
 - Read `grading_notes` to understand normalization, aliases, and tie-breaks.
 
 Treat Golden Answers as the reference implementation for your evaluation framework, not as something to memorize and replay without doing the email work.
+
+The package does **not** include a prebuilt Message-ID index. Building one from the raw mail files is part of the challenge if your agent needs fast lookup.
 
 ---
 
@@ -109,7 +110,7 @@ Your course tooling may wrap this differently, but graders expect both the answe
 - **Points:** 2 (Easy band 1-3)
 - **Family:** `exact_email_lookup`
 - **Scope:** `slinger-r` mailbox, `inbox` folder only
-- **Packaged path:** use `evidence/evidence.jsonl` to resolve the Message-ID to `mail/full_mailboxes/slinger-r/inbox/17.`
+- **Packaged path:** locate the Message-ID by searching or indexing `mail/full_mailboxes/slinger-r/inbox/`.
 
 ### Good submission
 
@@ -150,8 +151,6 @@ student_dataset/
   mail/
     full_mailboxes/          # full small mailboxes
     packs/                   # medium bounded folders and hard curated packs
-  evidence/
-    evidence.jsonl           # unified Message-ID index, one email per line
   challenges/
     challenges.json          # unified challenge array, sorted easy/medium/hard then id
   golden_answers/
@@ -174,7 +173,7 @@ For complete record shapes, see **`DATASET_CONTRACT.md`**. For answer-matching r
 
 1. Read challenges from `challenges/challenges.json`.
 2. Use each challenge's `difficulty`, `points`, and `scope` to choose the in-bounds mail: full mailboxes live under `mail/full_mailboxes/`, and named packs live under `mail/packs/`.
-3. Use `evidence/evidence.jsonl` to resolve Message-IDs to `packaged_path` values and to inspect metadata.
+3. Search the raw mail directly, or build your own Message-ID / metadata index from the packaged files.
 4. Build your agent to return a **Student Agent Submission** - answer plus evidence Message-IDs.
 5. Compare against `golden_answers/golden_answers.json` to score yourself before each course submission round.
 

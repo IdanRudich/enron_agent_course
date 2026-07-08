@@ -26,17 +26,16 @@ Message-ID is the **primary evidence key** for grading.
   angle-bracketed strings are identical. A submission that omits the angle brackets but is
   otherwise identical MAY be accepted (add-only tolerance); a submission that changes any
   character inside the brackets does **not** match.
-- **Storage:** the evidence index (`message_id`) and Golden Answers (`evidence_message_ids`)
-  both store the canonical angle-bracket form.
+- **Storage:** raw email `Message-ID:` headers and Golden Answers (`evidence_message_ids`)
+  use the canonical angle-bracket form.
 
 ---
 
 ## 2. Date
 
 - **Canonical format: ISO 8601** with explicit UTC offset, e.g.
-  `2001-05-14T09:12:00-07:00`. This is the format stored in the evidence index `date` field
-  and the format Golden Answers use as `accepted_answer.value` for date questions unless the
-  prompt specifies otherwise.
+  `2001-05-14T09:12:00-07:00`. This is the format Golden Answers use as
+  `accepted_answer.value` for date questions unless the prompt specifies otherwise.
 - **PST/PDT handling:** Enron `Date:` headers are largely US Pacific time. Preserve the
   original UTC offset from the header:
   - PST = UTC−08:00 (`-08:00`)
@@ -116,7 +115,7 @@ match the topic.
 
 | Value | Canonical form | Stored in |
 | --- | --- | --- |
-| Message-ID | `<localpart@domain>` (angle brackets, trimmed) | evidence index, golden `evidence_message_ids` |
-| Date/time | ISO 8601 with original Pacific offset, e.g. `...-07:00` | evidence index `date`, date answers |
+| Message-ID | `<localpart@domain>` (angle brackets, trimmed) | raw email headers, golden `evidence_message_ids` |
+| Date/time | ISO 8601 with original Pacific offset, e.g. `...-07:00` | date answers |
 | Date-only | `YYYY-MM-DD` (offset noted in grading_notes) | date-only answers |
 | Address | lowercase email address; display names as aliases | golden `accepted_answer` |

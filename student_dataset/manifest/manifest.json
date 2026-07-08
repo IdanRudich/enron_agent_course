@@ -25,14 +25,13 @@
     "medium_challenges": 10,
     "hard_challenges": 8
   },
-  "provenance_note": "Each packaged email traces to enron_mail_20150507/maildir via evidence index source_path; evidence rows retain original difficulty provenance.",
+  "provenance_note": "Each packaged email traces to enron_mail_20150507/maildir through source fragments and packaged paths. The release intentionally does not include a prebuilt evidence index.",
   "mail_layout": {
     "full_mailboxes": "mail/full_mailboxes",
     "packs": "mail/packs"
   },
   "files": {
     "challenges": "challenges/challenges.json",
-    "golden_answers": "golden_answers/golden_answers.json",
-    "evidence": "evidence/evidence.jsonl"
+    "golden_answers": "golden_answers/golden_answers.json"
   }
 }

@@ -154,7 +154,7 @@
       "intended_question_sketch": "Confirm from two different mailboxes which Enron attorney took over the Cage Gas collection and that he was actively pursuing it (richard.sanders@enron.com), corroborated by both hyvl-d and sanders-r.",
       "parser_pitfalls": [
         "The two sanders-r emails (sent/270. and all_documents/469.) are the SAME message filed in two folders with DIFFERENT Message-IDs (duplicate-looking; mailbox hygiene).",
-        "Five hyvl-d emails here are also packaged in cage_gas_termination_thread (their Message-IDs appear twice in the evidence index under different packs); scope evidence by pack.",
+        "Five hyvl-d emails here are also packaged in cage_gas_termination_thread (their Message-IDs appear in multiple packaged paths/packs); scope evidence by pack.",
         "Cross-mailbox linkage relies on shared participants (Russell Diamond, Debbie Brackett) and the 'Cage Gas' subject, not a shared Message-ID."
       ]
     },

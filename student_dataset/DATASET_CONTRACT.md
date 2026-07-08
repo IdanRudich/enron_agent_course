@@ -2,7 +2,7 @@
 
 This document is the **authoritative contract** for the Beginner Enron Golden Dataset artifact. Every downstream consumer should follow the directory layout, record shapes, and rules defined here. When this document and any other note disagree, this document wins for structure/schemas and `NORMALIZATION.md` wins for value-matching rules.
 
-The artifact is **plain data**: JSON, JSONL, Markdown, and copied raw email files. It is not tied to any implementation package, framework, or language.
+The artifact is **plain data**: JSON, Markdown, and copied raw email files. It is not tied to any implementation package, framework, or language.
 
 ---
 
@@ -23,8 +23,6 @@ student_dataset/
     packs/
       <pack_name>/<n>.
       <pack_name>/<mailbox>__<folder>__<n>.
-  evidence/
-    evidence.jsonl
   challenges/
     challenges.json
   golden_answers/
@@ -40,14 +38,13 @@ student_dataset/
 | --- | --- |
 | `mail/full_mailboxes/<mailbox>/<folder>/<n>.` | Full beginner-friendly mailboxes, native Enron folder structure preserved. |
 | `mail/packs/<pack_name>/...` | Medium bounded folders and Hard curated multi-message packs. |
-| `evidence/evidence.jsonl` | Unified evidence index, one record per packaged email. Each row includes original `difficulty`, source lineage, `packaged_path`, and `pack`. |
 | `challenges/challenges.json` | Public Challenge Questions as one JSON array, sorted by difficulty order Easy, Medium, Hard, then `id`. |
 | `golden_answers/golden_answers.json` | Student-visible Golden Answers as one JSON array, sorted the same way as challenges. |
 | `manifest/sources_<difficulty>.json` | Per-difficulty source selection fragments. These document source provenance and email counts; they do not imply separate student mail corpora. |
 | `manifest/manifest.json` | Top-level manifest: version, unified files, mail layout, counts, and provenance. |
 | `validation/validation_report.md` | Consistency report produced during verification. |
 
-The physical student corpus is unified. Difficulty remains explicit metadata on Challenge Questions, Golden Answers, evidence rows, source fragments, and manifest counts.
+The physical student corpus is unified. Difficulty remains explicit metadata on Challenge Questions, Golden Answers, source fragments, and manifest counts. The package intentionally does not ship a prebuilt Message-ID index; students may build one from the raw mail files.
 
 ---
 
@@ -152,14 +149,14 @@ Element of the JSON array in `golden_answers/golden_answers.json`. **Student-vis
 | `difficulty` | string | Same as the matching Challenge Question. |
 | `points` | integer | Must equal the matching Challenge Question's `points`. |
 | `accepted_answer` | object | `{ "value": <canonical answer>, "aliases": [<accepted equivalents>] }`. |
-| `evidence_message_ids` | array of string | Accepted Evidence Message-IDs in canonical angle-bracket form `"<...@...>"`. Every id must resolve in `evidence/evidence.jsonl` for the relevant difficulty and scope. |
+| `evidence_message_ids` | array of string | Accepted Evidence Message-IDs in canonical angle-bracket form `"<...@...>"`. Every id must appear in an in-scope packaged raw email file. |
 | `evidence_mode` | string | `"all"` = every listed id required; `"any"` = any one listed id suffices. |
 | `grading_notes` | string | How answer equivalence is judged. |
 
 ### Rules
 
 - `id`, `difficulty`, and `points` must match the Challenge Question with the same `id`.
-- Every id in `evidence_message_ids` must appear as a `message_id` in the unified evidence index.
+- Every id in `evidence_message_ids` must appear as the `Message-ID:` header of at least one packaged raw email file.
 - For scoped pack challenges, the accepted evidence must resolve inside the scoped pack(s).
 - `accepted_answer.value` is the single canonical answer; aliases only add accepted equivalents.
 
@@ -167,37 +164,18 @@ Element of the JSON array in `golden_answers/golden_answers.json`. **Student-vis
 
 ## 5. Evidence Representation
 
-Evidence Message-IDs are represented in two places, and they must agree:
+Evidence Message-IDs are represented in Golden Answers and in the raw email files themselves:
 
-1. **Evidence index** - `evidence/evidence.jsonl`, one JSON object per line, one line per packaged email.
+1. **Packaged mail** - each raw email file has a `Message-ID:` header.
 2. **Golden Answers** - each Golden Answer lists the subset of Message-IDs accepted as evidence for that challenge.
 
-Message-ID alone is the grading evidence key, but Message-IDs are not guaranteed to be unique across every packaged row. Some Hard packs intentionally include the same source message in more than one pack. The evidence row identity is therefore `(message_id, packaged_path, pack)`, and duplicate Message-IDs remain distinct through `packaged_path` and `pack`.
+Message-ID alone is the grading evidence key, but Message-IDs are not guaranteed to be unique across every packaged file. Some Hard packs intentionally include the same source message in more than one pack. Graders and student-built indexes should therefore preserve the packaged path and pack context when they index mail.
 
-### Evidence Index Record Fields
+### Student-Built Indexes
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `message_id` | string | Canonical angle-bracket Message-ID `"<...@...>"`. |
-| `subject` | string | Email `Subject:` header, trimmed. |
-| `date` | string | Canonical date per `NORMALIZATION.md` (ISO 8601). |
-| `from` | string | Top-level `From:` (prefer email address). |
-| `to` | array of string | Top-level `To:` recipients. |
-| `cc` | array of string | Top-level `Cc:` recipients (`[]` if none). |
-| `source_mailbox` | string | Original mailbox, e.g. `"slinger-r"`. |
-| `source_folder` | string | Original folder, e.g. `"inbox"`. |
-| `source_path` | string | Path in the raw corpus, e.g. `"enron_mail_20150507/maildir/slinger-r/inbox/1."`. |
-| `packaged_path` | string | Path inside this artifact, e.g. `"student_dataset/mail/full_mailboxes/slinger-r/inbox/1."` or `"student_dataset/mail/packs/symes-k__scheduling/1."`. |
-| `pack` | string or null | Pack name for rows under `mail/packs/`; `null` for full-mailbox rows. |
-| `difficulty` | string | Original difficulty provenance: `"easy"`, `"medium"`, or `"hard"`. |
+Students may create their own index if useful. A good local index records at least `message_id`, `subject`, `date`, `from`, `to`, `cc`, `packaged_path`, and `pack`. That index is a tool students build from the raw files, not a shipped dataset artifact.
 
-### Example JSONL Row
-
-```json
-{"message_id":"<example123@enron.com>","subject":"Weekly update","date":"2001-05-14T09:12:00-07:00","from":"richard.slinger@enron.com","to":["jeff.dasovich@enron.com"],"cc":[],"source_mailbox":"slinger-r","source_folder":"inbox","source_path":"enron_mail_20150507/maildir/slinger-r/inbox/1.","packaged_path":"student_dataset/mail/full_mailboxes/slinger-r/inbox/1.","pack":null,"difficulty":"easy"}
-```
-
-Every packaged email traces back to the raw maildir via `source_path`; this is the provenance / lineage guarantee referenced in the manifest.
+Every packaged email traces back to the raw maildir through the source fragments in `manifest/sources_<difficulty>.json`; this is the provenance / lineage guarantee referenced in the manifest.
 
 ---
 
@@ -240,10 +218,10 @@ A correct-looking answer without accepted Message-ID evidence scores zero. Gradi
 | `target_email_ceiling` | integer | Approximate max packaged emails. |
 | `source_corpus` | string | Raw corpus id, `"enron_mail_20150507"`. |
 | `mail_layout` | object | `{ "full_mailboxes": "mail/full_mailboxes", "packs": "mail/packs" }`. |
-| `files` | object | Paths to the unified challenge, golden-answer, and evidence files. |
+| `files` | object | Paths to the unified challenge and golden-answer files. |
 | `difficulties` | object | Per-difficulty `{ sources_file, email_count }` counts for provenance and point-band reporting. |
 | `totals` | object | `{ emails, challenges, easy_challenges, medium_challenges, hard_challenges }`. |
-| `provenance_note` | string | Statement that each email traces to raw maildir and evidence rows retain original difficulty provenance. |
+| `provenance_note` | string | Statement that each email traces to raw maildir through the source fragments and packaged paths. |
 
 ### Source Manifest Fragments
 
@@ -268,9 +246,8 @@ Source records keep their existing `difficulty`, `type`, `source_path`, `source_
 The contract does not require students to use any specific implementation package, framework, or programming language. All deliverables are plain, tool-agnostic formats:
 
 - Challenge Questions and Golden Answers: JSON arrays.
-- Evidence index: JSON Lines (JSONL).
 - Manifests and source fragments: JSON.
 - Documentation: Markdown.
 - Packaged emails: raw Enron maildir files copied verbatim.
 
-Any language or tooling that can read JSON/JSONL/Markdown and plain text files can consume this dataset. Challenge files and Golden Answer files are intentionally separate so a student evaluation framework can load prompts and answers as independent inputs.
+Any language or tooling that can read JSON, Markdown, and plain text files can consume this dataset. Challenge files and Golden Answer files are intentionally separate so a student evaluation framework can load prompts and answers as independent inputs.
