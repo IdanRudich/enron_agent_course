@@ -1,0 +1,29 @@
+{
+  "dataset_name": "Beginner Enron Golden Dataset",
+  "dataset_version": "0.1.0",
+  "created": "2026-07-08",
+  "target_email_ceiling": 6000,
+  "source_corpus": "enron_mail_20150507",
+  "difficulties": {
+    "easy": {
+      "sources_file": "manifest/sources_easy.json",
+      "email_count": 1329
+    },
+    "medium": {
+      "sources_file": "manifest/sources_medium.json",
+      "email_count": 1500
+    },
+    "hard": {
+      "sources_file": "manifest/sources_hard.json",
+      "email_count": 63
+    }
+  },
+  "totals": {
+    "emails": 2892,
+    "challenges": 28,
+    "easy_challenges": 10,
+    "medium_challenges": 10,
+    "hard_challenges": 8
+  },
+  "provenance_note": "Each packaged email traces to enron_mail_20150507/maildir via evidence index source_path."
+}

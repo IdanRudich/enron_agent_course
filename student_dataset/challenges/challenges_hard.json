@@ -1,0 +1,146 @@
+[
+  {
+    "id": "hard-001",
+    "difficulty": "hard",
+    "family": "thread_reconstruction",
+    "points": 9,
+    "prompt": "Within the `cage_gas_termination_thread` pack only, follow the Cage Gas contract-default and termination email chain. Eric Moon eventually sends a per-deal breakdown of the termination amounts owed. What is the TOTAL termination amount in that breakdown (sum across all deals)?",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["cage_gas_termination_thread"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "US dollar amount (integer or formatted with commas)",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-002",
+    "difficulty": "hard",
+    "family": "thread_reconstruction",
+    "points": 8,
+    "prompt": "Within the `cage_gas_termination_thread` pack only, trace the Cage Gas default thread to its final corporate outcome. According to the Dun & Bradstreet bankruptcy alert forwarded in the thread, on what calendar date did Cage Gas Services Corporation file bankruptcy? Use YYYY-MM-DD format.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["cage_gas_termination_thread"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 calendar date (YYYY-MM-DD)",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-003",
+    "difficulty": "hard",
+    "family": "thread_reconstruction",
+    "points": 9,
+    "prompt": "Within the `pge_hydro_auction_thread` pack only, the folder spans a 1999 PG&E hydro auction discussion and a May 2000 regulatory push. Identify the two final May 2000 emails that conclude Enron's hydro position in this thread. List their subject lines in chronological order (earliest first), separated by semicolons.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["pge_hydro_auction_thread"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ordered list of two subject lines separated by semicolon",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-004",
+    "difficulty": "hard",
+    "family": "cross_mailbox_corroboration",
+    "points": 10,
+    "prompt": "Within the `cage_gas_cross_mailbox` pack only, combine evidence from both the hyvl-d and sanders-r mailboxes. Which Enron attorney (email address) took over active pursuit of the Cage Gas collection, corroborated across both mailboxes?",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["cage_gas_cross_mailbox"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "single email address",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-005",
+    "difficulty": "hard",
+    "family": "timeline_synthesis",
+    "points": 9,
+    "prompt": "Within the `governor_davis_meeting_timeline` pack only, assemble the dated timeline of Enron's December 2000 Governor Gray Davis meeting preparation. What is the calendar date of the earliest email in the pack, and what is the calendar date of the final recap email titled \"Materials Provided to California Governor\"? Answer as two YYYY-MM-DD dates separated by a semicolon (earliest first).",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["governor_davis_meeting_timeline"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "two ISO 8601 calendar dates separated by semicolon",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-006",
+    "difficulty": "hard",
+    "family": "timeline_synthesis",
+    "points": 8,
+    "prompt": "Within the `pge_bankruptcy_timeline` pack only, Pacific Gas & Electric filed for Chapter 11 and Enron issued a public response the same day. On what calendar date did both events occur? Use YYYY-MM-DD format.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["pge_bankruptcy_timeline"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "ISO 8601 calendar date (YYYY-MM-DD)",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-007",
+    "difficulty": "hard",
+    "family": "timeline_synthesis",
+    "points": 10,
+    "prompt": "Within the `pge_bankruptcy_timeline` pack only, list in chronological order the calendar dates of these three key events: (1) PG&E's Chapter 11 filing news, (2) Michael Tribolet's forward of \"PGE Bankruptcy motions\", (3) the \"PX credits & Schedule F in the PG&E bankruptcy\" email. Answer as three YYYY-MM-DD dates separated by semicolons.",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["pge_bankruptcy_timeline"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "three ISO 8601 calendar dates separated by semicolons",
+      "requires_evidence_message_ids": true
+    }
+  },
+  {
+    "id": "hard-008",
+    "difficulty": "hard",
+    "family": "contradiction_resolution",
+    "points": 9,
+    "prompt": "Within the `tva_settlement_contradiction` pack only, multiple TVA settlement drafts circulate over several months. One later email explicitly instructs recipients to disregard an earlier draft. What is the exact Subject line of that authoritative (REVISED) email?",
+    "scope": {
+      "mailboxes": [],
+      "folders": [],
+      "packs": ["tva_settlement_contradiction"],
+      "date_range": null,
+      "topic": null
+    },
+    "expected_submission": {
+      "answer_format": "exact email subject line",
+      "requires_evidence_message_ids": true
+    }
+  }
+]

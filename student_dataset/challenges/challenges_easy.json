@@ -1,0 +1,92 @@
+[
+  {
+    "id": "easy-001",
+    "difficulty": "easy",
+    "family": "exact_email_lookup",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <22322411.1075840045955.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). The body gives a contact phone number for AON. What is that AON contact phone number?",
+    "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "phone number", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-002",
+    "difficulty": "easy",
+    "family": "message_id_discovery",
+    "points": 2,
+    "prompt": "Search only the phanis-s mailbox (inbox folder) for the email whose sender (From) is sara.shackleton@enron.com and whose Subject is exactly 'Magnum Hunter Resources, Inc.'. Return that email's Message-ID.",
+    "scope": {"mailboxes": ["phanis-s"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "Message-ID in angle-bracket form", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-003",
+    "difficulty": "easy",
+    "family": "header_field_extraction",
+    "points": 1,
+    "prompt": "Open the email with Message-ID <10033007.1075840046962.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). Who is listed as the sender in the From header? Give the email address.",
+    "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "single email address", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-004",
+    "difficulty": "easy",
+    "family": "header_field_extraction",
+    "points": 1,
+    "prompt": "Open the email with Message-ID <14464692.1075840045536.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). What is the exact text of its Subject header?",
+    "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "email subject text", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-005",
+    "difficulty": "easy",
+    "family": "attachment_mention",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <31472676.1075853654527.JavaMail.evans@thyme> in the dickson-s mailbox (pictures folder). The body lists image filenames even though the email carries no real MIME attachment. List every image filename mentioned in the body.",
+    "scope": {"mailboxes": ["dickson-s"], "folders": ["pictures"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "list of image filenames", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-006",
+    "difficulty": "easy",
+    "family": "latest_vs_quoted_sender",
+    "points": 3,
+    "prompt": "Open the email with Message-ID <5764479.1075840047485.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). This is a reply that quotes an earlier message underneath it. Who is the current (latest) sender of this email itself, not the person quoted in the earlier message below? Give the email address.",
+    "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "single email address", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-007",
+    "difficulty": "easy",
+    "family": "date_normalization",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <3789605.1075840048923.JavaMail.evans@thyme> in the slinger-r mailbox (sent_items folder). Take the Date header and convert it to ISO 8601 format, keeping the email's original UTC offset. Give the normalized date-time.",
+    "scope": {"mailboxes": ["slinger-r"], "folders": ["sent_items"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "ISO 8601 date-time with UTC offset", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-008",
+    "difficulty": "easy",
+    "family": "date_normalization",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <3392486.1075840045696.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). Take the Date header and convert it to ISO 8601 format, keeping the email's original UTC offset. Give the normalized date-time.",
+    "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "ISO 8601 date-time with UTC offset", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-009",
+    "difficulty": "easy",
+    "family": "recipient_role",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <11700608.1075840047233.JavaMail.evans@thyme> in the slinger-r mailbox (inbox folder). This email has both To and Cc recipients. Which single email address is in the To field (the direct recipient), not the Cc field?",
+    "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "single email address", "requires_evidence_message_ids": true}
+  },
+  {
+    "id": "easy-010",
+    "difficulty": "easy",
+    "family": "body_fact_extraction",
+    "points": 2,
+    "prompt": "Open the email with Message-ID <1378742.1075855414130.JavaMail.evans@thyme> in the phanis-s mailbox (sent_items folder). The body names a person from Kona Ltd. who called requesting the return of a letter of credit, and gives his phone number. What is that phone number?",
+    "scope": {"mailboxes": ["phanis-s"], "folders": ["sent_items"], "packs": [], "date_range": null, "topic": null},
+    "expected_submission": {"answer_format": "phone number", "requires_evidence_message_ids": true}
+  }
+]

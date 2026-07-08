@@ -1,0 +1,63 @@
+{
+  "pass": true,
+  "failures": [],
+  "warnings": [],
+  "checks": [
+    "easy: 10 challenges, 10 golden answers, 1329 evidence lines, 1329 mail files, sources sum email_count=1329",
+    "medium: 10 challenges, 10 golden answers, 1500 evidence lines, 1500 mail files, sources sum email_count=1500",
+    "hard: 8 challenges, 8 golden answers, 63 evidence lines, 63 mail files, sources sum email_count=63",
+    "medium spot-check pack 'symes-k__power_marketer': 136 evidence rows",
+    "medium-001 scope symes-k/power_marketer: 136 evidence rows",
+    "hard curated pack emails: 63 rows with pack set",
+    "manifest.json updated (created=2026-07-08)"
+  ],
+  "fixes": [],
+  "counts": {
+    "challenges_easy": 10,
+    "golden_easy": 10,
+    "evidence_easy": 1329,
+    "sources_email_sum_easy": 1329,
+    "email_disk_easy": 1329,
+    "challenges_medium": 10,
+    "golden_medium": 10,
+    "evidence_medium": 1500,
+    "sources_email_sum_medium": 1500,
+    "email_disk_medium": 1500,
+    "challenges_hard": 8,
+    "golden_hard": 8,
+    "evidence_hard": 63,
+    "sources_email_sum_hard": 63,
+    "email_disk_hard": 63,
+    "challenges_total": 28,
+    "email_disk_total": 2892
+  },
+  "manifest": {
+    "dataset_name": "Beginner Enron Golden Dataset",
+    "dataset_version": "0.1.0",
+    "created": "2026-07-08",
+    "target_email_ceiling": 6000,
+    "source_corpus": "enron_mail_20150507",
+    "difficulties": {
+      "easy": {
+        "sources_file": "manifest/sources_easy.json",
+        "email_count": 1329
+      },
+      "medium": {
+        "sources_file": "manifest/sources_medium.json",
+        "email_count": 1500
+      },
+      "hard": {
+        "sources_file": "manifest/sources_hard.json",
+        "email_count": 63
+      }
+    },
+    "totals": {
+      "emails": 2892,
+      "challenges": 28,
+      "easy_challenges": 10,
+      "medium_challenges": 10,
+      "hard_challenges": 8
+    },
+    "provenance_note": "Each packaged email traces to enron_mail_20150507/maildir via evidence index source_path."
+  }
+}

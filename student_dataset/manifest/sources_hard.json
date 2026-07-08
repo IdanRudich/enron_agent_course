@@ -1,0 +1,501 @@
+{
+  "difficulty": "hard",
+  "sources": [
+    {
+      "type": "curated_pack",
+      "pack_name": "cage_gas_termination_thread",
+      "synthesis_type": "thread_reconstruction",
+      "packaged_path": "student_dataset/mail/hard/cage_gas_termination_thread",
+      "email_count": 12,
+      "topic": "Cage Gas Services contract default and termination (ENA credit/legal)",
+      "scope": {
+        "mailboxes": [
+          "hyvl-d"
+        ],
+        "folders": [
+          "gas/cage"
+        ],
+        "packs": [
+          "cage_gas_termination_thread"
+        ],
+        "date_range": null,
+        "topic": "Cage Gas Services contract default and termination (ENA credit/legal)"
+      },
+      "source_provenance": [
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/1."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/2."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/3."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/4."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/5."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/6."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/7."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/8."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/9."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/10."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/11."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/12."
+        }
+      ],
+      "intended_question_sketch": "Reconstruct the ordered sequence of the Cage Gas default and state the final outcome/next step reached in the thread (escalate to attorney Richard Sanders; Cage later files bankruptcy).",
+      "parser_pitfalls": [
+        "Files 7. and 8. are near-duplicates: 8. is a forwarded copy of Eric Moon's per-deal breakdown in 7.; grade evidence against the specific targeted Message-ID.",
+        "Most messages carry a Bcc: header populated identically to Cc:.",
+        "Two distinct dollar figures appear (L/C draw $540,170.00 in 2., termination total $768,761 by deal in 7./8.); do not conflate them.",
+        "Later messages (10., 11.) quote prior messages inline; grade against top-level headers."
+      ]
+    },
+    {
+      "type": "curated_pack",
+      "pack_name": "cage_gas_cross_mailbox",
+      "synthesis_type": "cross_mailbox_corroboration",
+      "packaged_path": "student_dataset/mail/hard/cage_gas_cross_mailbox",
+      "email_count": 7,
+      "topic": "Cage Gas Services collection corroborated across Hyvl and Sanders mailboxes",
+      "scope": {
+        "mailboxes": [
+          "hyvl-d",
+          "sanders-r"
+        ],
+        "folders": [
+          "all_documents",
+          "gas/cage",
+          "sent"
+        ],
+        "packs": [
+          "cage_gas_cross_mailbox"
+        ],
+        "date_range": null,
+        "topic": "Cage Gas Services collection corroborated across Hyvl and Sanders mailboxes"
+      },
+      "source_provenance": [
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/1."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/9."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/10."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/11."
+        },
+        {
+          "mailbox": "hyvl-d",
+          "folder": "gas/cage",
+          "source_path": "enron_mail_20150507/maildir/hyvl-d/gas/cage/12."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "sent",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/sent/270."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "all_documents",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/all_documents/469."
+        }
+      ],
+      "intended_question_sketch": "Confirm from two different mailboxes which Enron attorney took over the Cage Gas collection and that he was actively pursuing it (richard.sanders@enron.com), corroborated by both hyvl-d and sanders-r.",
+      "parser_pitfalls": [
+        "The two sanders-r emails (sent/270. and all_documents/469.) are the SAME message filed in two folders with DIFFERENT Message-IDs (duplicate-looking; mailbox hygiene).",
+        "Five hyvl-d emails here are also packaged in cage_gas_termination_thread (their Message-IDs appear twice in the evidence index under different packs); scope evidence by pack.",
+        "Cross-mailbox linkage relies on shared participants (Russell Diamond, Debbie Brackett) and the 'Cage Gas' subject, not a shared Message-ID."
+      ]
+    },
+    {
+      "type": "curated_pack",
+      "pack_name": "governor_davis_meeting_timeline",
+      "synthesis_type": "timeline_synthesis",
+      "packaged_path": "student_dataset/mail/hard/governor_davis_meeting_timeline",
+      "email_count": 8,
+      "topic": "Enron prep for the December 2000 Governor Gray Davis meeting (California crisis)",
+      "scope": {
+        "mailboxes": [
+          "kean-s"
+        ],
+        "folders": [
+          "governor_davis_meeting"
+        ],
+        "packs": [
+          "governor_davis_meeting_timeline"
+        ],
+        "date_range": null,
+        "topic": "Enron prep for the December 2000 Governor Gray Davis meeting (California crisis)"
+      },
+      "source_provenance": [
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/1."
+        },
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/2."
+        },
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/3."
+        },
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/4."
+        },
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/5."
+        },
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/6."
+        },
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/7."
+        },
+        {
+          "mailbox": "kean-s",
+          "folder": "governor_davis_meeting",
+          "source_path": "enron_mail_20150507/maildir/kean-s/governor_davis_meeting/8."
+        }
+      ],
+      "intended_question_sketch": "Assemble the dated timeline of Enron's Governor Davis meeting prep and identify the earliest and final dated events (charts/testimony on 2000-12-22 -> materials-provided recap on 2001-01-03).",
+      "parser_pitfalls": [
+        "File 3. (from Phillip Allen) has an EMPTY Subject: header.",
+        "File 8. ('Materials Provided to California Governor') has a very large Cc: list.",
+        "File 6. subject is truncated by the source ('(BN ) Greenspan, ... to Meet (Up') and wraps forwarded Bloomberg content.",
+        "Files 4. and 5. are a 'Charts' -> 'Re: Charts' correction ('Use this file...'); the second supersedes the first.",
+        "All 2000-12-22 messages share a date; order them by time-of-day within the day."
+      ]
+    },
+    {
+      "type": "curated_pack",
+      "pack_name": "tva_settlement_contradiction",
+      "synthesis_type": "contradiction_resolution",
+      "packaged_path": "student_dataset/mail/hard/tva_settlement_contradiction",
+      "email_count": 8,
+      "topic": "Enron/TVA control-area dispute settlement drafts (which draft governs)",
+      "scope": {
+        "mailboxes": [
+          "sanders-r"
+        ],
+        "folders": [
+          "tva"
+        ],
+        "packs": [
+          "tva_settlement_contradiction"
+        ],
+        "date_range": null,
+        "topic": "Enron/TVA control-area dispute settlement drafts (which draft governs)"
+      },
+      "source_provenance": [
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/1."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/2."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/3."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/4."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/5."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/6."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/15."
+        },
+        {
+          "mailbox": "sanders-r",
+          "folder": "tva",
+          "source_path": "enron_mail_20150507/maildir/sanders-r/tva/16."
+        }
+      ],
+      "intended_question_sketch": "Given conflicting TVA settlement drafts, determine which draft is authoritative and why (the 2000-11-28 REVISED draft, because it explicitly instructs to disregard the earlier draft).",
+      "parser_pitfalls": [
+        "File 1. ('REVISED TVA Settlement Agreement') explicitly says to DISREGARD the earlier draft; this is the contradiction-resolving message.",
+        "Several messages are from external counsel (rmadden@gibbs-bruns.com) and one uses the address variant Richard.B.Sanders@enron.com.",
+        "Messages contain forwarded/quoted attachments references; grade against top-level headers.",
+        "Files 15./16. are the earliest TVA-matter context (Feb 2000); 1. is the latest (Nov 2000)."
+      ]
+    },
+    {
+      "type": "curated_pack",
+      "pack_name": "pge_hydro_auction_thread",
+      "synthesis_type": "thread_reconstruction",
+      "packaged_path": "student_dataset/mail/hard/pge_hydro_auction_thread",
+      "email_count": 12,
+      "topic": "PG&E hydro asset auction/divestiture proposal (California regulatory)",
+      "scope": {
+        "mailboxes": [
+          "dasovich-j"
+        ],
+        "folders": [
+          "pg_e_hydro_sale"
+        ],
+        "packs": [
+          "pge_hydro_auction_thread"
+        ],
+        "date_range": null,
+        "topic": "PG&E hydro asset auction/divestiture proposal (California regulatory)"
+      },
+      "source_provenance": [
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/1."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/2."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/3."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/4."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/5."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/6."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/7."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/8."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/9."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/10."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/11."
+        },
+        {
+          "mailbox": "dasovich-j",
+          "folder": "pg_e_hydro_sale",
+          "source_path": "enron_mail_20150507/maildir/dasovich-j/pg_e_hydro_sale/12."
+        }
+      ],
+      "intended_question_sketch": "Reconstruct the PG&E hydro auction discussion chain and identify the final position/output (2000 talking points + revised memo) that concludes the thread.",
+      "parser_pitfalls": [
+        "Folder spans two periods (Sep-Nov 1999 auction discussion and May 2000 talking points/revised memo); order by date carefully.",
+        "Contains a 'hydro auction' Re: sub-thread (files 8. -> 6. -> 5.) plus other PG&E hydro subjects; not every message is a direct reply.",
+        "Some senders are external (mharris@rcgroup.com); several messages forward press releases."
+      ]
+    },
+    {
+      "type": "curated_pack",
+      "pack_name": "pge_bankruptcy_timeline",
+      "synthesis_type": "timeline_synthesis",
+      "packaged_path": "student_dataset/mail/hard/pge_bankruptcy_timeline",
+      "email_count": 16,
+      "topic": "PG&E Chapter 11 bankruptcy filing and Enron's response (April 2001)",
+      "scope": {
+        "mailboxes": [
+          "shapiro-r"
+        ],
+        "folders": [
+          "pg_e_bankruptcy"
+        ],
+        "packs": [
+          "pge_bankruptcy_timeline"
+        ],
+        "date_range": null,
+        "topic": "PG&E Chapter 11 bankruptcy filing and Enron's response (April 2001)"
+      },
+      "source_provenance": [
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/1."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/2."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/3."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/4."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/5."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/6."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/7."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/8."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/9."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/10."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/11."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/12."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/13."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/14."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/15."
+        },
+        {
+          "mailbox": "shapiro-r",
+          "folder": "pg_e_bankruptcy",
+          "source_path": "enron_mail_20150507/maildir/shapiro-r/pg_e_bankruptcy/16."
+        }
+      ],
+      "intended_question_sketch": "Build the dated timeline of PG&E's Chapter 11 filing and Enron's response, and state the filing date and the sequence of Enron's public/legal reactions (files 2001-04-06 -> response statements same day -> legal motions 2001-04-09..11 -> PX credits 2001-05-23).",
+      "parser_pitfalls": [
+        "Many senders are external news/analyst services (ubspainewebber.com, scientech.com, issuealert@...); distinguish Enron-internal messages from forwarded news.",
+        "File 1. subject is truncated ('*PG&E <PCG.N> SAYS PACIFIC G&E FILED FOR CHAPTER 11 VOLUNTARY').",
+        "Several 2001-04-06 messages share the date; order by time-of-day for the intra-day sequence."
+      ]
+    }
+  ]
+}

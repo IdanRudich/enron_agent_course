@@ -1,0 +1,92 @@
+[
+  {
+    "id": "easy-001",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {"value": "1-800-368-3804", "aliases": ["18003683804", "800-368-3804", "(800) 368-3804", "1 800 368 3804", "1.800.368.3804"]},
+    "evidence_message_ids": ["<22322411.1075840045955.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Atomic fact retrieved from the body of the email named by the given Message-ID. The body states 'The contact number for AON is 1-800-368-3804.' Accept the number in any common punctuation/spacing (digits 8003683804); the leading US '1' is optional. The second number in the email (1-800-332-7979, for all Benefits) is a distractor and is not accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-002",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {"value": "<8294594.1075855414353.JavaMail.evans@thyme>", "aliases": ["8294594.1075855414353.JavaMail.evans@thyme"]},
+    "evidence_message_ids": ["<8294594.1075855414353.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Only one email in phanis-s/inbox has From sara.shackleton@enron.com with Subject 'Magnum Hunter Resources, Inc.', so the discovered Message-ID is unique. Canonical form keeps the angle brackets; a bracket-less but otherwise identical string is accepted (add-only tolerance per NORMALIZATION.md §1). Inner content matched byte-for-byte after trimming. The answer value and the evidence Message-ID are the same id here."
+  },
+  {
+    "id": "easy-003",
+    "difficulty": "easy",
+    "points": 1,
+    "accepted_answer": {"value": "david.steiner@enron.com", "aliases": ["David Steiner", "Steiner, David"]},
+    "evidence_message_ids": ["<10033007.1075840046962.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Top-level From header of the named email. Canonical answer is the lowercase email address; display-name aliases accepted per NORMALIZATION.md §3. Address compared case-insensitively after trimming. Message-ID evidence required."
+  },
+  {
+    "id": "easy-004",
+    "difficulty": "easy",
+    "points": 1,
+    "accepted_answer": {"value": "Paul Kane Resigns", "aliases": []},
+    "evidence_message_ids": ["<10033007.1075840046962.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Exact Subject header text of the named email. Compare after trimming leading/trailing whitespace; case-insensitive match accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-005",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {"value": ["MVC-003S.JPG", "MVC-011S.JPG", "MVC-013S.JPG", "MVC-019S.JPG"], "aliases": []},
+    "evidence_message_ids": ["<31472676.1075853654527.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "The four filenames are mentioned as plain text in the body ('- MVC-003S.JPG' etc.); the email carries NO real MIME attachment (verified: zero attachment parts). Answer is the set of all four filenames; order does not matter and filename case is not significant. All four required for full credit. Message-ID evidence required."
+  },
+  {
+    "id": "easy-006",
+    "difficulty": "easy",
+    "points": 3,
+    "accepted_answer": {"value": "christina.slinger@gs.com", "aliases": ["Christina Slinger", "Slinger, Christina"]},
+    "evidence_message_ids": ["<5764479.1075840047485.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Graded against the current email's top-level From header per NORMALIZATION.md §5. The quoted 'Original Message' below is from Ryan.Slinger@enron.com; ryan.slinger@enron.com is the quoted-history sender and is a distractor, NOT accepted. Canonical answer is the lowercase current-sender address; display-name aliases accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-007",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {"value": "2001-05-22T07:25:59-07:00", "aliases": ["2001-05-22T14:25:59+00:00", "2001-05-22T14:25:59Z"]},
+    "evidence_message_ids": ["<3789605.1075840048923.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Raw Date header 'Tue, 22 May 2001 07:25:59 -0700' (PDT). Canonical answer keeps the original -07:00 offset per NORMALIZATION.md §2. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-008",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {"value": "2002-01-31T12:33:39-08:00", "aliases": ["2002-01-31T20:33:39+00:00", "2002-01-31T20:33:39Z"]},
+    "evidence_message_ids": ["<3392486.1075840045696.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Raw Date header 'Thu, 31 Jan 2002 12:33:39 -0800' (PST). Canonical answer keeps the original -08:00 offset per NORMALIZATION.md §2. Representations denoting the same instant (e.g. the UTC equivalents listed as aliases) are accepted; any answer resolving to the same absolute instant is accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-009",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {"value": "stephanie.sever@enron.com", "aliases": ["Stephanie Sever", "Sever, Stephanie"]},
+    "evidence_message_ids": ["<11700608.1075840047233.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "The To field holds exactly one address: stephanie.sever@enron.com. The Cc field holds ryan.slinger@enron.com and bill.williams@enron.com; those are Cc recipients and are NOT accepted for this To-role question (note ryan.slinger, the mailbox owner, appears only in Cc). Address compared case-insensitively; display-name aliases accepted. Message-ID evidence required."
+  },
+  {
+    "id": "easy-010",
+    "difficulty": "easy",
+    "points": 2,
+    "accepted_answer": {"value": "281-820-7889", "aliases": ["2818207889", "(281) 820-7889", "281.820.7889", "281 820 7889"]},
+    "evidence_message_ids": ["<1378742.1075855414130.JavaMail.evans@thyme>"],
+    "evidence_mode": "all",
+    "grading_notes": "Explicit fact from the body: 'I received a call from Ryan Youngblood of Kona Ltd. (281-820-7889) requesting the return of the letter of credit...'. Accept the number in any common punctuation/spacing (digits 2818207889). Message-ID evidence required."
+  }
+]

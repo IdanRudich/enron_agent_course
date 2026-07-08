@@ -1,0 +1,70 @@
+{
+  "difficulty": "easy",
+  "sources": [
+    {
+      "type": "full_mailbox",
+      "mailbox": "slinger-r",
+      "source_path": "enron_mail_20150507/maildir/slinger-r",
+      "packaged_path": "student_dataset/mail/easy/slinger-r",
+      "email_count": 132,
+      "folders": ["inbox", "sent_items", "deleted_items"],
+      "parser_pitfalls": [
+        "Mailbox owner is Ryan Slinger (ryan.slinger@enron.com), NOT Richard Slinger. The DATASET_CONTRACT example uses 'richard.slinger@enron.com' illustratively; do not treat that as the real owner address.",
+        "Automated/bulletin messages (e.g. Outage Reports) use placeholder senders like 'no.address@enron.com' and have an empty To: header.",
+        "Enron distribution-list expansion produces double-dot local parts such as 'm..driscoll@enron.com' and 'd..thomas@enron.com'; these are valid addresses in the corpus, not parse errors.",
+        "Clean inbox/sent_items/deleted_items split; good starter mailbox for header-field and recipient-role challenges."
+      ]
+    },
+    {
+      "type": "full_mailbox",
+      "mailbox": "phanis-s",
+      "source_path": "enron_mail_20150507/maildir/phanis-s",
+      "packaged_path": "student_dataset/mail/easy/phanis-s",
+      "email_count": 35,
+      "folders": ["inbox", "sent_items", "deleted_items", "contacts"],
+      "parser_pitfalls": [
+        "Smallest mailbox (35 files); ideal for exact-lookup and Message-ID-discovery challenges with a tightly bounded search space.",
+        "A 'contacts' folder (2 files) exists alongside mail folders; its items are still RFC822 messages with Message-IDs, but they are not conversational email and should be excluded from participant/topic scopes."
+      ]
+    },
+    {
+      "type": "full_mailbox",
+      "mailbox": "south-s",
+      "source_path": "enron_mail_20150507/maildir/south-s",
+      "packaged_path": "student_dataset/mail/easy/south-s",
+      "email_count": 248,
+      "folders": ["all_documents", "discussion_threads", "notes_inbox", "sent", "_sent_mail", "southern_cone", "southeast"],
+      "parser_pitfalls": [
+        "No conventional 'inbox' folder: incoming mail lives in 'notes_inbox'; sent mail is split across 'sent' and '_sent_mail'. Do not assume inbox/sent_items naming when scoping challenges.",
+        "'all_documents' and 'discussion_threads' are Notes-style archive folders that heavily overlap/duplicate messages seen in other folders (same Message-ID content may appear in multiple folders); useful for mailbox-hygiene/duplicate-looking challenges but risky for naive counts.",
+        "Topic folders 'southern_cone' and 'southeast' are region-specific and good for bounded-topic material."
+      ]
+    },
+    {
+      "type": "full_mailbox",
+      "mailbox": "crandell-s",
+      "source_path": "enron_mail_20150507/maildir/crandell-s",
+      "packaged_path": "student_dataset/mail/easy/crandell-s",
+      "email_count": 519,
+      "folders": ["inbox", "inbox/bankruptcy", "inbox/rto_west", "inbox/regulatory", "inbox/ferc", "inbox/rto", "inbox/ubs", "sent_items", "deleted_items", "calendar", "to_do"],
+      "parser_pitfalls": [
+        "The 'inbox' contains NESTED subfolders (inbox/bankruptcy, inbox/rto_west, inbox/regulatory, inbox/ferc, inbox/rto, inbox/ubs). A recursive walk records source_folder as e.g. 'inbox/bankruptcy'; a challenge scoped to 'inbox' must state whether subfolders are in or out of bounds.",
+        "Largest Easy mailbox (519); regulatory/FERC/RTO subfolders provide clean topic-bounded material and many Re:/Fwd: threads.",
+        "'calendar' and 'to_do' folders hold non-conversational Notes items with Message-IDs; exclude from participant/topic scopes."
+      ]
+    },
+    {
+      "type": "full_mailbox",
+      "mailbox": "dickson-s",
+      "source_path": "enron_mail_20150507/maildir/dickson-s",
+      "packaged_path": "student_dataset/mail/easy/dickson-s",
+      "email_count": 395,
+      "folders": ["all_documents", "sent", "pictures"],
+      "parser_pitfalls": [
+        "The 'pictures' folder holds emails that MENTION image attachments (e.g. body lists ' - MVC-003S.JPG') but the actual JPEG bytes are NOT present. Perfect for attachment-mention challenges that distinguish a text mention from a real MIME attachment.",
+        "No 'inbox' folder: mail is split between 'all_documents' (archive, 199) and 'sent' (189). 'all_documents' duplicates much of the mailbox, so avoid using it for exact counts.",
+        "Personal/off-Enron correspondents appear (e.g. ssmgranmayeh@msn.com, obgynassociates.com), so From/To are not always @enron.com addresses."
+      ]
+    }
+  ]
+}
