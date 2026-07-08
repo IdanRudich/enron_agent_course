@@ -24,38 +24,9 @@ DIFFICULTY_ORDER = {difficulty: i for i, difficulty in enumerate(DIFFICULTIES)}
 POINT_BANDS = {"easy": (1, 3), "medium": (4, 7), "hard": (8, 10)}
 EXPECTED_CHALLENGE_COUNTS = {"easy": 10, "medium": 10, "hard": 8}
 
-EASY_FAMILIES = {
-    "exact_email_lookup",
-    "message_id_discovery",
-    "header_field_extraction",
-    "attachment_mention",
-    "latest_vs_quoted_sender",
-    "date_normalization",
-    "recipient_role",
-    "body_fact_extraction",
-}
-MEDIUM_FAMILIES = {
-    "bounded_work_summary",
-    "search_aggregate",
-    "earliest_latest",
-    "participant_list",
-    "topic_participation",
-}
-HARD_FAMILIES = {
-    "thread_reconstruction",
-    "cross_mailbox_corroboration",
-    "timeline_synthesis",
-    "contradiction_resolution",
-}
-CROSS_CUTTING = {
-    "negative_evidence",
-    "forwarded_copy",
-    "entity_disambiguation",
-    "mailbox_hygiene",
-}
-ALL_FAMILIES = EASY_FAMILIES | MEDIUM_FAMILIES | HARD_FAMILIES | CROSS_CUTTING
-
 MSG_ID_RE = re.compile(r"^<[^>]+>$")
+PROMPT_PACK_RE = re.compile(r"(?:pack\s+['`]([^'`]+)['`]|['`]([^'`]+)['`]\s+pack)", re.IGNORECASE)
+PROMPT_MAILBOX_FOLDER_RE = re.compile(r"\b([a-z0-9-]+) mailbox \(([^)]+) folder\)", re.IGNORECASE)
 SOURCE_CORPUS_PREFIX = "enron_mail_20150507/maildir/"
 DATASET_MAIL_PREFIX = "student_dataset/mail/"
 EXPECTED_FILES = {
@@ -275,26 +246,37 @@ def derive_mail_rows(pack_difficulty: dict[str, str], report: Report) -> dict[st
     return rows_by_mid
 
 
-def validate_scope_explicit(challenge: dict, report: Report) -> None:
+def prompt_pack_names(prompt: str) -> set[str]:
+    return {a or b for a, b in PROMPT_PACK_RE.findall(prompt)}
+
+
+def prompt_mailbox_folders(prompt: str) -> tuple[set[str], set[str]]:
+    mailboxes: set[str] = set()
+    folders: set[str] = set()
+    for mailbox, folder in PROMPT_MAILBOX_FOLDER_RE.findall(prompt):
+        mailboxes.add(mailbox)
+        folders.add(folder)
+    return mailboxes, folders
+
+
+def validate_prompt_bounds_explicit(challenge: dict, report: Report) -> None:
     cid = challenge.get("id", "<missing>")
-    scope = challenge.get("scope")
-    if not isinstance(scope, dict):
-        report.fail(f"{cid}: missing or invalid scope object")
-        return
     prompt = challenge.get("prompt", "")
     if not prompt or not prompt.strip():
         report.fail(f"{cid}: empty prompt")
-    mailboxes = scope.get("mailboxes") or []
-    folders = scope.get("folders") or []
-    packs = scope.get("packs") or []
-    topic = scope.get("topic")
-    date_range = scope.get("date_range")
-    has_bound = bool(mailboxes or folders or packs or topic or date_range)
+        return
+    if "family" in challenge:
+        report.fail(f"{cid}: student-facing challenge record must not include family")
+    if "scope" in challenge:
+        report.fail(f"{cid}: student-facing challenge record must not include scope")
+    prompt_packs = prompt_pack_names(prompt)
+    prompt_mailboxes, prompt_folders = prompt_mailbox_folders(prompt)
+    has_bound = bool(prompt_packs or (prompt_mailboxes and prompt_folders))
     search_words = ("search", "count", "how many", "list all", "list every", "earliest", "latest", "who")
     prompt_lower = prompt.lower()
     needs_explicit = any(w in prompt_lower for w in search_words)
     if needs_explicit and not has_bound:
-        report.fail(f"{cid}: search-style prompt lacks explicit scope bounds")
+        report.fail(f"{cid}: search-style prompt lacks prompt-visible scope bounds")
 
 
 def validate_challenge(ch: dict, report: Report) -> None:
@@ -305,9 +287,6 @@ def validate_challenge(ch: dict, report: Report) -> None:
         return
     if not isinstance(cid, str) or not cid.startswith(f"{difficulty}-"):
         report.fail(f"{cid}: id prefix does not match difficulty {difficulty!r}")
-    family = ch.get("family")
-    if family not in ALL_FAMILIES:
-        report.fail(f"{cid}: unknown family {family!r}")
     points = ch.get("points")
     lo, hi = POINT_BANDS[difficulty]
     if not isinstance(points, int) or not (lo <= points <= hi):
@@ -315,15 +294,14 @@ def validate_challenge(ch: dict, report: Report) -> None:
     es = ch.get("expected_submission") or {}
     if es.get("requires_evidence_message_ids") is not True:
         report.fail(f"{cid}: expected_submission.requires_evidence_message_ids must be true")
-    validate_scope_explicit(ch, report)
+    validate_prompt_bounds_explicit(ch, report)
 
 
-def rows_matching_challenge_scope(mid: str, challenge: dict, rows_by_mid: dict[str, list[dict]]) -> list[dict]:
+def rows_matching_prompt_bounds(mid: str, challenge: dict, rows_by_mid: dict[str, list[dict]]) -> list[dict]:
     difficulty = challenge.get("difficulty")
-    scope = challenge.get("scope") or {}
-    packs = set(scope.get("packs") or [])
-    mailboxes = set(scope.get("mailboxes") or [])
-    folders = set(scope.get("folders") or [])
+    prompt = challenge.get("prompt", "")
+    packs = prompt_pack_names(prompt)
+    mailboxes, folders = prompt_mailbox_folders(prompt)
     rows = [r for r in rows_by_mid.get(mid, []) if r.get("difficulty") == difficulty]
     if packs:
         rows = [r for r in rows if r.get("pack") in packs]
@@ -352,9 +330,9 @@ def validate_golden(ga: object, ch: dict, rows_by_mid: dict[str, list[dict]], re
         if not isinstance(mid, str) or not MSG_ID_RE.match(mid):
             report.fail(f"{gid}: malformed evidence Message-ID {mid!r}")
             continue
-        matches = rows_matching_challenge_scope(mid, ch, rows_by_mid)
+        matches = rows_matching_prompt_bounds(mid, ch, rows_by_mid)
         if not matches:
-            packs = ch.get("scope", {}).get("packs") or []
+            packs = sorted(prompt_pack_names(ch.get("prompt", "")))
             scope_hint = f" in packs {packs}" if packs else " in declared scope"
             report.fail(f"{gid}: evidence Message-ID not found in packaged raw mail{scope_hint}: {mid}")
 
@@ -482,7 +460,7 @@ def main() -> int:
 
     medium_001 = ch_by_id.get("medium-001")
     if medium_001:
-        pack = (medium_001.get("scope", {}).get("packs") or [None])[0]
+        pack = next(iter(prompt_pack_names(medium_001.get("prompt", ""))), None)
         pack_rows = [r for rows in rows_by_mid.values() for r in rows if r.get("pack") == pack]
         report.check(f"medium-001 pack {pack!r}: {len(pack_rows)} packaged files")
     hard_duplicates = [mid for mid, rows in rows_by_mid.items() if len(rows) > 1 and any(r.get("difficulty") == "hard" for r in rows)]

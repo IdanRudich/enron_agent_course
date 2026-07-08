@@ -11,8 +11,8 @@ You do **not** need Python or any specific tooling. Everything is plain files: J
 | Component | Location | What it is |
 | --- | --- | --- |
 | **Full mailboxes** | `mail/full_mailboxes/` | Five small full Enron mailboxes, copied with native folder structure. These support Easy lookup and extraction challenges. |
-| **Packs** | `mail/packs/` | Medium bounded folders plus Hard curated multi-message packs. Pack names match `scope.packs` values. |
-| **Golden Set** | `golden_set/golden_set.json` | 28 graded tasks (10 Easy, 10 Medium, 8 Hard). Each record keeps the challenge prompt, metadata, explicit search scope, and nested official answer. |
+| **Packs** | `mail/packs/` | Medium bounded folders plus Hard curated multi-message packs. Pack names are stated directly in prompts. |
+| **Golden Set** | `golden_set/golden_set.json` | 28 graded tasks (10 Easy, 10 Medium, 8 Hard). Each record keeps the challenge prompt, basic metadata, expected submission shape, and nested official answer. |
 | **Manifest** | `manifest/manifest.json` | Dataset version, unified file locations, mail layout, counts, and provenance. Source details remain in `manifest/sources_<difficulty>.json`. |
 | **Validation report** | `validation/validation_report.md` | Consistency checks run before release. |
 
@@ -65,15 +65,7 @@ Each challenge has **Fixed Challenge Points** (one integer, all-or-nothing). Dif
 | **Medium** | 4-7 | 1,500 | 10 | `mail/packs/<pack_name>/...` |
 | **Hard** | 8-10 | 63 | 8 | `mail/packs/<pack_name>/...` |
 
-Challenge families remain grouped by difficulty:
-
-**Easy** - `exact_email_lookup`, `message_id_discovery`, `header_field_extraction`, `attachment_mention`, `latest_vs_quoted_sender`, `date_normalization`, `recipient_role`, `body_fact_extraction`
-
-**Medium** - `bounded_work_summary`, `search_aggregate`, `earliest_latest`, `participant_list`, `topic_participation`
-
-**Hard** - `thread_reconstruction`, `cross_mailbox_corroboration`, `timeline_synthesis`, `contradiction_resolution`
-
-When a prompt requires search, its `scope` object tells you which mailboxes, folders, packs, date ranges, or topics are in bounds. Stay inside that scope.
+When a prompt requires search, the prompt text tells you which mailboxes, folders, packs, date ranges, or topics are in bounds. Stay inside those stated bounds.
 
 ---
 
@@ -107,8 +99,7 @@ Your course tooling may wrap this differently, but graders expect both the answe
 > Open the email with Message-ID `<22322411.1075840045955.JavaMail.evans@thyme>` in the slinger-r mailbox (inbox folder). The body gives a contact phone number for AON. What is that AON contact phone number?
 
 - **Points:** 2 (Easy band 1-3)
-- **Family:** `exact_email_lookup`
-- **Scope:** `slinger-r` mailbox, `inbox` folder only
+- **Prompt-stated bounds:** `slinger-r` mailbox, `inbox` folder only
 - **Packaged path:** locate the Message-ID by searching or indexing `mail/full_mailboxes/slinger-r/inbox/`.
 
 ### Good submission
@@ -171,7 +162,7 @@ For complete record shapes, see **`DATASET_CONTRACT.md`**. For answer-matching r
 ## Quick Start
 
 1. Read challenge records from `golden_set/golden_set.json`.
-2. Use each challenge's `difficulty`, `points`, and `scope` to choose the in-bounds mail: full mailboxes live under `mail/full_mailboxes/`, and named packs live under `mail/packs/`.
+2. Use each challenge's `difficulty`, `points`, and prompt text to choose the in-bounds mail: full mailboxes live under `mail/full_mailboxes/`, and named packs live under `mail/packs/`.
 3. Search the raw mail directly, or build your own Message-ID / metadata index from the packaged files.
 4. Build your agent to return a **Student Agent Submission** - answer plus evidence Message-IDs.
 5. Compare against each record's `golden_answer` object to score yourself before each course submission round.

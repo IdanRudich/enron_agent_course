@@ -55,22 +55,10 @@ Element of the JSON array in `golden_set/golden_set.json`.
 | --- | --- | --- |
 | `id` | string | Stable challenge id, `"<difficulty>-NNN"` zero-padded to 3 digits, e.g. `"easy-001"`. Unique across the whole dataset. |
 | `difficulty` | string | One of `"easy"`, `"medium"`, `"hard"`. Difficulty is challenge metadata and determines the point band. |
-| `family` | string | Challenge family; must be one of the values in [Challenge Families](#3-challenge-families). |
 | `points` | integer | Fixed Challenge Points. Must fit the difficulty's Point Band. |
-| `prompt` | string | Beginner-friendly task text. Must state scope explicitly whenever search is required. |
-| `scope` | object | Where the answer may be found. See below. |
+| `prompt` | string | Beginner-friendly task text. Must state mailbox, folder, pack, date, or topic bounds explicitly whenever search is required. |
 | `expected_submission` | object | What a valid student submission must contain. See below. |
 | `golden_answer` | object | The official student-visible answer and accepted evidence for this challenge. See [Golden Answer Object](#4-golden-answer-object). |
-
-`scope` object:
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `mailboxes` | array of string | In-bounds mailbox names, or `[]` if not scoped by mailbox. |
-| `folders` | array of string | In-bounds folder names, or `[]`. |
-| `packs` | array of string | In-bounds pack names under `mail/packs/`, or `[]`. |
-| `date_range` | object or null | `null`, or `{ "start": "<ISO 8601>", "end": "<ISO 8601>" }` inclusive. |
-| `topic` | string or null | Free-text topic label for topic-bounded challenges, else `null`. |
 
 `expected_submission` object:
 
@@ -85,10 +73,8 @@ Element of the JSON array in `golden_set/golden_set.json`.
 {
   "id": "easy-001",
   "difficulty": "easy",
-  "family": "exact_email_lookup",
   "points": 2,
   "prompt": "Open the email with Message-ID <example123@enron.com> in the slinger-r inbox. Who is listed as the sender (From)?",
-  "scope": {"mailboxes": ["slinger-r"], "folders": ["inbox"], "packs": [], "date_range": null, "topic": null},
   "expected_submission": {"answer_format": "single email address", "requires_evidence_message_ids": true},
   "golden_answer": {
     "accepted_answer": {"value": "sender@example.com", "aliases": []},
@@ -101,13 +87,13 @@ Element of the JSON array in `golden_set/golden_set.json`.
 
 ---
 
-## 3. Challenge Families
+## 3. Challenge Taxonomy Glossary
 
-Allowed `family` values, grouped by the difficulty they primarily belong to:
+These authoring labels describe the kinds of tasks in the release. They are retained as design vocabulary, but they are not fields in student-facing Golden Set records.
 
 **Easy families**
 
-| `family` value |
+| Challenge type |
 | --- |
 | `exact_email_lookup` |
 | `message_id_discovery` |
@@ -120,7 +106,7 @@ Allowed `family` values, grouped by the difficulty they primarily belong to:
 
 **Medium families**
 
-| `family` value |
+| Challenge type |
 | --- |
 | `bounded_work_summary` |
 | `search_aggregate` |
@@ -130,7 +116,7 @@ Allowed `family` values, grouped by the difficulty they primarily belong to:
 
 **Hard families**
 
-| `family` value |
+| Challenge type |
 | --- |
 | `thread_reconstruction` |
 | `cross_mailbox_corroboration` |
@@ -158,7 +144,7 @@ Nested object at `golden_answer` inside each `golden_set/golden_set.json` record
 
 - `id`, `difficulty`, and `points` live on the parent Golden Set record.
 - Every id in `evidence_message_ids` must appear as the `Message-ID:` header of at least one packaged raw email file.
-- For scoped pack challenges, the accepted evidence must resolve inside the scoped pack(s).
+- For prompt-bounded pack challenges, the accepted evidence must resolve inside the named pack(s).
 - `accepted_answer.value` is the single canonical answer; aliases only add accepted equivalents.
 
 ---

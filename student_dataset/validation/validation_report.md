@@ -40,10 +40,10 @@ The old physical split (`mail/easy`, `mail/medium`, `mail/hard`) and old split p
 - [x] **No shipped evidence index** - no prebuilt evidence index remains in the student package.
 - [x] **Obsolete file removal** - no split challenge, split golden-answer, per-difficulty, or evidence files remain.
 - [x] **Mail layout** - `mail/full_mailboxes` and `mail/packs` exist; `mail/easy`, `mail/medium`, and `mail/hard` do not.
-- [x] **Golden Set shape** - all 28 records contain challenge fields plus a nested `golden_answer` object.
+- [x] **Golden Set shape** - all 28 records contain public challenge fields plus a nested `golden_answer` object, without routing-only `family` or `scope` fields.
 - [x] **Point bands** - easy 1-3, medium 4-7, hard 8-10.
 - [x] **Golden Set sort order** - unified array sorted by Easy, Medium, Hard, then id.
-- [x] **Evidence Message-ID resolution** - all nested `golden_answer.evidence_message_ids` resolve by parsing `Message-ID:` headers from in-scope packaged raw mail files.
+- [x] **Evidence Message-ID resolution** - all nested `golden_answer.evidence_message_ids` resolve by parsing `Message-ID:` headers from prompt-bounded packaged raw mail files.
 - [x] **Source lineage** - all source fragments trace back under `enron_mail_20150507/maildir/`.
 - [x] **Source count reconciliation** - source fragment `email_count` sums match packaged mail files by difficulty.
 - [x] **Mail count reconciliation** - mail files on disk = 2,892.

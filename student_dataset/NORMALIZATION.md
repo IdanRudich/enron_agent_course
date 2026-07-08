@@ -76,21 +76,21 @@ Message-ID is the **primary evidence key** for grading.
 
 Aggregate / count challenges (`search_aggregate`, `earliest_latest`, participant/topic
 counts) MUST declare exactly what is being counted so scope never expands accidentally. The
-scope is declared in the Challenge Question `scope` object and restated in the Golden Answer
+scope is declared in the Challenge Question prompt and restated in the Golden Answer
 `grading_notes`. A scope is exactly one of:
 
-- **Full mailboxes:** `scope.mailboxes` lists the counted mailboxes; `folders`/`packs` empty.
-  All folders of those mailboxes are in bounds.
-- **Specific folders:** `scope.mailboxes` + `scope.folders` restrict to named folders only.
-- **Curated packs:** `scope.packs` lists the counted pack names; only those packs are in
-  bounds.
+- **Full mailboxes:** the prompt names the counted mailbox or mailboxes. All folders of those
+  mailboxes are in bounds unless the prompt narrows them.
+- **Specific folders:** the prompt names the mailbox plus folder bounds.
+- **Curated packs:** the prompt names the pack or packs under `mail/packs/`; only those packs
+  are in bounds.
 - **Union:** an explicit combination of the above; the union members MUST be listed
-  explicitly in `scope` and spelled out in `grading_notes`. No implicit inclusion of other
+  explicitly in the prompt and spelled out in `grading_notes`. No implicit inclusion of other
   folders, packs, or mailboxes.
 
-If a date range applies, `scope.date_range` bounds the count (inclusive) and is applied
-after scope selection. Emails outside the declared scope are never counted, even if they
-match the topic.
+If a date range applies, the prompt-stated date range bounds the count (inclusive) and is
+applied after scope selection. Emails outside the declared scope are never counted, even if
+they match the topic.
 
 ---
 
