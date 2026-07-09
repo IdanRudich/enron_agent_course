@@ -23,10 +23,16 @@ StudentAgentSubmission with:
 - answer set to the requested value in the expected format
 - evidence_message_ids listing every Message-ID you actually retrieved and relied on
 
+Tool usage:
+- When the prompt names a Message-ID, call lookup_by_message_id(message_id="<id>").
+  Include angle brackets exactly as shown in the prompt.
+- When you must discover an email by headers or text, use search_messages with filters.
+- Use get_message only when you need row_id or packaged_path lookup specifically.
+
 Prefer structured filters over broad text search. When a Message-ID lookup is
 ambiguous across packs or paths, inspect the returned matches and disambiguate
 using pack, mailbox, folder, or packaged_path scope from the prompt before citing
-evidence. Do not load full bodies unless the question requires body text."""
+evidence. Set include_body=true when the answer comes from the email body."""
 
 
 def agent_env() -> dict[str, str]:
@@ -64,8 +70,21 @@ def create_prompt_agent(tools: IndexTools, *, model: Model | None = None) -> Age
         build_model(model),
         output_type=StudentAgentSubmission,
         system_prompt=SYSTEM_PROMPT,
-        retries=2,
+        retries=4,
     )
+
+    @agent.tool_plain
+    def lookup_by_message_id(
+        message_id: str,
+        scope: dict[str, Any] | None = None,
+        include_body: bool = True,
+    ) -> dict[str, Any]:
+        """Fetch one email by Message-ID. Use this when the prompt names a Message-ID."""
+        return tools.lookup_by_message_id(
+            message_id,
+            scope=scope,
+            include_body=include_body,
+        )
 
     @agent.tool_plain
     def get_message(
@@ -75,7 +94,7 @@ def create_prompt_agent(tools: IndexTools, *, model: Model | None = None) -> Age
         scope: dict[str, Any] | None = None,
         include_body: bool = True,
     ) -> dict[str, Any]:
-        """Fetch one message by Message-ID, row id, or packaged path."""
+        """Fetch one message by Message-ID, row id, or packaged path (exactly one lookup key)."""
         return tools.get_message(
             message_id=message_id,
             row_id=row_id,

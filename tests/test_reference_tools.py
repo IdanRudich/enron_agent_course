@@ -35,14 +35,27 @@ def full_index(tmp_path_factory: pytest.TempPathFactory) -> IndexTools:
 
 
 class TestGetMessage:
+    def test_invalid_lookup_returns_error_dict(self, subset_index: tuple[Path, IndexTools]) -> None:
+        _, tools = subset_index
+        result = tools.get_message()
+        assert result["status"] == "error"
+        assert "exactly one" in result["error"]
+
     def test_lookup_by_message_id(self, subset_index: tuple[Path, IndexTools]) -> None:
         _, tools = subset_index
-        result = tools.get_message(message_id="<27940994.1075840056140.JavaMail.evans@thyme>")
+        result = tools.lookup_by_message_id("<27940994.1075840056140.JavaMail.evans@thyme>")
         assert result["status"] == "found"
         message = result["message"]
         assert message["from_raw"] == "michael.tully@enron.com"
         assert message["subject_raw"] == "Forward obligations"
         assert "Could one of you two send me the criteria" in message["body_text"]
+
+    def test_lookup_by_message_id_via_get_message(self, subset_index: tuple[Path, IndexTools]) -> None:
+        _, tools = subset_index
+        result = tools.get_message(message_id="<27940994.1075840056140.JavaMail.evans@thyme>")
+        assert result["status"] == "found"
+        message = result["message"]
+        assert message["from_raw"] == "michael.tully@enron.com"
 
     def test_lookup_by_packaged_path(self, subset_index: tuple[Path, IndexTools]) -> None:
         _, tools = subset_index

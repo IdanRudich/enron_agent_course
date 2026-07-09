@@ -83,6 +83,7 @@ class TestPromptRuntime:
             agent = create_prompt_agent(tools, model=TestModel())
             tool_names = {tool.name for tool in agent._function_toolset.tools.values()}  # noqa: SLF001
             assert tool_names == {
+                "lookup_by_message_id",
                 "get_message",
                 "search_messages",
                 "count_messages",
@@ -98,7 +99,7 @@ class TestPromptRuntime:
         golden = _load_golden("easy-003")
         model = FunctionModel(
             _tool_then_answer(
-                "get_message",
+                "lookup_by_message_id",
                 {"message_id": golden["golden_answer"]["evidence_message_ids"][0]},
                 "easy-003",
                 golden["golden_answer"]["accepted_answer"]["value"],

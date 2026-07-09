@@ -64,8 +64,19 @@ class IndexTools:
         include_body: bool = True,
     ) -> dict[str, Any]:
         """Look up one or more messages by Message-ID, row id, or packaged path."""
-        if sum(value is not None for value in (message_id, row_id, packaged_path)) != 1:
-            raise ValueError("Provide exactly one of message_id, row_id, or packaged_path")
+        message_id = _coerce_optional_str(message_id)
+        packaged_path = _coerce_optional_str(packaged_path)
+        lookup_count = sum(value is not None for value in (message_id, row_id, packaged_path))
+        if lookup_count != 1:
+            return {
+                "status": "error",
+                "error": "Provide exactly one of message_id, row_id, or packaged_path",
+                "hint": (
+                    "For prompts that name a Message-ID, call lookup_by_message_id with that id "
+                    "(including angle brackets). Use row_id or packaged_path only when the prompt "
+                    "names those identifiers."
+                ),
+            }
 
         filters = MessageFilters.from_mapping(scope)
         if message_id is not None:
@@ -89,6 +100,20 @@ class IndexTools:
         if len(matches) == 1:
             return {"status": "found", "message": matches[0], "matches": matches}
         return {"status": "ambiguous", "matches": matches}
+
+    def lookup_by_message_id(
+        self,
+        message_id: str,
+        *,
+        scope: dict[str, Any] | None = None,
+        include_body: bool = True,
+    ) -> dict[str, Any]:
+        """Fetch a message by Message-ID (the common case for direct email lookups)."""
+        return self.get_message(
+            message_id=message_id,
+            scope=scope,
+            include_body=include_body,
+        )
 
     def search_messages(
         self,
@@ -334,6 +359,13 @@ def _filters_from_params(where_sql: str, params: list[Any]) -> dict[str, Any]:
     """Best-effort reverse mapping for supporting-message lookups in tests."""
     _ = where_sql, params
     return {}
+
+
+def _coerce_optional_str(value: str | None) -> str | None:
+    if value is None:
+        return None
+    stripped = value.strip()
+    return stripped or None
 
 
 def _normalize_message_id(message_id: str) -> str:
