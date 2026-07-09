@@ -19,6 +19,7 @@ dev = ["pytest>=7.0"]
 
 [project.scripts]
 enron-eval = "enron_eval.cli:main"
+enron-reference = "enron_reference.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

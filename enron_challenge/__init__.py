@@ -7,6 +7,7 @@ from enron_challenge.models import (
     PublicChallengeRecord,
     StudentAgentSubmission,
 )
+from enron_challenge.cli import run_cli
 from enron_challenge.protocol import EnronAgent
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "IndexResult",
     "PublicChallengeRecord",
     "StudentAgentSubmission",
+    "run_cli",
 ]
