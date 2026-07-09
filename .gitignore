@@ -1,5 +1,6 @@
 enron_mail_20150507
 .venv/
+.env
 __pycache__/
 *.egg-info/
 .pytest_cache/
