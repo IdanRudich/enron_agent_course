@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 import tempfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -46,6 +47,7 @@ def run_eval(
     selector: ChallengeSelector | None = None,
     timeout: float | None = None,
     skip_judge: bool = False,
+    verbose: bool = False,
 ) -> EvalRunResult:
     dataset_path = Path(dataset_path)
     all_challenges = load_golden_challenges(dataset_path)
@@ -64,6 +66,7 @@ def run_eval(
     started_at = _utc_now()
     run_start = perf_counter()
 
+    _log(verbose, "Running agent metadata...")
     metadata_result = run_metadata(agent_cmd, timeout=timeout, env=agent_env)
     if metadata_result.timed_out:
         raise EvalRunnerError("Agent metadata timed out")
@@ -75,8 +78,11 @@ def run_eval(
     agent_name = metadata_result.payload["agent_name"]
     if not agent_name:
         raise EvalRunnerError("Agent metadata failed: missing agent_name")
+    _log(verbose, f"Agent: {agent_name}")
 
     selected_challenges = _resolve_challenges(all_challenges, selector)
+    total = len(selected_challenges)
+    _log(verbose, f"Selected {total} challenge(s)")
 
     if output_dir is None:
         output_dir = _default_output_dir(agent_name)
@@ -84,6 +90,7 @@ def run_eval(
         output_dir = Path(output_dir)
 
     with tempfile.TemporaryDirectory(prefix="enron-index-") as index_dir:
+        _log(verbose, "Building agent index...")
         index_result = run_index(
             agent_cmd,
             str(dataset_path),
@@ -98,25 +105,33 @@ def run_eval(
                 f"Agent index failed (exit {index_result.returncode}): "
                 f"{index_result.stderr.strip()}"
             )
+        indexed = index_result.payload.get("indexed_messages", "?")
+        _log(verbose, f"Index ready ({indexed} messages)")
 
         mail_index = build_mail_index(str(dataset_path))
         challenge_results: list[ChallengeResult] = []
-        for challenge in selected_challenges:
+        for index, challenge in enumerate(selected_challenges, start=1):
+            _log(verbose, f"[{index}/{total}] {challenge.id} ({challenge.difficulty})...")
             try:
-                challenge_results.append(
-                    _evaluate_challenge(
-                        agent_cmd,
-                        dataset_path,
-                        index_dir,
-                        challenge,
-                        mail_index=mail_index,
-                        timeout=timeout,
-                        agent_env=agent_env,
-                        judge=judge,
-                    )
+                challenge_result = _evaluate_challenge(
+                    agent_cmd,
+                    dataset_path,
+                    index_dir,
+                    challenge,
+                    mail_index=mail_index,
+                    timeout=timeout,
+                    agent_env=agent_env,
+                    judge=judge,
                 )
             except JudgeError as exc:
                 raise EvalRunnerError(str(exc)) from exc
+            challenge_results.append(challenge_result)
+            _log(
+                verbose,
+                f"  -> {challenge_result.status} "
+                f"({challenge_result.points_earned}/{challenge_result.max_points}) "
+                f"in {challenge_result.duration_seconds:.1f}s",
+            )
 
         finished_at = _utc_now()
         total_duration = perf_counter() - run_start
@@ -135,8 +150,8 @@ def run_eval(
             challenges=challenge_results,
         )
 
-        json_path, _md_path = write_results(result, output_dir)
-        print_terminal_summary(result, json_path)
+        json_path, md_path = write_results(result, output_dir)
+        print_terminal_summary(result, json_path, md_path)
         return result
 
 
@@ -280,3 +295,8 @@ def _slugify(value: str) -> str:
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
+def _log(verbose: bool, message: str) -> None:
+    if verbose:
+        print(message, file=sys.stderr)

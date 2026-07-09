@@ -1,0 +1,892 @@
+{
+  "agent_name": "enron-reference-agent",
+  "dataset_version": "0.1.0",
+  "started_at": "2026-07-09T00:43:59+00:00",
+  "finished_at": "2026-07-09T00:53:36+00:00",
+  "duration_seconds": 576.6842814099946,
+  "total_points": 98,
+  "max_points": 142,
+  "index_dir": "/tmp/enron-index-uhziyczi",
+  "challenges": [
+    {
+      "challenge_id": "easy-001",
+      "difficulty": "easy",
+      "max_points": 2,
+      "points_earned": 2,
+      "status": "correct",
+      "duration_seconds": 6.5608999020041665,
+      "submission": {
+        "challenge_id": "easy-001",
+        "answer": "1-800-368-3804",
+        "evidence_message_ids": [
+          "22322411.1075840045955.JavaMail.evans@thyme"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-001\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-002",
+      "difficulty": "easy",
+      "max_points": 2,
+      "points_earned": 2,
+      "status": "correct",
+      "duration_seconds": 12.451117532000353,
+      "submission": {
+        "challenge_id": "easy-002",
+        "answer": "<8294594.1075855414353.JavaMail.evans@thyme>",
+        "evidence_message_ids": [
+          "<8294594.1075855414353.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-002\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-003",
+      "difficulty": "easy",
+      "max_points": 1,
+      "points_earned": 1,
+      "status": "correct",
+      "duration_seconds": 5.913802615999884,
+      "submission": {
+        "challenge_id": "easy-003",
+        "answer": "david.steiner@enron.com",
+        "evidence_message_ids": [
+          "<10033007.1075840046962.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-003\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-004",
+      "difficulty": "easy",
+      "max_points": 1,
+      "points_earned": 1,
+      "status": "correct",
+      "duration_seconds": 6.828729624001426,
+      "submission": {
+        "challenge_id": "easy-004",
+        "answer": "Confirmation of Interview on Friday with Tim Belden",
+        "evidence_message_ids": [
+          "<14464692.1075840045536.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-004\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-005",
+      "difficulty": "easy",
+      "max_points": 2,
+      "points_earned": 2,
+      "status": "correct",
+      "duration_seconds": 12.021402235004643,
+      "submission": {
+        "challenge_id": "easy-005",
+        "answer": "[\"MVC-003S.JPG\", \"MVC-011S.JPG\", \"MVC-013S.JPG\", \"MVC-019S.JPG\"]",
+        "evidence_message_ids": [
+          "<31472676.1075853654527.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": true,
+        "judge_equivalent": true,
+        "judge_rationale": "The student answer is a JSON-formatted list containing exactly the same four image filenames as the expected answer: \"MVC-003S.JPG\", \"MVC-011S.JPG\", \"MVC-013S.JPG\", and \"MVC-019S.JPG\". The filenames match exactly in spelling, case, and extension. The only difference is formatting (JSON array vs plain list), but the semantic content is identical."
+      },
+      "stderr": "prompt easy-005\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-006",
+      "difficulty": "easy",
+      "max_points": 3,
+      "points_earned": 3,
+      "status": "correct",
+      "duration_seconds": 8.303295928999432,
+      "submission": {
+        "challenge_id": "easy-006",
+        "answer": "christina.slinger@gs.com",
+        "evidence_message_ids": [
+          "<5764479.1075840047485.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-006\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-007",
+      "difficulty": "easy",
+      "max_points": 2,
+      "points_earned": 2,
+      "status": "correct",
+      "duration_seconds": 8.5142402019992,
+      "submission": {
+        "challenge_id": "easy-007",
+        "answer": "2001-05-22T07:25:59-07:00",
+        "evidence_message_ids": [
+          "3789605.1075840048923.JavaMail.evans@thyme"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-007\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-008",
+      "difficulty": "easy",
+      "max_points": 2,
+      "points_earned": 2,
+      "status": "correct",
+      "duration_seconds": 8.048092569995788,
+      "submission": {
+        "challenge_id": "easy-008",
+        "answer": "2002-01-31T12:33:39-08:00",
+        "evidence_message_ids": [
+          "<3392486.1075840045696.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-008\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-009",
+      "difficulty": "easy",
+      "max_points": 2,
+      "points_earned": 2,
+      "status": "correct",
+      "duration_seconds": 7.397976253996603,
+      "submission": {
+        "challenge_id": "easy-009",
+        "answer": "stephanie.sever@enron.com",
+        "evidence_message_ids": [
+          "<11700608.1075840047233.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-009\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "easy-010",
+      "difficulty": "easy",
+      "max_points": 2,
+      "points_earned": 2,
+      "status": "correct",
+      "duration_seconds": 6.154246274003526,
+      "submission": {
+        "challenge_id": "easy-010",
+        "answer": "281-820-7889",
+        "evidence_message_ids": [
+          "<1378742.1075855414130.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt easy-010\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-001",
+      "difficulty": "medium",
+      "max_points": 4,
+      "points_earned": 0,
+      "status": "incorrect",
+      "duration_seconds": 8.611421013993095,
+      "submission": {
+        "challenge_id": "medium-001",
+        "answer": "136",
+        "evidence_message_ids": []
+      },
+      "grading": {
+        "answer_match": false,
+        "evidence_pass": false,
+        "evidence_mode": "predicate",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt medium-001\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-002",
+      "difficulty": "medium",
+      "max_points": 5,
+      "points_earned": 0,
+      "status": "incorrect",
+      "duration_seconds": 63.44364181400306,
+      "submission": {
+        "challenge_id": "medium-002",
+        "answer": "49",
+        "evidence_message_ids": [
+          "<32020551.1075855210397.JavaMail.evans@thyme>",
+          "<2010339.1075855210372.JavaMail.evans@thyme>",
+          "<303482.1075855211200.JavaMail.evans@thyme>",
+          "<1099586.1075855210896.JavaMail.evans@thyme>",
+          "<18632987.1075855210873.JavaMail.evans@thyme>",
+          "<30933191.1075855211314.JavaMail.evans@thyme>",
+          "<18550179.1075855210850.JavaMail.evans@thyme>",
+          "<19616973.1075855210943.JavaMail.evans@thyme>",
+          "<33154248.1075855210826.JavaMail.evans@thyme>",
+          "<31973257.1075855211177.JavaMail.evans@thyme>",
+          "<12454815.1075855211039.JavaMail.evans@thyme>",
+          "<30062607.1075855210804.JavaMail.evans@thyme>",
+          "<23383589.1075855210624.JavaMail.evans@thyme>",
+          "<822101.1075855210531.JavaMail.evans@thyme>",
+          "<6032684.1075855210601.JavaMail.evans@thyme>",
+          "<10419294.1075855210780.JavaMail.evans@thyme>",
+          "<11991878.1075855210674.JavaMail.evans@thyme>",
+          "<23129681.1075855211015.JavaMail.evans@thyme>",
+          "<7205828.1075855210725.JavaMail.evans@thyme>",
+          "<15543167.1075855211062.JavaMail.evans@thyme>",
+          "<18477911.1075855210648.JavaMail.evans@thyme>",
+          "<17057900.1075855211130.JavaMail.evans@thyme>",
+          "<22194469.1075855211361.JavaMail.evans@thyme>",
+          "<28983563.1075855211108.JavaMail.evans@thyme>",
+          "<17007855.1075855210508.JavaMail.evans@thyme>",
+          "<3064465.1075855211155.JavaMail.evans@thyme>",
+          "<26187314.1075855210553.JavaMail.evans@thyme>",
+          "<5262037.1075855210990.JavaMail.evans@thyme>",
+          "<27952221.1075855211289.JavaMail.evans@thyme>",
+          "<30176741.1075855210967.JavaMail.evans@thyme>",
+          "<19577673.1075855210702.JavaMail.evans@thyme>",
+          "<25815340.1075855210920.JavaMail.evans@thyme>",
+          "<353039.1075855211266.JavaMail.evans@thyme>",
+          "<1786152.1075855211337.JavaMail.evans@thyme>",
+          "<12761073.1075855211085.JavaMail.evans@thyme>",
+          "<23429420.1075855210485.JavaMail.evans@thyme>",
+          "<30264631.1075855210577.JavaMail.evans@thyme>",
+          "<16462789.1075855212349.JavaMail.evans@thyme>",
+          "<5523176.1075855212326.JavaMail.evans@thyme>",
+          "<32680312.1075855212304.JavaMail.evans@thyme>",
+          "<14536142.1075855212280.JavaMail.evans@thyme>",
+          "<4287255.1075855212257.JavaMail.evans@thyme>",
+          "<18367648.1075855212235.JavaMail.evans@thyme>",
+          "<5764860.1075855212205.JavaMail.evans@thyme>",
+          "<1547596.1075855212180.JavaMail.evans@thyme>",
+          "<11415826.1075855212156.JavaMail.evans@thyme>",
+          "<17100322.1075855212132.JavaMail.evans@thyme>",
+          "<4379244.1075855212106.JavaMail.evans@thyme>",
+          "<13110985.1075855212082.JavaMail.evans@thyme>",
+          "<27156571.1075855212058.JavaMail.evans@thyme>",
+          "<29846632.1075855212035.JavaMail.evans@thyme>",
+          "<10980286.1075855212012.JavaMail.evans@thyme>",
+          "<13095406.1075855211987.JavaMail.evans@thyme>",
+          "<17032543.1075855211963.JavaMail.evans@thyme>",
+          "<32090046.1075855211941.JavaMail.evans@thyme>",
+          "<25642390.1075855211918.JavaMail.evans@thyme>",
+          "<12736917.1075855211895.JavaMail.evans@thyme>",
+          "<25162089.1075855211872.JavaMail.evans@thyme>",
+          "<1295200.1075855211849.JavaMail.evans@thyme>",
+          "<4294453.1075855211826.JavaMail.evans@thyme>",
+          "<12032894.1075855211804.JavaMail.evans@thyme>",
+          "<13802214.1075855211781.JavaMail.evans@thyme>",
+          "<12235102.1075855211756.JavaMail.evans@thyme>",
+          "<4656462.1075855211733.JavaMail.evans@thyme>",
+          "<27597285.1075855211710.JavaMail.evans@thyme>",
+          "<27075578.1075855211686.JavaMail.evans@thyme>",
+          "<28159623.1075855211662.JavaMail.evans@thyme>",
+          "<18552742.1075855211638.JavaMail.evans@thyme>",
+          "<29370964.1075855211616.JavaMail.evans@thyme>",
+          "<5825409.1075855211593.JavaMail.evans@thyme>",
+          "<15774343.1075855211570.JavaMail.evans@thyme>",
+          "<19065094.1075855211546.JavaMail.evans@thyme>",
+          "<19893819.1075855211523.JavaMail.evans@thyme>",
+          "<15495676.1075855211500.JavaMail.evans@thyme>",
+          "<29159158.1075855211476.JavaMail.evans@thyme>",
+          "<2175875.1075855211453.JavaMail.evans@thyme>",
+          "<14356642.1075855211430.JavaMail.evans@thyme>",
+          "<9286369.1075855211408.JavaMail.evans@thyme>",
+          "<31390826.1075855211383.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": false,
+        "evidence_pass": true,
+        "evidence_mode": "predicate",
+        "judge_used": true,
+        "judge_equivalent": false,
+        "judge_rationale": "The student answer is 49, while the expected answer is 51. These are different integer counts and are not equivalent. The accepted aliases only provide alternative phrasings of \"51\" (e.g., \"51 emails\", \"51 replies/forwards\") but do not include 49."
+      },
+      "stderr": "prompt medium-002\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-003",
+      "difficulty": "medium",
+      "max_points": 5,
+      "points_earned": 5,
+      "status": "correct",
+      "duration_seconds": 17.536955502000637,
+      "submission": {
+        "challenge_id": "medium-003",
+        "answer": "2000-03-15T07:37:00-08:00 <26816706.1075846346223.JavaMail.evans@thyme>",
+        "evidence_message_ids": [
+          "<26816706.1075846346223.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": true,
+        "judge_equivalent": true,
+        "judge_rationale": "The student answer provides the exact ISO 8601 date (2000-03-15T07:37:00-08:00) which matches the expected answer value, and also includes a Message-ID citation as required by the expected answer format. The date matches one of the accepted aliases (2000-03-15T15:37:00Z is the UTC equivalent). The student correctly identified both the date and provided the Message-ID evidence."
+      },
+      "stderr": "prompt medium-003\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-004",
+      "difficulty": "medium",
+      "max_points": 5,
+      "points_earned": 5,
+      "status": "correct",
+      "duration_seconds": 10.987249325997254,
+      "submission": {
+        "challenge_id": "medium-004",
+        "answer": "2001-05-01T07:45:00-07:00 <6822417.1075841878775.JavaMail.evans@thyme>",
+        "evidence_message_ids": [
+          "<6822417.1075841878775.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": true,
+        "judge_equivalent": true,
+        "judge_rationale": "The student answer's date (2001-05-01T07:45:00-07:00) exactly matches the expected answer value. This date is also listed as an accepted alias. The student answer additionally provides a valid Message-ID (<6822417.1075841878775.JavaMail.evans@thyme>) which satisfies the citation requirement in the expected answer format. The semantic meaning is identical."
+      },
+      "stderr": "prompt medium-004\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-005",
+      "difficulty": "medium",
+      "max_points": 6,
+      "points_earned": 6,
+      "status": "correct",
+      "duration_seconds": 20.77727416199923,
+      "submission": {
+        "challenge_id": "medium-005",
+        "answer": "[\"bill.iii@enron.com\", \"chris.mallory@enron.com\", \"chris.stokley@enron.com\", \"david.porter@enron.com\", \"david.poston@enron.com\", \"geir.solberg@enron.com\", \"holden.salisbury@enron.com\", \"jeff.richter@enron.com\", \"jeremy.morris@enron.com\", \"jesse.bryson@enron.com\", \"kourtney.nelson@enron.com\", \"lester.rawson@enron.com\", \"michael.tully@enron.com\", \"phillip.platter@enron.com\", \"portland.desk@enron.com\", \"portland.shift@enron.com\", \"ryan.slinger@enron.com\", \"shift.portland@enron.com\", \"volume_management_portland@enron.com\"]",
+        "evidence_message_ids": [
+          "<16022517.1075839947691.JavaMail.evans@thyme>",
+          "<9883409.1075839947656.JavaMail.evans@thyme>",
+          "<20003078.1075839947580.JavaMail.evans@thyme>",
+          "<32946703.1075839947555.JavaMail.evans@thyme>",
+          "<31332340.1075839947510.JavaMail.evans@thyme>",
+          "<12122347.1075839947473.JavaMail.evans@thyme>",
+          "<13676443.1075839947448.JavaMail.evans@thyme>",
+          "<16020374.1075839947420.JavaMail.evans@thyme>",
+          "<24166053.1075839947395.JavaMail.evans@thyme>",
+          "<17680053.1075839947367.JavaMail.evans@thyme>",
+          "<30472956.1075839947340.JavaMail.evans@thyme>",
+          "<13228332.1075839947312.JavaMail.evans@thyme>",
+          "<21360867.1075839947288.JavaMail.evans@thyme>",
+          "<31782850.1075839947263.JavaMail.evans@thyme>",
+          "<6330655.1075839947238.JavaMail.evans@thyme>",
+          "<29310343.1075839947212.JavaMail.evans@thyme>",
+          "<19157736.1075839947186.JavaMail.evans@thyme>",
+          "<8549963.1075839947158.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "predicate",
+        "judge_used": true,
+        "judge_equivalent": true,
+        "judge_rationale": "Both the expected answer and student answer contain exactly the same 19 email addresses, all lowercased and matching exactly. The only difference is formatting (set notation vs. JSON array), but the semantic content is identical."
+      },
+      "stderr": "prompt medium-005\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-006",
+      "difficulty": "medium",
+      "max_points": 5,
+      "points_earned": 5,
+      "status": "correct",
+      "duration_seconds": 34.57847953400051,
+      "submission": {
+        "challenge_id": "medium-006",
+        "answer": [
+          "bill.iii@enron.com",
+          "cara.semperger@enron.com",
+          "kourtney.nelson@enron.com",
+          "kroum.kroumov@enron.com",
+          "lester.rawson@enron.com",
+          "phillip.platter@enron.com"
+        ],
+        "evidence_message_ids": [
+          "<9100681.1075841877941.JavaMail.evans@thyme>",
+          "<14054298.1075841877964.JavaMail.evans@thyme>",
+          "<20952615.1075841877987.JavaMail.evans@thyme>",
+          "<30405241.1075841878013.JavaMail.evans@thyme>",
+          "<20455503.1075841878038.JavaMail.evans@thyme>",
+          "<30484554.1075841878060.JavaMail.evans@thyme>",
+          "<11279209.1075841878082.JavaMail.evans@thyme>",
+          "<20686998.1075841878105.JavaMail.evans@thyme>",
+          "<28921352.1075841878129.JavaMail.evans@thyme>",
+          "<11668954.1075841878156.JavaMail.evans@thyme>",
+          "<28009623.1075841878180.JavaMail.evans@thyme>",
+          "<22622946.1075841878203.JavaMail.evans@thyme>",
+          "<18587233.1075841878226.JavaMail.evans@thyme>",
+          "<3865619.1075841878249.JavaMail.evans@thyme>",
+          "<8094230.1075841878271.JavaMail.evans@thyme>",
+          "<10063435.1075841878294.JavaMail.evans@thyme>",
+          "<21828236.1075841878318.JavaMail.evans@thyme>",
+          "<16571485.1075841878342.JavaMail.evans@thyme>",
+          "<15165025.1075841878366.JavaMail.evans@thyme>",
+          "<32673707.1075841878388.JavaMail.evans@thyme>",
+          "<28724366.1075841878411.JavaMail.evans@thyme>",
+          "<22814281.1075841878436.JavaMail.evans@thyme>",
+          "<13127794.1075841878459.JavaMail.evans@thyme>",
+          "<18453439.1075841878482.JavaMail.evans@thyme>",
+          "<3349410.1075841878505.JavaMail.evans@thyme>",
+          "<22754058.1075841878527.JavaMail.evans@thyme>",
+          "<7596469.1075841878550.JavaMail.evans@thyme>",
+          "<32806244.1075841878572.JavaMail.evans@thyme>",
+          "<8117065.1075841878594.JavaMail.evans@thyme>",
+          "<24761720.1075841878617.JavaMail.evans@thyme>",
+          "<28167559.1075841878639.JavaMail.evans@thyme>",
+          "<26243717.1075841878661.JavaMail.evans@thyme>",
+          "<5150800.1075841878684.JavaMail.evans@thyme>",
+          "<32616562.1075841878707.JavaMail.evans@thyme>",
+          "<7814547.1075841878729.JavaMail.evans@thyme>",
+          "<7059873.1075841878752.JavaMail.evans@thyme>",
+          "<6822417.1075841878775.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "predicate",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt medium-006\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-007",
+      "difficulty": "medium",
+      "max_points": 4,
+      "points_earned": 0,
+      "status": "crash",
+      "duration_seconds": 11.594974743005878,
+      "submission": null,
+      "grading": null,
+      "stderr": "prompt medium-007\nstatus_code: 400, model_name: MiniMax-M2.7, body: {'type': 'bad_request_error', 'message': 'invalid params, context window exceeds limit (2013)', 'http_code': '400'}\n",
+      "failure_kind": "crash",
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-008",
+      "difficulty": "medium",
+      "max_points": 5,
+      "points_earned": 0,
+      "status": "crash",
+      "duration_seconds": 8.849691935996816,
+      "submission": null,
+      "grading": null,
+      "stderr": "prompt medium-008\nbad parameter or other API misuse\n",
+      "failure_kind": "crash",
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-009",
+      "difficulty": "medium",
+      "max_points": 6,
+      "points_earned": 6,
+      "status": "correct",
+      "duration_seconds": 43.13334155899793,
+      "submission": {
+        "challenge_id": "medium-009",
+        "answer": "24",
+        "evidence_message_ids": [
+          "<30869027.1075846339788.JavaMail.evans@thyme>",
+          "<5156685.1075846339760.JavaMail.evans@thyme>",
+          "<31787875.1075846339731.JavaMail.evans@thyme>",
+          "<1383438.1075846339698.JavaMail.evans@thyme>",
+          "<12316217.1075846339670.JavaMail.evans@thyme>",
+          "<13426057.1075846339616.JavaMail.evans@thyme>",
+          "<27857346.1075846339588.JavaMail.evans@thyme>",
+          "<19405211.1075846339558.JavaMail.evans@thyme>",
+          "<32279851.1075846339529.JavaMail.evans@thyme>",
+          "<4999049.1075846339338.JavaMail.evans@thyme>",
+          "<4773426.1075846339310.JavaMail.evans@thyme>",
+          "<31556263.1075846339281.JavaMail.evans@thyme>",
+          "<1347488.1075846339253.JavaMail.evans@thyme>",
+          "<1619205.1075846339224.JavaMail.evans@thyme>",
+          "<16696455.1075846339190.JavaMail.evans@thyme>",
+          "<911377.1075846339157.JavaMail.evans@thyme>",
+          "<10146042.1075846339129.JavaMail.evans@thyme>",
+          "<11246638.1075846339100.JavaMail.evans@thyme>",
+          "<5946114.1075846339068.JavaMail.evans@thyme>",
+          "<20617752.1075846339040.JavaMail.evans@thyme>",
+          "<4555142.1075846339011.JavaMail.evans@thyme>",
+          "<14260954.1075846338982.JavaMail.evans@thyme>",
+          "<14823.1075846338953.JavaMail.evans@thyme>",
+          "<21563719.1075846338925.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "predicate",
+        "judge_used": true,
+        "judge_equivalent": true,
+        "judge_rationale": "The student answer \"24\" is exactly equivalent to the expected answer value of 24. Both represent the same integer count of emails sent by Leonardo Pacheco. The format matches the expected answer format of \"integer count of emails sent by the named person\" and aligns with the accepted aliases."
+      },
+      "stderr": "prompt medium-009\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "medium-010",
+      "difficulty": "medium",
+      "max_points": 6,
+      "points_earned": 6,
+      "status": "correct",
+      "duration_seconds": 41.366854752996005,
+      "submission": {
+        "challenge_id": "medium-010",
+        "answer": "8",
+        "evidence_message_ids": [
+          "<22175853.1075843183671.JavaMail.evans@thyme>",
+          "<10670379.1075843183644.JavaMail.evans@thyme>",
+          "<12093308.1075843183548.JavaMail.evans@thyme>",
+          "<13037491.1075843183599.JavaMail.evans@thyme>",
+          "<31572670.1075843183525.JavaMail.evans@thyme>",
+          "<14534080.1075843183503.JavaMail.evans@thyme>",
+          "<31439053.1075843183478.JavaMail.evans@thyme>",
+          "<2948639.1075843183454.JavaMail.evans@thyme>",
+          "<30440136.1075843183427.JavaMail.evans@thyme>",
+          "<28135865.1075843183403.JavaMail.evans@thyme>",
+          "<1662725.1075843183379.JavaMail.evans@thyme>",
+          "<16806263.1075843183356.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "predicate",
+        "judge_used": true,
+        "judge_equivalent": true,
+        "judge_rationale": "The student answer \"8\" is exactly the integer value expected (8). This matches the expected answer value and falls within the accepted aliases. The semantic meaning is identical: Mona Petrochko sent 8 emails in the pack."
+      },
+      "stderr": "prompt medium-010\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-001",
+      "difficulty": "hard",
+      "max_points": 9,
+      "points_earned": 0,
+      "status": "incorrect",
+      "duration_seconds": 11.995131712996226,
+      "submission": {
+        "challenge_id": "hard-001",
+        "answer": "768,761",
+        "evidence_message_ids": [
+          "<16191280.1075842251338.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": false,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-001\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-002",
+      "difficulty": "hard",
+      "max_points": 8,
+      "points_earned": 0,
+      "status": "incorrect",
+      "duration_seconds": 36.731760896000196,
+      "submission": {
+        "challenge_id": "hard-002",
+        "answer": "2000-10-03",
+        "evidence_message_ids": [
+          "<11014678.1075842251456.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": false,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-002\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-003",
+      "difficulty": "hard",
+      "max_points": 9,
+      "points_earned": 9,
+      "status": "correct",
+      "duration_seconds": 15.316785177004931,
+      "submission": {
+        "challenge_id": "hard-003",
+        "answer": "Revised Memo; Talking Points for Hydro Presentation",
+        "evidence_message_ids": [
+          "<1662725.1075843183379.JavaMail.evans@thyme>",
+          "<16806263.1075843183356.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-003\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-004",
+      "difficulty": "hard",
+      "max_points": 10,
+      "points_earned": 10,
+      "status": "correct",
+      "duration_seconds": 22.36098195100203,
+      "submission": {
+        "challenge_id": "hard-004",
+        "answer": "richard.sanders@enron.com",
+        "evidence_message_ids": [
+          "<24284446.1075842251410.JavaMail.evans@thyme>",
+          "<26134261.1075842251433.JavaMail.evans@thyme>",
+          "<560447.1075853179520.JavaMail.evans@thyme>",
+          "<6766807.1075853257399.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-004\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-005",
+      "difficulty": "hard",
+      "max_points": 9,
+      "points_earned": 9,
+      "status": "correct",
+      "duration_seconds": 23.765625190004357,
+      "submission": {
+        "challenge_id": "hard-005",
+        "answer": "2000-12-22;2001-01-03",
+        "evidence_message_ids": [
+          "<939576.1075848212371.JavaMail.evans@thyme>",
+          "<13027935.1075848212528.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-005\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-006",
+      "difficulty": "hard",
+      "max_points": 8,
+      "points_earned": 8,
+      "status": "correct",
+      "duration_seconds": 25.58250916600082,
+      "submission": {
+        "challenge_id": "hard-006",
+        "answer": "2001-04-06",
+        "evidence_message_ids": [
+          "<28157939.1075844268030.JavaMail.evans@thyme>",
+          "<13657465.1075844268135.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-006\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-007",
+      "difficulty": "hard",
+      "max_points": 10,
+      "points_earned": 10,
+      "status": "correct",
+      "duration_seconds": 19.934355698998843,
+      "submission": {
+        "challenge_id": "hard-007",
+        "answer": "2001-04-06;2001-04-09;2001-05-23",
+        "evidence_message_ids": [
+          "<28157939.1075844268030.JavaMail.evans@thyme>",
+          "<16858560.1075844268372.JavaMail.evans@thyme>",
+          "<21936463.1075844268445.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": true,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-007\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    },
+    {
+      "challenge_id": "hard-008",
+      "difficulty": "hard",
+      "max_points": 9,
+      "points_earned": 0,
+      "status": "incorrect",
+      "duration_seconds": 24.614602410998486,
+      "submission": {
+        "challenge_id": "hard-008",
+        "answer": "REVISED TVA Settlement Agreement",
+        "evidence_message_ids": [
+          "<5240747.1075853289522.JavaMail.evans@thyme>"
+        ]
+      },
+      "grading": {
+        "answer_match": true,
+        "evidence_pass": false,
+        "evidence_mode": "all",
+        "judge_used": false,
+        "judge_equivalent": null,
+        "judge_rationale": null
+      },
+      "stderr": "prompt hard-008\n",
+      "failure_kind": null,
+      "raw_stdout": null
+    }
+  ]
+}

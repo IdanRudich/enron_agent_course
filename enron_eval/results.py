@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from enron_eval.models import EvalRunResult
+from enron_eval.models import ChallengeResult, EvalRunResult
 
 
 def write_results(result: EvalRunResult, output_dir: Path) -> tuple[Path, Path]:
@@ -47,8 +47,48 @@ def _render_markdown(result: EvalRunResult) -> str:
     return "\n".join(lines)
 
 
-def print_terminal_summary(result: EvalRunResult, json_path: Path) -> None:
-    print(f"Agent: {result.agent_name}")
-    print(f"Dataset: {result.dataset_version}")
-    print(f"Score: {result.total_points}/{result.max_points}")
-    print(f"Results: {json_path}")
+def print_terminal_summary(
+    result: EvalRunResult,
+    json_path: Path,
+    md_path: Path,
+) -> None:
+    pct = (100 * result.total_points / result.max_points) if result.max_points else 0.0
+
+    print()
+    print("Eval complete")
+    print(f"  Agent:    {result.agent_name}")
+    print(f"  Dataset:  {result.dataset_version}")
+    print(f"  Duration: {result.duration_seconds:.1f}s")
+    print(f"  Score:    {result.total_points}/{result.max_points} ({pct:.0f}%)")
+    print()
+    print("  Challenge       Diff   Score  Status       Answer  Evidence  Judge   Time")
+    print(f"  {'-' * 78}")
+    for challenge in result.challenges:
+        answer_col, evidence_col, judge_col = _grading_columns(challenge)
+        print(
+            f"  {challenge.challenge_id:<15} "
+            f"{challenge.difficulty:<6} "
+            f"{challenge.points_earned}/{challenge.max_points:<4} "
+            f"{challenge.status:<12} "
+            f"{answer_col:<7} "
+            f"{evidence_col:<9} "
+            f"{judge_col:<7} "
+            f"{challenge.duration_seconds:.1f}s"
+        )
+    print()
+    print(f"  JSON: {json_path}")
+    print(f"  MD:   {md_path}")
+
+
+def _grading_columns(challenge: ChallengeResult) -> tuple[str, str, str]:
+    if challenge.grading is None:
+        return "—", "—", challenge.failure_kind or "—"
+
+    grading = challenge.grading
+    answer_col = "yes" if grading.answer_match else "no"
+    evidence_col = "yes" if grading.evidence_pass else "no"
+    if grading.judge_used:
+        judge_col = "equiv" if grading.judge_equivalent else "reject"
+    else:
+        judge_col = "—"
+    return answer_col, evidence_col, judge_col

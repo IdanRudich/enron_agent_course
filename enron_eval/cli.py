@@ -61,6 +61,12 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Skip answer-equivalence judge (for testing without judge credentials)",
     )
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Print per-challenge progress to stderr",
+    )
     return parser
 
 
@@ -82,6 +88,7 @@ def main(argv: list[str] | None = None) -> None:
             selector=selector,
             timeout=args.timeout,
             skip_judge=args.skip_judge,
+            verbose=args.verbose,
         )
     except EvalRunnerError as exc:
         print(str(exc), file=sys.stderr)

@@ -389,13 +389,32 @@ Human-readable summary: agent, dataset version, timestamps, total score, and a c
 
 ### Terminal summary
 
-On success, `enron-eval` prints:
+On success, `enron-eval` prints a per-challenge table with score, grading columns, and output paths:
 
 ```
-Agent: my-agent-name
-Dataset: 0.1.0
-Score: 120/142
-Results: /path/to/output/results.json
+Eval complete
+  Agent:    my-agent-name
+  Dataset:  0.1.0
+  Duration: 45.2s
+  Score:    120/142 (85%)
+
+  Challenge       Diff   Score  Status       Answer  Evidence  Judge   Time
+  ------------------------------------------------------------------------------
+  easy-001        easy   1/1    correct      yes     yes       —       4.2s
+  ...
+
+  JSON: /path/to/output/results.json
+  MD:   /path/to/output/results.md
+```
+
+Use `--verbose` for per-challenge progress on stderr during the run.
+
+For the full Minimax smoke path (loads `.env`, validates credentials, runs reference agent checks), use:
+
+```bash
+enron-smoke          # single easy-001 challenge (default)
+enron-smoke easy     # all easy challenges
+enron-smoke full     # all 28 challenges
 ```
 
 Fatal runner errors (metadata/index/selector/judge config) print to stderr and exit `1`.
@@ -463,7 +482,21 @@ See `docs/research/pydanticai_minimax_enron_integration.md` for deeper integrati
 
 Use this path to verify real Minimax connectivity for both the reference agent and the judge. Automated tests mock the judge and do not require API keys.
 
-### 1. Set credentials
+### Quick path: `enron-smoke`
+
+Copy `.env.example` to `.env`, fill in credentials, then run:
+
+```bash
+enron-smoke          # one easy challenge (easy-001)
+enron-smoke easy     # all 10 easy challenges
+enron-smoke full     # all 28 challenges
+```
+
+`enron-smoke` loads `.env` from the current directory, validates agent and judge credentials, runs reference-agent metadata/index/prompt checks, then invokes `enron-eval` with verbose progress.
+
+### Manual step-by-step (same contract)
+
+If you prefer to run each step yourself:
 
 ```bash
 export ENRON_AGENT_API_KEY="your-agent-key"

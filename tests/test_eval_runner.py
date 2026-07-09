@@ -68,11 +68,16 @@ class TestEvalRunner:
 
         assert result.returncode == 0
         stdout = result.stdout
-        assert "Agent: perfect-fake-agent" in stdout
-        assert "Dataset: 0.1.0" in stdout
-        assert "Score: 142/142" in stdout
-        assert "Results:" in stdout
+        assert "Eval complete" in stdout
+        assert "Agent:    perfect-fake-agent" in stdout
+        assert "Dataset:  0.1.0" in stdout
+        assert "Score:    142/142" in stdout
+        assert "JSON:" in stdout
+        assert "MD:" in stdout
         assert str(output_dir / "results.json") in stdout
+        assert str(output_dir / "results.md") in stdout
+        assert "easy-001" in stdout
+        assert "Answer  Evidence  Judge" in stdout
 
     def test_fresh_index_directory_each_run(self, tmp_path: Path) -> None:
         output_dir_a = tmp_path / "run-a"

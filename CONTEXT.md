@@ -3,7 +3,7 @@
 ## Glossary
 
 ### Challenge Question
-A graded task given to a student agent. Each challenge question has a correct answer, a point value, and one or more accepted evidence Message-IDs.
+A graded task given to a student agent. Each challenge question has a correct answer, a point value, and one or more accepted evidence Message-IDs. Use this term rather than the informal phrase "eval test".
 
 ### Public Challenge Record
 The student-facing challenge question data available to an agent. It includes id, difficulty, points, prompt, and expected submission information, but not family, scope, or golden answer data.
@@ -39,7 +39,7 @@ The JSON object printed to stdout by a successful student agent CLI command. Dia
 The student agent CLI mode that prepares a searchable representation of a packaged dataset before evaluation begins.
 
 ### Fresh Evaluation Index
-An index directory created for a single eval run. The course runner builds a fresh evaluation index by default rather than reusing a previous index.
+An index directory created for a single eval run. The course runner builds a fresh evaluation index by default rather than reusing a previous index; after index mode completes, prompt mode treats the index as read-only.
 
 ### Agent Prompt Mode
 The student agent CLI mode that receives a challenge question id, loads the corresponding prompt from the packaged dataset, and returns a student agent submission.
@@ -58,6 +58,9 @@ A solution agent tool for deterministic aggregate operations over indexed messag
 
 ### Eval Runner
 The course tool that calls a student agent CLI, grades the returned submissions, and reports eval results.
+
+### Parallel Challenge Execution
+An eval runner behavior where multiple selected challenge questions are prompted concurrently within one eval run.
 
 ### Prompt Invocation Failure
 A per-challenge student agent CLI failure during agent prompt mode. The eval runner records the failure for that challenge and continues evaluating remaining challenges.

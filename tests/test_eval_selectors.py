@@ -179,4 +179,4 @@ class TestEvalSelectors:
         assert result.returncode == 0, result.stderr
         payload = json.loads((output_dir / "results.json").read_text(encoding="utf-8"))
         assert payload["dataset_version"] == "0.1.0"
-        assert "Dataset: 0.1.0" in result.stdout
+        assert "Dataset:  0.1.0" in result.stdout
